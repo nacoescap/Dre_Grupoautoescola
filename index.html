@@ -231,6 +231,48 @@ th.ef-th { padding:8px 8px 8px 12px; }
 .actions { display:flex; gap:6px; }
 .modal-overlay { position:fixed; inset:0; background:rgba(15,30,58,0.5); z-index:200; display:flex; align-items:center; justify-content:center; display:none; }
 .modal-overlay.open { display:flex; }
+/* Tela de importação (Contas a Pagar / Receber) — prévia compacta */
+#modal-import .modal { width:min(1480px,97vw) !important; max-height:94vh !important; padding:20px 24px; }
+#modal-import .modal-title { margin-bottom:12px; }
+.imp-toolbar { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+.imp-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.imp-chip { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:999px; font-size:12px; background:#f5f5f4; color:#44403c; border:1px solid #e7e5e4; white-space:nowrap; }
+.imp-chip b { font-weight:700; }
+.imp-chip.red { background:#fef2f2; border-color:#fecaca; color:#991b1b; }
+.imp-chip.amber { background:#fffbeb; border-color:#fde68a; color:#92400e; }
+.imp-chip.blue { background:#eff6ff; border-color:#bfdbfe; color:#1e40af; }
+.imp-chip.green { background:#f0fdf4; border-color:#bbf7d0; color:#166534; }
+.imp-bar { display:flex; align-items:center; gap:8px; flex-wrap:wrap; background:#faf9f7; border:1px solid #f0efed; padding:8px 10px; border-radius:8px; margin-bottom:10px; }
+.imp-bar label { font-size:12px; font-weight:600; color:#57534e; margin:0; }
+.imp-bar select { width:220px; padding:5px 8px; font-size:12px; }
+.imp-bar .sep { width:1px; height:22px; background:#e7e5e4; margin:0 4px; }
+.imp-total { margin-left:auto; font-size:12px; color:#57534e; }
+.imp-total b { font-family:'DM Mono',monospace; font-size:13px; color:#1f2937; }
+.imp-wrap { flex:1 1 auto; min-height:200px; max-height:calc(94vh - 290px); overflow:auto; border:1px solid #e7e5e4; border-radius:8px; }
+.imp-table { table-layout:fixed; border-collapse:separate; border-spacing:0; font-size:12px; min-width:100%; }
+.imp-table th { padding:7px 6px; font-size:10.5px; letter-spacing:.3px; background:#f5f5f4; color:#78716c; border-bottom:1px solid #e7e5e4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.imp-table td { padding:3px 6px; border-bottom:1px solid #f0efed; white-space:nowrap; }
+.imp-table tbody tr:nth-child(even) td { background:#fcfcfb; }
+.imp-table tbody tr:hover td { background:#fff7ed; }
+.imp-table input, .imp-table select { padding:3px 6px; font-size:12px; height:28px; border-radius:6px; border-width:1px; background:#fff; }
+.imp-table input[type=checkbox] { width:15px; height:15px; padding:0; }
+.imp-table input[type=date] { font-family:'DM Mono',monospace; font-size:11.5px; padding:3px 4px; }
+.imp-table input[type=number] { text-align:right; font-family:'DM Mono',monospace; -moz-appearance:textfield; }
+.imp-table input[type=number]::-webkit-inner-spin-button, .imp-table input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+#import-step-2 > .btn-row { justify-content:flex-end; margin-top:12px !important; }
+.imp-table .c { text-align:center; }
+.imp-table .mono { font-family:'DM Mono',monospace; font-size:11.5px; color:#57534e; overflow:hidden; text-overflow:ellipsis; }
+.imp-table .obs { color:#78716c; overflow:hidden; text-overflow:ellipsis; }
+.imp-table tr.off td { opacity:.5; }
+.imp-table tr.st-dup td:first-child { box-shadow:inset 3px 0 0 #dc2626; }
+.imp-table tr.st-aporte td:first-child { box-shadow:inset 3px 0 0 #d97706; }
+.imp-table tr.st-interna td:first-child { box-shadow:inset 3px 0 0 #2563eb; }
+.imp-table tr.done td { background:#f0fdf4 !important; color:#15803d; opacity:1; }
+.imp-tags { display:flex; gap:4px; margin-top:2px; }
+.imp-tag { font-size:10px; font-weight:600; padding:1px 6px; border-radius:4px; white-space:nowrap; }
+.imp-tag.red { background:#fee2e2; color:#991b1b; } .imp-tag.amber { background:#fef3c7; color:#92400e; } .imp-tag.blue { background:#dbeafe; color:#1e40af; } .imp-tag.new { background:#f5f5f4; color:#57534e; }
+.imp-ok { width:28px; height:28px; padding:0; border:none; border-radius:6px; background:#ea580c; color:#fff; font-size:14px; cursor:pointer; }
+.imp-ok:hover { background:#c2410c; }
 .modal-x-auto { float:right; margin:-18px -18px 6px 12px; background:none; border:none; cursor:pointer; color:#a8a29e; font-size:22px; line-height:1; padding:4px; }
 .modal-x-auto:hover { color:#57534e; }
 .modal { background:#fff; border:1px solid #e7e5e4; border-radius:var(--radius2); padding:32px; width:620px; max-width:95vw; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(26,62,122,0.18); }
@@ -3905,6 +3947,7 @@ tr.cob-dia-vazio > td {
   <div class="modal" style="width:min(1100px,95vw);max-height:88vh;overflow:auto;">
     <div class="modal-title" id="import-title">📥 Importar Extrato — Conciliação Bancária</div>
     <input type="hidden" id="import-tipo" />
+    <div id="import-config">
     <div class="form-group">
       <label>Formato do arquivo</label>
       <select id="import-formato" onchange="atualizarFormatoImport()">
@@ -3915,6 +3958,7 @@ tr.cob-dia-vazio > td {
     <p style="font-size:13px;color:#57534e;margin-bottom:12px;" id="import-instrucao">
       Cole abaixo o conteúdo do relatório (CSV, separado por ";" ou ",") ou selecione o arquivo. O sistema tenta identificar automaticamente o fornecedor/cliente e a categoria; o que não conseguir identificar fica em branco para você preencher.
     </p>
+    </div>
     <div id="import-step-1">
       <div class="form-group"><label id="import-file-label">Arquivo CSV</label><input type="file" id="import-file" accept=".csv,text/csv" onchange="lerArquivoImport(event)" /></div>
       <div id="import-pdf-status" style="display:none;font-size:12px;color:#57534e;margin:-8px 0 12px;"></div>
@@ -3927,21 +3971,24 @@ tr.cob-dia-vazio > td {
       </div>
     </div>
     <div id="import-step-2" style="display:none;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:10px;">
-        <div id="import-resumo" style="font-size:13px;color:#57534e;"></div>
-        <button class="btn btn-secondary" onclick="voltarImportStep1()">← Voltar</button>
+      <div class="imp-toolbar">
+        <div id="import-resumo" class="imp-chips"></div>
+        <button class="btn btn-secondary btn-sm" onclick="voltarImportStep1()">← Voltar</button>
       </div>
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;background:#faf9f7;padding:10px 12px;border-radius:8px;">
-        <label style="font-size:12px;font-weight:600;color:#57534e;margin:0;">Categoria em massa:</label>
-        <select id="import-cat-massa" style="font-size:12px;max-width:220px;padding:6px 8px;"><option value="">Selecione...</option></select>
-        <button class="btn btn-secondary btn-sm" onclick="aplicarCategoriaMassaImport()">Aplicar a todas as linhas</button>
-        <span style="font-size:11px;color:#a8a29e;">(você ainda pode alterar linha a linha depois)</span>
+      <div class="imp-bar">
+        <label>Categoria em massa:</label>
+        <select id="import-cat-massa"><option value="">Selecione...</option></select>
+        <button class="btn btn-secondary btn-sm" onclick="aplicarCategoriaMassaImport()">Aplicar a todas</button>
+        <span id="import-emp-massa-wrap" style="display:contents">
+        <span class="sep"></span>
+        <label>Empresa em massa:</label>
+        <select id="import-emp-massa"><option value="">Selecione...</option></select>
+        <button class="btn btn-secondary btn-sm" onclick="aplicarEmpresaMassaImport()">Aplicar a todas</button>
+        </span>
+        <div class="imp-total" id="import-total"></div>
       </div>
-      <div class="table-scroll" style="max-height:50vh;">
-        <table><thead><tr id="import-thead-row">
-          <th style="width:30px"><input type="checkbox" id="import-check-all" checked onchange="toggleAllImportRows(this)" /></th>
-          <th>Data</th><th>Vencimento</th><th>Fornecedor/Cliente</th><th>Valor</th><th>NF/Pedido</th><th>Categoria</th><th>Obs.</th><th>Ações</th>
-        </tr></thead><tbody id="tb-import-preview"></tbody></table>
+      <div class="imp-wrap">
+        <table class="imp-table"><colgroup id="import-colgroup"></colgroup><thead><tr id="import-thead-row"></tr></thead><tbody id="tb-import-preview"></tbody></table>
       </div>
       <div id="import-progress-wrap" style="display:none;margin-top:14px;">
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#57534e;margin-bottom:4px;">
@@ -13250,6 +13297,7 @@ function imprimirDre() {
 // IMPORTAR EXTRATO / CONCILIAÇÃO BANCÁRIA
 // ══════════════════════════════════════════
 let importPreviewRows = [];
+let _importEmpresaPadrao = '';
 
 function abrirModalImport(tipo) {
   document.getElementById('import-tipo').value = tipo;
@@ -13259,6 +13307,7 @@ function abrirModalImport(tipo) {
   document.getElementById('import-textarea').value = '';
   document.getElementById('import-file').value = '';
   document.getElementById('import-formato').value = 'csv';
+  document.getElementById('import-config').style.display = '';
   document.getElementById('import-step-1').style.display = '';
   document.getElementById('import-step-2').style.display = 'none';
   importPreviewRows = [];
@@ -13286,6 +13335,7 @@ function atualizarFormatoImport() {
 }
 
 function voltarImportStep1() {
+  document.getElementById('import-config').style.display = '';
   document.getElementById('import-step-1').style.display = '';
   document.getElementById('import-step-2').style.display = 'none';
 }
@@ -13521,6 +13571,25 @@ function sugerirCategoria(tipo, fornecedorId, clienteId, textoLivre) {
   return '';
 }
 
+// Identifica a categoria do sistema pelo "Plano de Conta" do relatório (Excel/PDF): primeiro nome
+// igual (ignorando acentos, maiúsculas e pontuação); senão, a categoria de nome mais longo contida
+// no plano por palavras inteiras (ex.: "PRIMEIRA HABILITAÇÃO B NAÇÕES MULHER" → "PRIMEIRA HABILITAÇÃO B").
+function acharCategoriaPorPlano(tipo, plano) {
+  const norm = t => ' ' + normText(t).replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
+  const alvo = norm(plano);
+  if(alvo.trim() === '') return '';
+  const tipoAlvo = tipo === 'pagar' ? 'saida' : 'entrada';
+  const cats = db.dfc_cats.filter(c => c.nome && (!c.tipo || c.tipo === tipoAlvo));
+  const igual = cats.find(c => norm(c.nome) === alvo);
+  if(igual) return igual.id;
+  let melhor = null;
+  cats.forEach(c => {
+    const n = norm(c.nome);
+    if(n.trim().length >= 4 && alvo.indexOf(n) > -1 && (!melhor || n.length > norm(melhor.nome).length)) melhor = c;
+  });
+  return melhor ? melhor.id : '';
+}
+
 // Verifica se já existe um lançamento igual (mesmo fornecedor/cliente + mesma data + mesmo valor),
 // para evitar duplicar dados ao importar o mesmo extrato mais de uma vez.
 function acharDuplicado(tipo, nomeRaw, matchId, isNovo, dataRef, valor) {
@@ -13547,7 +13616,7 @@ function acharDuplicado(tipo, nomeRaw, matchId, isNovo, dataRef, valor) {
 // Monta uma linha de prévia a partir dos dados brutos já identificados (nome, valor, data etc),
 // reaproveitando o match de fornecedor/cliente, sugestão de categoria e checagem de duplicidade.
 function montarLinhaImport(tipo, dados) {
-  const { nomeRaw, valor, dataRef, venc, nf, obs, aporteSuspeito, transfInterna, dtReceb, valorRecebido } = dados;
+  const { nomeRaw, valor, dataRef, venc, nf, obs, aporteSuspeito, transfInterna, dtReceb, valorRecebido, plano } = dados;
   let matchId = null, isNovo = true;
   if(tipo === 'pagar') {
     const f = acharFornecedorPorNome(nomeRaw);
@@ -13556,13 +13625,15 @@ function montarLinhaImport(tipo, dados) {
     const c = acharClientePorNome(nomeRaw);
     if(c) { matchId = c.id; isNovo = false; }
   }
-  const catSugerida = sugerirCategoria(tipo, tipo==='pagar'?matchId:null, tipo==='receber'?matchId:null, `${nomeRaw} ${obs||''}`);
+  // Com Plano de Conta no relatório, a categoria vem só dele (sem correspondência fica em branco para escolher)
+  const catSugerida = plano ? acharCategoriaPorPlano(tipo, plano) : sugerirCategoria(tipo, tipo==='pagar'?matchId:null, tipo==='receber'?matchId:null, `${nomeRaw} ${obs||''}`);
   const duplicado = acharDuplicado(tipo, nomeRaw, matchId, isNovo, dataRef, valor);
   return {
     incluir: !duplicado && !aporteSuspeito && !transfInterna, nomeRaw, matchId, isNovo, duplicado, aporteSuspeito: !!aporteSuspeito, transfInterna: !!transfInterna,
     dataRef, venc, valor, nf: nf||'', obs: obs||'',
     dtReceb: dtReceb || '', valorRecebido: valorRecebido || 0,
-    catId: catSugerida
+    catId: catSugerida,
+    empresaId: _importEmpresaPadrao || ''
   };
 }
 
@@ -13722,7 +13793,8 @@ function parseRelatorioContasReceber(texto) {
     resultado.push({
       nomeRaw: cliente.replace(/\s+/g,' ').trim(), valor: parseValorBR(valor),
       dataRef: parseDataBR(emissao), venc: parseDataBR(venc), nf: doc, obs,
-      dtReceb: parseDataBR(dtReceb), valorRecebido: parseValorBR(valorRec)
+      dtReceb: parseDataBR(dtReceb), valorRecebido: parseValorBR(valorRec),
+      plano: (plano || '').replace(/\s+/g,' ').trim()
     });
   });
   return resultado;
@@ -13814,6 +13886,7 @@ function processarImport() {
   const tipo = document.getElementById('import-tipo').value;
   const formato = document.getElementById('import-formato').value;
   const texto = document.getElementById('import-textarea').value;
+  _importEmpresaPadrao = identificarEmpresaImport(texto);
   if(!texto.trim()) { alert('Cole o conteúdo do arquivo ou selecione um arquivo.'); return; }
 
   // PDF do "Relatório de Contas a Receber" (funciona em qualquer um dos dois formatos)
@@ -13886,7 +13959,7 @@ function processarImport() {
     const obsTxt = [plano, obsCol].filter(Boolean).join(' · ');
     const valorRecebido = idxValorRec > -1 ? parseValorBR(cols[idxValorRec]) : 0;
     const dtReceb = idxDtRec > -1 ? parseDataBR(cols[idxDtRec]) : '';
-    return montarLinhaImport(tipo, { nomeRaw, valor, dataRef, venc, nf, obs: obsTxt, valorRecebido, dtReceb });
+    return montarLinhaImport(tipo, { nomeRaw, valor, dataRef, venc, nf, obs: obsTxt, valorRecebido, dtReceb, plano });
   });
 
   if(!importPreviewRows.length) { alert('Nenhuma linha válida encontrada no arquivo.'); return; }
@@ -13898,69 +13971,107 @@ function processarImport() {
 
 function renderImportPreview() {
   const tipo = document.getElementById('import-tipo').value;
+  const ehReceber = tipo === 'receber';
   const nomesLista = tipo === 'pagar' ? db.fornecedores : db.clientes;
   const catsDoTipo = db.dfc_cats.filter(c => !c.tipo || c.tipo === (tipo==='pagar'?'saida':'entrada'));
+  const esc = v => String(v == null ? '' : v).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+  document.getElementById('import-config').style.display = 'none';
 
   const catMassaSel = document.getElementById('import-cat-massa');
   const catMassaValorAtual = catMassaSel.value;
   catMassaSel.innerHTML = '<option value="">Selecione...</option>' +
-    catsDoTipo.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
+    catsDoTipo.map(c=>`<option value="${c.id}">${esc(c.nome)}</option>`).join('');
   if(catMassaValorAtual) catMassaSel.value = catMassaValorAtual;
 
-  const semMatch = new Set(
-    importPreviewRows.filter(r=>r.isNovo && !r.importado).map(r=>normText(r.nomeRaw))
-  ).size;
-  const semCategoria = importPreviewRows.filter(r=>!r.catId && !r.importado).length;
-  const duplicados = importPreviewRows.filter(r=>r.duplicado && !r.importado).length;
-  const aportes = importPreviewRows.filter(r=>r.aporteSuspeito && !r.importado).length;
-  const internas = importPreviewRows.filter(r=>r.transfInterna && !r.importado).length;
-  const jaRecebidos = importPreviewRows.filter(r=>r.valorRecebido>0 && r.dtReceb && !r.importado).length;
-  const importados = importPreviewRows.filter(r=>r.importado).length;
-  document.getElementById('import-resumo').innerHTML =
-    `${importPreviewRows.length} linha(s) encontrada(s) · <b>${semMatch}</b> ${tipo==='pagar'?'fornecedor(es)':'cliente(s)'} novo(s) serão criados · <b>${semCategoria}</b> sem categoria identificada`
-    + (duplicados ? ` · <b style="color:#c0392b">${duplicados}</b> possível(is) duplicata(s) já desmarcada(s)` : '')
-    + (aportes ? ` · <b style="color:#c2740c">${aportes}</b> possível(is) depósito(s)/aporte(s) próprio(s) já desmarcado(s)` : '')
-    + (tipo==='receber' && jaRecebidos ? ` · <b style="color:#16a34a">${jaRecebidos}</b> entram como já recebida(s)` : '')
-    + (internas ? ` · <b style="color:#2563eb">${internas}</b> transferência(s) entre contas próprias já desmarcada(s)` : '')
-    + (importados ? ` · <b style="color:#1a8a3c">${importados}</b> já importada(s)` : '');
+  const empresas = empresasAtivas();
+  const usaEmpresa = empresas.length > 0;
+  const empMassaSel = document.getElementById('import-emp-massa');
+  const empMassaAtual = empMassaSel.value;
+  empMassaSel.innerHTML = '<option value="">Selecione...</option>' + empresas.map(e=>`<option value="${e.id}">${esc(e.apelido||e.nome)}</option>`).join('');
+  if(empMassaAtual) empMassaSel.value = empMassaAtual;
+  document.getElementById('import-emp-massa-wrap').style.display = usaEmpresa ? 'contents' : 'none';
 
-  const ehReceber = tipo === 'receber';
-  const todasMarcadas = importPreviewRows.filter(r=>!r.importado).every(r=>r.incluir);
-  document.getElementById('import-thead-row').innerHTML =
-    `<th style="width:30px"><input type="checkbox" id="import-check-all" ${todasMarcadas?'checked':''} onchange="toggleAllImportRows(this)" /></th>`
-    + `<th>Data</th><th>Vencimento</th><th>${ehReceber?'Cliente':'Fornecedor'}</th><th>Valor</th>`
-    + (ehReceber ? `<th title="Preenchido = o lançamento entra como recebido">Recebido em</th><th>Vlr. Recebido</th>` : '')
-    + `<th>NF/Pedido</th><th>Categoria</th><th>Obs.</th><th>Ações</th>`;
+  const pend = importPreviewRows.filter(r=>!r.importado);
+  const semEmpresa = usaEmpresa ? pend.filter(r=>!r.empresaId).length : 0;
+  const semMatch = new Set(pend.filter(r=>r.isNovo).map(r=>normText(r.nomeRaw))).size;
+  const semCategoria = pend.filter(r=>!r.catId).length;
+  const duplicados = pend.filter(r=>r.duplicado).length;
+  const aportes = pend.filter(r=>r.aporteSuspeito).length;
+  const internas = pend.filter(r=>r.transfInterna).length;
+  const jaRecebidos = pend.filter(r=>r.valorRecebido>0 && r.dtReceb).length;
+  const importados = importPreviewRows.length - pend.length;
+  const chip = (cls, n, txt, title) => `<span class="imp-chip ${cls}"${title?` title="${esc(title)}"`:''}><b>${n}</b> ${txt}</span>`;
+  document.getElementById('import-resumo').innerHTML =
+    chip('', importPreviewRows.length, 'linha(s)')
+    + chip('', semMatch, ehReceber ? 'cliente(s) novo(s)' : 'fornecedor(es) novo(s)', 'Serão cadastrados ao importar')
+    + chip(semCategoria ? 'amber' : '', semCategoria, 'sem categoria')
+    + (usaEmpresa ? chip(semEmpresa ? 'amber' : '', semEmpresa, 'sem empresa') : '')
+    + (duplicados ? chip('red', duplicados, 'possível(is) duplicata(s)', 'Já existe lançamento com mesmo nome, data e valor — vêm desmarcadas') : '')
+    + (aportes ? chip('amber', aportes, 'possível(is) aporte(s) próprio(s)', 'Vêm desmarcados') : '')
+    + (internas ? chip('blue', internas, 'transf. entre contas próprias', 'Vêm desmarcadas') : '')
+    + (ehReceber && jaRecebidos ? chip('green', jaRecebidos, 'já recebida(s)', 'Entram baixadas com a data e o valor recebido') : '')
+    + (importados ? chip('green', importados, 'importada(s)') : '');
+
+  // Colunas: [largura, título]
+  const cols = [[32,''],[114,'Data'],[114,'Vencimento'],[null, ehReceber?'Cliente':'Fornecedor'],[92,'Valor']]
+    .concat(ehReceber ? [[114,'Recebido em'],[92,'Vlr. Receb.']] : [])
+    .concat([[76,'NF/Doc'],[160,'Categoria']])
+    .concat(usaEmpresa ? [[140,'Empresa']] : [])
+    .concat([[110,'Obs.'],[40,'']]);
+  const minTabela = cols.reduce((s,c)=>s+(c[0]||200),0);
+  document.querySelector('#modal-import .imp-table').style.minWidth = minTabela + 'px';
+  document.getElementById('import-colgroup').innerHTML = cols.map(c => c[0] ? `<col style="width:${c[0]}px">` : '<col>').join('');
+  const todasMarcadas = pend.length > 0 && pend.every(r=>r.incluir);
+  document.getElementById('import-thead-row').innerHTML = cols.map((c,k) => k === 0
+    ? `<th class="c"><input type="checkbox" id="import-check-all" ${todasMarcadas?'checked':''} onchange="toggleAllImportRows(this)" title="Marcar/desmarcar todas" /></th>`
+    : `<th${/Valor|Vlr/.test(c[1])?' style="text-align:right"':''}>${c[1]}</th>`).join('');
+
+  const nomeOptsBase = nomesLista.map(n=>`<option value="${n.id}">${esc(n.nome)}</option>`).join('');
+  const catOptsBase = '<option value="">— Selecione —</option>' + catsDoTipo.map(c=>`<option value="${c.id}">${esc(c.nome)}</option>`).join('');
+  const empOptsBase = '<option value="">— Selecione —</option>' + empresas.map(e=>`<option value="${e.id}">${esc(e.apelido||e.nome)}</option>`).join('');
+  const selecionar = (html, val) => val ? html.replace(`value="${val}"`, `value="${val}" selected`) : html;
 
   const tb = document.getElementById('tb-import-preview');
   tb.innerHTML = importPreviewRows.map((r,i) => {
     if(r.importado) {
-      return `<tr style="background:#f0fff4;color:#7a8a7f">
-        <td colspan="${ehReceber?10:8}">✅ Importado — ${r.nomeRaw} · ${fmtBRL(r.valor)} · ${fmtDate(r.dataRef)}</td>
-        <td>—</td>
-      </tr>`;
+      return `<tr class="done"><td class="c">✓</td><td colspan="${cols.length-1}">Importado — ${esc(r.nomeRaw)} · ${fmtBRL(ehReceber && r.valorRecebido>0 && r.dtReceb ? r.valorRecebido : r.valor)} · ${fmtDate(r.dataRef)}</td></tr>`;
     }
-    const nomeOptions = ['<option value="__novo__">＋ Criar novo: "'+r.nomeRaw+'"</option>']
-      .concat(nomesLista.map(n=>`<option value="${n.id}" ${!r.isNovo && r.matchId===n.id?'selected':''}>${n.nome}</option>`));
-    const catOptions = ['<option value="">— Selecione —</option>']
-      .concat(catsDoTipo.map(c=>`<option value="${c.id}" ${r.catId===c.id?'selected':''}>${c.nome}</option>`));
-    const dupBadge = r.duplicado ? '<span class="badge badge-red" style="margin-left:4px" title="Já existe um lançamento com mesmo fornecedor/cliente, data e valor">⚠️ Já existe</span>' : '';
-    const aporteBadge = r.aporteSuspeito ? '<span class="badge badge-yellow" style="margin-left:4px" title="Depósito em dinheiro/aporte, provavelmente feito pelo próprio titular da conta — não é um recebimento de cliente">💰 Possível aporte próprio</span>' : '';
-    const internaBadge = r.transfInterna ? '<span class="badge badge-blue" style="margin-left:4px" title="Transferência para/da própria empresa (mesmo CNPJ/titular) — não é pagamento a fornecedor nem recebimento de cliente">🔁 Transf. entre contas próprias</span>' : '';
-    return `<tr${r.duplicado?' style="background:#fff5f5"':(r.aporteSuspeito?' style="background:#fffaf0"':(r.transfInterna?' style="background:#f0f6ff"':''))}>
-      <td><input type="checkbox" ${r.incluir?'checked':''} onchange="importPreviewRows[${i}].incluir=this.checked" /></td>
-      <td><input type="date" value="${r.dataRef}" style="padding:5px;font-size:12px;width:120px" onchange="importPreviewRows[${i}].dataRef=this.value; recalcDuplicadoLinha(${i})" /></td>
-      <td><input type="date" value="${r.venc}" style="padding:5px;font-size:12px;width:120px" onchange="importPreviewRows[${i}].venc=this.value" /></td>
-      <td><select style="font-size:12px;max-width:200px" onchange="importPreviewRows[${i}].matchId=(this.value==='__novo__'?null:this.value); importPreviewRows[${i}].isNovo=(this.value==='__novo__'); recalcDuplicadoLinha(${i})">${nomeOptions.join('')}</select>${dupBadge}${aporteBadge}${internaBadge}</td>
-      <td style="font-family:DM Mono,monospace;font-size:12px"><input type="number" step="0.01" value="${r.valor}" style="width:100px;padding:5px;font-size:12px" onchange="importPreviewRows[${i}].valor=parseFloat(this.value)||0; recalcDuplicadoLinha(${i})" /></td>
-      ${ehReceber ? `<td><input type="date" value="${r.dtReceb||''}" style="padding:5px;font-size:12px;width:120px" onchange="importPreviewRows[${i}].dtReceb=this.value" /></td>
-      <td><input type="number" step="0.01" value="${r.valorRecebido||''}" style="width:100px;padding:5px;font-size:12px" onchange="importPreviewRows[${i}].valorRecebido=parseFloat(this.value)||0" /></td>` : ''}
-      <td style="font-size:12px">${r.nf||'—'}</td>
-      <td><select style="font-size:12px;max-width:180px" onchange="importPreviewRows[${i}].catId=this.value">${catOptions.join('')}</select></td>
-      <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${(r.obs||'').replace(/"/g,'&quot;')}">${r.obs||'—'}</td>
-      <td><button class="btn btn-primary btn-sm" onclick="confirmarImportLinha(${i})">✅ Confirmar</button></td>
+    const nomeOptions = `<option value="__novo__">＋ Novo: ${esc(r.nomeRaw)}</option>` + selecionar(nomeOptsBase, !r.isNovo ? r.matchId : '');
+    const tags = (r.duplicado ? '<span class="imp-tag red" title="Já existe um lançamento com mesmo nome, data e valor">Já existe</span>' : '')
+      + (r.aporteSuspeito ? '<span class="imp-tag amber" title="Depósito em dinheiro/aporte, provavelmente do próprio titular">Aporte próprio</span>' : '')
+      + (r.transfInterna ? '<span class="imp-tag blue" title="Transferência para/da própria empresa (mesmo CNPJ/titular)">Transf. própria</span>' : '');
+    const st = r.duplicado ? ' st-dup' : r.aporteSuspeito ? ' st-aporte' : r.transfInterna ? ' st-interna' : '';
+    return `<tr class="${r.incluir?'':'off'}${st}">
+      <td class="c"><input type="checkbox" ${r.incluir?'checked':''} onchange="importPreviewRows[${i}].incluir=this.checked; this.closest('tr').classList.toggle('off',!this.checked); atualizarTotalImport()" /></td>
+      <td><input type="date" value="${r.dataRef||''}" onchange="importPreviewRows[${i}].dataRef=this.value; recalcDuplicadoLinha(${i})" /></td>
+      <td><input type="date" value="${r.venc||''}" onchange="importPreviewRows[${i}].venc=this.value" /></td>
+      <td><select title="${esc(r.nomeRaw)}" onchange="importPreviewRows[${i}].matchId=(this.value==='__novo__'?null:this.value); importPreviewRows[${i}].isNovo=(this.value==='__novo__'); recalcDuplicadoLinha(${i})">${nomeOptions}</select>${tags?`<div class="imp-tags">${tags}</div>`:''}</td>
+      <td><input type="number" step="0.01" value="${r.valor}" onchange="importPreviewRows[${i}].valor=parseFloat(this.value)||0; recalcDuplicadoLinha(${i})" /></td>
+      ${ehReceber ? `<td><input type="date" value="${r.dtReceb||''}" title="Preenchido = entra como recebido" onchange="importPreviewRows[${i}].dtReceb=this.value; atualizarTotalImport()" /></td>
+      <td><input type="number" step="0.01" value="${r.valorRecebido||''}" onchange="importPreviewRows[${i}].valorRecebido=parseFloat(this.value)||0; atualizarTotalImport()" /></td>` : ''}
+      <td class="mono" title="${esc(r.nf)}">${esc(r.nf)||'—'}</td>
+      <td><select title="${esc(r.catId ? getDreCatNome(r.catId) : 'Sem categoria')}" onchange="importPreviewRows[${i}].catId=this.value; this.title=this.options[this.selectedIndex].text">${selecionar(catOptsBase, r.catId)}</select></td>
+      ${usaEmpresa ? `<td><select title="${esc(r.empresaId ? empresaNome(r.empresaId) : 'Sem empresa')}" onchange="importPreviewRows[${i}].empresaId=this.value; this.title=this.options[this.selectedIndex].text; renderResumoEmpresaImport()">${selecionar(empOptsBase, r.empresaId)}</select></td>` : ''}
+      <td class="obs" title="${esc(r.obs)}">${esc(r.obs)||'—'}</td>
+      <td class="c"><button class="imp-ok" onclick="confirmarImportLinha(${i})" title="Importar somente esta linha">✓</button></td>
     </tr>`;
   }).join('');
+  atualizarTotalImport();
+}
+
+function renderResumoEmpresaImport() { renderImportPreview(); }
+
+// Total das linhas marcadas (no Receber, usa o valor recebido quando a linha entra baixada)
+function atualizarTotalImport() {
+  const el = document.getElementById('import-total');
+  if(!el) return;
+  const ehReceber = document.getElementById('import-tipo').value === 'receber';
+  const marc = importPreviewRows.filter(r=>r.incluir && !r.importado);
+  const total = marc.reduce((s,r)=> s + ((ehReceber && r.valorRecebido>0 && r.dtReceb) ? r.valorRecebido : (r.valor||0)), 0);
+  el.innerHTML = `Selecionadas: <b>${marc.length}</b> · Total: <b>${fmtBRL(total)}</b>`;
+  const all = document.getElementById('import-check-all');
+  const pend = importPreviewRows.filter(r=>!r.importado);
+  if(all) all.checked = pend.length > 0 && pend.every(r=>r.incluir);
 }
 
 function toggleAllImportRows(cb) {
@@ -13970,6 +14081,32 @@ function toggleAllImportRows(cb) {
 
 // Aplica a categoria escolhida a todas as linhas ainda não importadas da prévia,
 // sem remover a possibilidade de ajustar linha a linha depois.
+// Identifica a empresa titular do arquivo pelo cabeçalho (CNPJ ou nome/apelido da empresa cadastrada).
+// Sem identificação, usa a empresa selecionada no topo do sistema.
+function identificarEmpresaImport(texto) {
+  const lista = empresasAtivas();
+  if(!lista.length) return '';
+  const linhas = (texto||'').replace(/\r\n?/g,'\n').split('\n');
+  const iTx = linhas.findIndex(l => /^\s*\d{2}\/\d{2}(\/\d{4})?[\s;]/.test(l) && /\d,\d{2}/.test(l));
+  const cab = linhas.slice(0, iTx > -1 ? iTx : 15).join(' ');
+  const cabDig = ' ' + (cab.match(/[\d.\/-]{14,18}/g) || []).map(x => x.replace(/\D/g,'')).join(' ') + ' ';
+  const porCnpj = lista.find(e => { const d = (e.cnpj||'').replace(/\D/g,''); return d.length >= 11 && cabDig.indexOf(' ' + d + ' ') > -1; });
+  if(porCnpj) return porCnpj.id;
+  const norm = t => ' ' + normText(t).replace(/[^a-z0-9]+/g,' ').trim() + ' ';
+  const cabN = norm(cab);
+  const porNome = lista.find(e => [e.nome, e.apelido].some(n => n && norm(n).trim().length >= 6 && cabN.indexOf(norm(n)) > -1));
+  if(porNome) return porNome.id;
+  const atual = empresaAtual();
+  return lista.some(e => e.id === atual) ? atual : '';
+}
+
+function aplicarEmpresaMassaImport() {
+  const empId = document.getElementById('import-emp-massa').value;
+  if(!empId) { alert('Selecione uma empresa antes de aplicar.'); return; }
+  importPreviewRows.forEach(r => { if(!r.importado) r.empresaId = empId; });
+  renderImportPreview();
+}
+
 function aplicarCategoriaMassaImport() {
   const catId = document.getElementById('import-cat-massa').value;
   if(!catId) { alert('Selecione uma categoria antes de aplicar.'); return; }
@@ -14020,7 +14157,7 @@ async function importarLinha(tipo, r) {
 
   if(tipo === 'pagar') {
     const lanc = {
-      id: uid(), empresa_id: empresaAtual() || null,
+      id: uid(), empresa_id: r.empresaId || empresaAtual() || null,
       dtcompra: r.dataRef, dtprev: r.venc, nf: r.nf||'',
       forn: idAlvo, prod: '', valor: r.valor, parcelas: 1,
       financeiro: 'sim', pago: 'nao', tipo_pag: '', banco: '',
@@ -14036,7 +14173,7 @@ async function importarLinha(tipo, r) {
     const jaRecebido = (r.valorRecebido > 0) && !!r.dtReceb;
     const difValor = jaRecebido && Math.abs(r.valorRecebido - r.valor) > 0.005;
     const lanc = {
-      id: uid(), empresa_id: empresaAtual() || null,
+      id: uid(), empresa_id: r.empresaId || empresaAtual() || null,
       dtvenda: r.dataRef, dtprev: r.venc, nf: r.nf||'',
       cliente: idAlvo, prod: '', valor: jaRecebido ? r.valorRecebido : r.valor, parcelas: 1,
       financeiro: 'sim', recebido: jaRecebido ? 'sim' : 'nao', dtrecebido: jaRecebido ? r.dtReceb : '',
@@ -14104,6 +14241,8 @@ async function confirmarImport() {
   const tipo = document.getElementById('import-tipo').value;
   const linhas = importPreviewRows.filter(r=>r.incluir && !r.importado);
   if(!linhas.length) { alert('Nenhuma linha selecionada para importar.'); return; }
+  const semEmp = empresasAtivas().length ? linhas.filter(r => !r.empresaId).length : 0;
+  if(semEmp && !confirm(`${semEmp} linha(s) selecionada(s) estão sem empresa e ficarão no Consolidado.\n\nUse "Empresa em massa" para definir. Deseja importar assim mesmo?`)) return;
 
   definirBotoesImportDesabilitados(true);
   let criados = 0, erros = 0;
