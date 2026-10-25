@@ -510,6 +510,22 @@ th.ef-th { padding:8px 8px 8px 12px; }
 #dre-tabela-wrap .dre-row-subtotal td.dre-pct,
 #dre-tabela-wrap .dre-row-final td.dre-pct { color:#57534e; font-weight:700; }
 #dre-tabela-wrap .dre-cat-row td.dre-pct { font-size:9px; }
+/* ── DRE: layout que se ajusta à quantidade de meses visíveis ── */
+#dre-tabela-wrap { overflow-x:auto; }
+#dre-tabela-wrap .dfc-table td:first-child, #dre-tabela-wrap .dfc-table th:first-child { position:sticky; left:0; z-index:1; background:#fff; }
+#dre-tabela-wrap .dfc-table th:first-child { background:#faf9f7; z-index:3; }
+#dre-tabela-wrap .dfc-table tr.dre-row-pe td:first-child { background:#fff7ed; }
+#dre-tabela-wrap .dfc-table th:not(.dre-pct):not(:first-child) { border-left:1px solid #f0efed; }
+#dre-tabela-wrap .dfc-table th.dfc-col-total:not(.dre-pct), #dre-tabela-wrap .dfc-table td.dfc-col-total:not(.dre-pct) { border-left:2px solid #e7e5e4; }
+#dre-tabela-wrap .dfc-table th.dre-pct { color:#c2410c; }
+/* Poucos meses: a tabela fica do tamanho do conteúdo, com os valores perto das contas */
+#dre-tabela-wrap .dfc-table.dre-compacta { width:auto; }
+#dre-tabela-wrap .dfc-table.dre-compacta th:first-child, #dre-tabela-wrap .dfc-table.dre-compacta td:first-child { min-width:300px; padding-right:24px; }
+#dre-tabela-wrap .dfc-table.dre-compacta th:not(.dre-pct):not(:first-child), #dre-tabela-wrap .dfc-table.dre-compacta td:not(.dre-pct):not(:first-child) { min-width:132px; padding-left:16px; }
+#dre-tabela-wrap .dfc-table.dre-compacta th.dre-pct, #dre-tabela-wrap .dfc-table.dre-compacta td.dre-pct { min-width:64px; padding-right:14px; }
+#dre-tabela-wrap .dfc-table.dre-compacta td { font-size:12px; padding-top:4px; padding-bottom:4px; }
+#dre-tabela-wrap .dfc-table.dre-compacta td.dre-pct { font-size:11px; }
+#dre-tabela-wrap .dfc-table.dre-compacta th { font-size:10.5px; padding-top:8px; padding-bottom:8px; }
 
 
 /* ── CALENDÁRIO — RECEBER ── */
@@ -2344,6 +2360,10 @@ tr.cob-dia-vazio > td {
             <input type="checkbox" id="dfc-incluir-receber" checked onchange="renderDfc()" />
             Incluir Contas a Receber
           </label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;">
+            <input type="checkbox" id="dfc-ocultar-grafico" onchange="salvarOcultarGraficoDfc(); renderDfc();" />
+            Ocultar gráfico
+          </label>
           <div style="display:flex;align-items:center;gap:4px;background:#faf9f7;border-radius:8px;padding:3px;">
             <button id="btn-dfc-rec-todos" onclick="setDfcFiltroRec('todos')" style="padding:5px 12px;font-size:12px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:#ea580c;color:#fff;">Todos</button>
             <button id="btn-dfc-rec-aberto" onclick="setDfcFiltroRec('aberto')" style="padding:5px 12px;font-size:12px;font-weight:600;border:none;border-radius:6px;cursor:pointer;background:transparent;color:#57534e;">Contas a Receber</button>
@@ -2359,7 +2379,7 @@ tr.cob-dia-vazio > td {
       </div>
 
       <!-- Gráfico DFC -->
-      <div class="card">
+      <div class="card" id="card-chart-dfc">
         <div class="card-title">Evolução Mensal</div>
         <div style="position:relative;height:320px;">
           <canvas id="chart-dfc"></canvas>
@@ -2438,7 +2458,8 @@ tr.cob-dia-vazio > td {
           </label>
           <span class="dre-tb-sep" aria-hidden="true"></span>
           <label class="dre-tb-check" title="Ignora vendas e compras sem categoria de DRE"><input type="checkbox" id="dre-somente-classificados" onchange="renderDre()" />Somente com categoria</label>
-          <label class="dre-tb-check"><input type="checkbox" id="dre-ocultar-acumulada" onchange="salvarPrefsDre(); renderDre();" />Ocultar acumulado</label>
+          <label class="dre-tb-check"><input type="checkbox" id="dre-ocultar-acumulada" onchange="salvarPrefsDre(); renderDre();" />Ocultar DRE acumulada</label>
+          <label class="dre-tb-check"><input type="checkbox" id="dre-ocultar-grafico" onchange="salvarPrefsDre(); renderDre();" />Ocultar gráfico</label>
           <label class="dre-tb-check" title="Ocultar a variação só esconde a linha; o valor já digitado continua somando no CPV."><input type="checkbox" id="dre-ocultar-varestoque" onchange="salvarPrefsDre(); renderDre();" />Ocultar variação do estoque</label>
         </div>
         <div class="dre-tb-row">
@@ -2463,7 +2484,7 @@ tr.cob-dia-vazio > td {
       </div>
 
       <!-- Gráfico DRE -->
-      <div class="card">
+      <div class="card" id="card-chart-dre">
         <div class="card-title">Evolução Mensal</div>
         <div style="position:relative;height:320px;">
           <canvas id="chart-dre"></canvas>
@@ -10518,7 +10539,23 @@ function setDfcFiltroRec(modo) {
   renderDfc();
 }
 
+// Mostra/oculta o card "Evolução Mensal" do Fluxo de Caixa (preferência guardada no navegador)
+const DFC_OCULTAR_GRAF_KEY = 'dfc_ocultar_grafico';
+function salvarOcultarGraficoDfc() {
+  try { localStorage.setItem(DFC_OCULTAR_GRAF_KEY, document.getElementById('dfc-ocultar-grafico').checked ? '1' : '0'); } catch(e) {}
+}
+function aplicarOcultarGraficoDfc() {
+  const chk = document.getElementById('dfc-ocultar-grafico');
+  if (chk && !window._dfcGrafPrefOk) {
+    window._dfcGrafPrefOk = true;
+    try { chk.checked = localStorage.getItem(DFC_OCULTAR_GRAF_KEY) === '1'; } catch(e) {}
+  }
+  const card = document.getElementById('card-chart-dfc');
+  if (card) card.style.display = (chk && chk.checked) ? 'none' : '';
+}
+
 function renderDfc() {
+  aplicarOcultarGraficoDfc();
   const ano = parseInt(document.getElementById('dfc-ano').value);
   const inclPagar   = document.getElementById('dfc-incluir-pagar').checked;
   const inclReceber = document.getElementById('dfc-incluir-receber').checked;
@@ -11298,6 +11335,7 @@ async function setVarEstoque(mes, rawValor) {
 
 function renderDre() {
   if (!window._drePrefsOk) { window._drePrefsOk = true; restaurarPrefsDre(); }
+  aplicarOcultarGraficoDre();
   const ano = parseInt(document.getElementById('dre-ano').value);
   const somenteClassificados = document.getElementById('dre-somente-classificados').checked;
   // Base de apuração. Três modos:
@@ -11497,7 +11535,7 @@ function renderDre() {
   const linhaCalc = {};
   grupos.forEach(g => linhaCalc[g.id] = {});
 
-  COLS.forEach(col => {
+  const calcularColunaDre = (col, destino) => {
     let acumulado = 0;
     let valorAnterior = 0; // valor da linha imediatamente anterior, usado pelas linhas de percentual
     grupos.forEach(g => {
@@ -11505,20 +11543,43 @@ function renderDre() {
         const bruto = valorBruto(g.id, col);
         const assinado = g.tipo === 'entrada' ? bruto : -bruto;
         acumulado += assinado;
-        linhaCalc[g.id][col] = assinado;
+        destino[g.id][col] = assinado;
         valorAnterior = assinado;
       } else if (g.tipo === 'subtotal') {
-        linhaCalc[g.id][col] = acumulado;
+        destino[g.id][col] = acumulado;
         valorAnterior = acumulado;
       } else if (g.tipo === 'percentual') {
         const base = grupoBase ? valorBruto(grupoBase.id, col) : 0;
-        linhaCalc[g.id][col] = base ? (valorAnterior / base) * 100 : 0;
+        destino[g.id][col] = base ? (valorAnterior / base) * 100 : 0;
       }
     });
-  });
+  };
+  COLS.forEach(col => calcularColunaDre(col, linhaCalc));
+  // Todos os 12 meses (mesmo os ocultos), para a análise horizontal comparar com o mês anterior
+  const linhaCalcMes = {};
+  grupos.forEach(g => linhaCalcMes[g.id] = {});
+  for (let m = 1; m <= 12; m++) calcularColunaDre(m, linhaCalcMes);
 
-  const mesesHeader = mesesVisiveis.map(m => `<th>${MESES_ABR[m]}</th><th class="dre-pct">%</th>`).join('')
-    + (mostrarAcum ? '<th class="dfc-col-total">DRE Acumulada</th><th class="dfc-col-total dre-pct">%</th>' : '');
+  // Coluna "%" ao lado de cada mês = ANÁLISE HORIZONTAL: variação do mês sobre o mês
+  // anterior (Fev x Jan, Mar x Fev...). Contas de receita/custo/despesa: variação do
+  // valor da conta (despesa 100 → 150 = +50%). Subtotais/resultado: (atual − anterior)
+  // ÷ |anterior|. Vermelho = variação desfavorável (receita/resultado caiu, custo/despesa subiu).
+  // Janeiro não tem mês anterior no ano → "—".
+  const ahCell = (atual, anterior, mes, modo) => {
+    const vazio = `<td class="dre-pct" title="Análise horizontal: sem mês anterior para comparar"><span class="dfc-val-zero">—</span></td>`;
+    if (mes <= 1 || Math.abs(anterior) < 0.005) return vazio;
+    let p;
+    if (modo === 'resultado') p = ((atual - anterior) / Math.abs(anterior)) * 100;
+    else p = ((Math.abs(atual) - Math.abs(anterior)) / Math.abs(anterior)) * 100;
+    if (Math.abs(p) < 0.05) p = 0;
+    const desfavoravel = modo === 'saida' ? p > 0 : p < 0;
+    const txt = (p > 0 ? '+' : '') + p.toFixed(1) + '%';
+    const tit = `Variação sobre ${MESES_ABR[mes-1]}: ${fmtBRL(anterior)} → ${fmtBRL(atual)}`;
+    return `<td class="dre-pct" title="${tit}">${p === 0 ? txt : `<span class="${desfavoravel ? 'dfc-val-neg' : 'dfc-val-pos'}">${txt}</span>`}</td>`;
+  };
+
+  const mesesHeader = mesesVisiveis.map(m => `<th>${MESES_ABR[m]}</th><th class="dre-pct" title="Análise horizontal: variação sobre o mês anterior">AH%</th>`).join('')
+    + (mostrarAcum ? '<th class="dfc-col-total">DRE Acumulada</th><th class="dfc-col-total dre-pct" title="Análise vertical: % sobre a Receita Bruta do acumulado">AV%</th>' : '');
 
   // Linha de uma categoria, exibida dentro do grupo expandido (herda o sinal
   // do grupo-pai, para que a soma das categorias bata com a linha do grupo).
@@ -11526,10 +11587,11 @@ function renderDre() {
     const sinal = grupoTipo === 'entrada' ? 1 : -1;
     const cells = mesesVisiveis.map(mes => {
       const v = sinal * valorBrutoCat(catId, mes);
+      const ah = ahCell(v, mes > 1 ? sinal * valorBrutoCat(catId, mes - 1) : 0, mes, grupoTipo);
       if (Math.abs(v) >= 0.005) {
-        return `<td class="dre-cell-click" onclick="abrirDetalheDreCategoria('${catId}',${mes})" title="Ver lançamentos desta categoria">${fmtDreVal(v)}</td>` + pctCell(v, mes, true);
+        return `<td class="dre-cell-click" onclick="abrirDetalheDreCategoria('${catId}',${mes})" title="Ver lançamentos desta categoria">${fmtDreVal(v)}</td>` + ah;
       }
-      return `<td>${fmtDreVal(v)}</td>` + pctCell(v, mes, true);
+      return `<td>${fmtDreVal(v)}</td>` + ah;
     }).join('');
     const totalVal = sinal * valorBrutoCat(catId, 'total');
     const totalCell = (Math.abs(totalVal) >= 0.005
@@ -11540,12 +11602,14 @@ function renderDre() {
 
   const linhaValor = (g, cls, clicavel) => {
     const absPct = g.tipo !== 'subtotal';
+    const modoAh = g.tipo === 'subtotal' ? 'resultado' : g.tipo;
     const cells = mesesVisiveis.map(mes => {
       const v = linhaCalc[g.id][mes];
+      const ah = ahCell(v, mes > 1 ? (linhaCalcMes[g.id][mes - 1] || 0) : 0, mes, modoAh);
       if (clicavel && Math.abs(v) >= 0.005) {
-        return `<td class="dre-cell-click" onclick="abrirDetalheDreGrupo('${g.id}',${mes})" title="Ver lançamentos desta conta">${fmtDreVal(v)}</td>` + pctCell(v, mes, absPct);
+        return `<td class="dre-cell-click" onclick="abrirDetalheDreGrupo('${g.id}',${mes})" title="Ver lançamentos desta conta">${fmtDreVal(v)}</td>` + ah;
       }
-      return `<td>${fmtDreVal(v)}</td>` + pctCell(v, mes, absPct);
+      return `<td>${fmtDreVal(v)}</td>` + ah;
     }).join('');
     const totalVal = linhaCalc[g.id]['total'];
     const totalCell = ((clicavel && Math.abs(totalVal) >= 0.005)
@@ -11585,7 +11649,7 @@ function renderDre() {
   const ultimoSubtotalId = subtotais.length ? subtotais[subtotais.length - 1].id : null;
 
   const linhaFinal = (g, cls) => {
-    const cells = mesesVisiveis.map(mes => `<td>${fmtDreVal(linhaCalc[g.id][mes])}</td>` + pctCell(linhaCalc[g.id][mes], mes, false)).join('');
+    const cells = mesesVisiveis.map(mes => `<td>${fmtDreVal(linhaCalc[g.id][mes])}</td>` + ahCell(linhaCalc[g.id][mes], mes > 1 ? (linhaCalcMes[g.id][mes - 1] || 0) : 0, mes, 'resultado')).join('');
     const totalVal = linhaCalc[g.id]['total'];
     return `<tr class="${cls}"><td>${g.nome}</td>${cells}${mostrarAcum ? `<td class="dfc-col-total">${fmtDreVal(totalVal)}</td>` + pctCell(totalVal, 'total', false, true) : ''}</tr>`;
   };
@@ -11666,7 +11730,9 @@ function renderDre() {
            ⚠️ Nenhum grupo de <strong>Amortização</strong> foi encontrado no DRE, então nada mudou. Cadastre um grupo com “Amortização” no nome em <strong>DRE → Grupos</strong>, ou escolha outra base de apuração.
          </div>`;
   }
-  const html = avisoBase + `<table class="dfc-table">
+  // Até 6 colunas de valor, a tabela fica compacta (do tamanho do conteúdo) em vez de esticar
+  const qtdColsValor = mesesVisiveis.length + (mostrarAcum ? 1 : 0);
+  const html = avisoBase + `<table class="dfc-table${qtdColsValor <= 6 ? ' dre-compacta' : ''}" data-cols="${qtdColsValor}">
     <thead><tr><th>DRE</th>${mesesHeader}</tr></thead>
     <tbody>${linhasHtml}${peRow}</tbody>
   </table>`;
@@ -11721,6 +11787,7 @@ function salvarPrefsDre() {
     localStorage.setItem(DRE_PREFS_KEY, JSON.stringify({
       base:   (document.getElementById('dre-base') || {}).value || 'competencia',
       acum:   !!((document.getElementById('dre-ocultar-acumulada') || {}).checked),
+      graf:   !!((document.getElementById('dre-ocultar-grafico') || {}).checked),
       varest: !!((document.getElementById('dre-ocultar-varestoque') || {}).checked)
     }));
   } catch(e) {}
@@ -11735,6 +11802,14 @@ function restaurarPrefsDre() {
   if (a) a.checked = !!p.acum;
   const v = document.getElementById('dre-ocultar-varestoque');
   if (v) v.checked = !!p.varest;
+  const gr = document.getElementById('dre-ocultar-grafico');
+  if (gr) gr.checked = !!p.graf;
+}
+// Mostra/oculta o card "Evolução Mensal" do DRE
+function aplicarOcultarGraficoDre() {
+  const card = document.getElementById('card-chart-dre');
+  const chk = document.getElementById('dre-ocultar-grafico');
+  if (card) card.style.display = (chk && chk.checked) ? 'none' : '';
 }
 
 function dreMesesTodos(mostrar) {
@@ -13242,11 +13317,24 @@ function imprimirDre() {
   cloneTable.querySelectorAll('.dre-toggle-cat').forEach(el => { el.outerHTML = ''; });
 
   const dataHoje = new Date().toLocaleString('pt-BR', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-  const tableHtml = '<table>' + cloneTable.innerHTML + '</table>';
+  // Layout do PDF conforme a quantidade de colunas visíveis: poucas colunas = retrato e
+  // tabela do tamanho do conteúdo (sem valores longe das contas); muitas = paisagem.
+  const qtdCols = parseInt(table.getAttribute('data-cols')) || 13;
+  const compacta = qtdCols <= 6;
+  const retrato = qtdCols <= 3;
+  const tableHtml = '<table class="' + (compacta ? 'compacta' : '') + '">' + cloneTable.innerHTML + '</table>';
+  const mesesSel = [];
+  for (let m = 1; m <= 12; m++) { const c = document.getElementById('dre-mes-' + m); if (!c || c.checked) mesesSel.push(MESES_ABR[m]); }
+  const baseSel = document.getElementById('dre-base');
+  const baseTxt = baseSel && baseSel.selectedIndex > -1 ? baseSel.options[baseSel.selectedIndex].text : '';
+  const empTxt = (typeof empresaNome === 'function') ? empresaNome(empresaAtual()) : '';
+  const filtrosTxt = [empTxt, 'Meses: ' + (mesesSel.length === 12 ? 'Jan a Dez' : mesesSel.join(', ')), baseTxt].filter(Boolean).join(' · ');
 
   const css = [
-    '* { margin:0; padding:0; box-sizing:border-box; }',
-    '@page { size: A4 landscape; margin: 12mm; }',
+    '* { margin:0; padding:0; box-sizing:border-box; -webkit-print-color-adjust:exact; print-color-adjust:exact; }',
+    '@page { size: A4 ' + (retrato ? 'portrait' : 'landscape') + '; margin: 12mm; }',
+    'thead { display:table-header-group; } tr { page-break-inside:avoid; }',
+    '.filtros { font-size:9.5px; color:#57534e; margin-top:3px; }',
     'body { font-family:Arial,sans-serif; color:#1f2937; padding:20px 26px; font-size:11px; }',
     '.header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; padding-bottom:10px; border-bottom:2px solid #ea580c; }',
     '.logo { font-size:18px; font-weight:800; color:#ea580c; }',
@@ -13267,6 +13355,15 @@ function imprimirDre() {
     '.dre-row-percent td:first-child { padding-left:20px; }',
     '.dre-row-final td { font-weight:800; font-size:11px; border-top:1.5px solid #d6d3d1; border-bottom:1.5px solid #d6d3d1; }',
     'th.dre-pct, td.dre-pct { padding-left:2px; padding-right:6px; color:#a8a29e; font-size:8.5px; font-weight:400; }',
+    'th.dre-pct { color:#c2410c; }',
+    'th.dfc-col-total:not(.dre-pct), td.dfc-col-total:not(.dre-pct) { border-left:2px solid #e7e5e4; }',
+    '.dre-row-pe td { border-top:1.5px solid #ea580c; background:#fff7ed; color:#9a3412; font-weight:700; }',
+    'table.compacta { width:auto; min-width:' + (retrato ? '100%' : '62%') + '; }',
+    'table.compacta td, table.compacta th { padding-left:12px; padding-right:12px; }',
+    'table.compacta td { font-size:11px; padding-top:4px; padding-bottom:4px; }',
+    'table.compacta td:first-child { min-width:250px; font-size:11.5px; }',
+    'table.compacta th:not(.dre-pct):not(:first-child), table.compacta td:not(.dre-pct):not(:first-child) { min-width:110px; }',
+    'table.compacta td.dre-pct, table.compacta th.dre-pct { font-size:9.5px; min-width:50px; }',
     '.dre-row-subtotal td.dre-pct, .dre-row-final td.dre-pct { color:#57534e; font-weight:700; }',
     '.dre-lucro-tag { display:inline-block; font-size:9px; font-weight:700; padding:1px 7px; border-radius:8px; margin-left:6px; }',
     '.dre-lucro-tag.pos { background:#dcfce7; color:#166534; }',
@@ -13279,7 +13376,7 @@ function imprimirDre() {
 
   const fullHtml = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>' + titulo + ' — C@P Consultoria</title>'
     + '<style>' + css + '</style></head><body>'
-    + '<div class="header"><div><div class="logo">C@P</div><div class="titulo">' + titulo + '</div></div>'
+    + '<div class="header"><div><div class="logo">C@P</div><div class="titulo">' + titulo + '</div><div class="filtros">' + filtrosTxt + '</div></div>'
     + '<div class="meta"><div>Emitido em: ' + dataHoje + '</div><div>Sistema de Gestão C@P Consultoria</div></div></div>'
     + tableHtml
     + '<div class="footer">Grupo Autoescola Nações · C@P Consultoria &middot; Gerado em ' + dataHoje + '</div>'
