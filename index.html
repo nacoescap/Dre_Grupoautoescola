@@ -231,6 +231,8 @@ th.ef-th { padding:8px 8px 8px 12px; }
 .actions { display:flex; gap:6px; }
 .modal-overlay { position:fixed; inset:0; background:rgba(15,30,58,0.5); z-index:200; display:flex; align-items:center; justify-content:center; display:none; }
 .modal-overlay.open { display:flex; }
+.modal-x-auto { float:right; margin:-18px -18px 6px 12px; background:none; border:none; cursor:pointer; color:#a8a29e; font-size:22px; line-height:1; padding:4px; }
+.modal-x-auto:hover { color:#57534e; }
 .modal { background:#fff; border:1px solid #e7e5e4; border-radius:var(--radius2); padding:32px; width:620px; max-width:95vw; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(26,62,122,0.18); }
 .modal-title { font-size:16px; font-weight:700; margin-bottom:24px; color:#1f2937; }
 .modal-footer { display:flex; gap:10px; justify-content:flex-end; margin-top:24px; border-top:1px solid #f5f4f2; padding-top:20px; }
@@ -2568,7 +2570,7 @@ tr.cob-dia-vazio > td {
               <div class="transf-title" id="transf-modal-title">Nova transferência</div>
               <div class="transf-sub">O valor sai da conta de origem e entra na conta de destino na data informada.</div>
             </div>
-            <button type="button" class="dre-det-x" onclick="closeModal('modal-transf')" aria-label="Fechar" title="Fechar (Esc)">&times;</button>
+            <button type="button" class="dre-det-x" onclick="closeModal('modal-transf')" aria-label="Fechar" title="Fechar">&times;</button>
           </div>
           <div class="transf-contas">
             <div class="form-group"><label for="transf-origem">Conta de origem *</label>
@@ -3906,7 +3908,7 @@ tr.cob-dia-vazio > td {
     <div class="form-group">
       <label>Formato do arquivo</label>
       <select id="import-formato" onchange="atualizarFormatoImport()">
-        <option value="csv">Planilha / Relatório (CSV)</option>
+        <option value="csv">Planilha / Relatório (Excel, CSV ou PDF do relatório)</option>
         <option value="extrato">Extrato Bancário (PDF do banco ou texto colado)</option>
       </select>
     </div>
@@ -3936,7 +3938,7 @@ tr.cob-dia-vazio > td {
         <span style="font-size:11px;color:#a8a29e;">(você ainda pode alterar linha a linha depois)</span>
       </div>
       <div class="table-scroll" style="max-height:50vh;">
-        <table><thead><tr>
+        <table><thead><tr id="import-thead-row">
           <th style="width:30px"><input type="checkbox" id="import-check-all" checked onchange="toggleAllImportRows(this)" /></th>
           <th>Data</th><th>Vencimento</th><th>Fornecedor/Cliente</th><th>Valor</th><th>NF/Pedido</th><th>Categoria</th><th>Obs.</th><th>Ações</th>
         </tr></thead><tbody id="tb-import-preview"></tbody></table>
@@ -3999,7 +4001,7 @@ tr.cob-dia-vazio > td {
         <div class="dre-det-title" id="dre-detalhe-title">Detalhe da Conta</div>
         <div class="dre-det-sub" id="dre-detalhe-sub"></div>
       </div>
-      <button type="button" class="dre-det-x" onclick="closeModal('modal-dre-detalhe')" aria-label="Fechar" title="Fechar (Esc)">&times;</button>
+      <button type="button" class="dre-det-x" onclick="closeModal('modal-dre-detalhe')" aria-label="Fechar" title="Fechar">&times;</button>
     </div>
     <div class="dre-det-kpis" id="dre-detalhe-kpis"></div>
     <div class="dre-det-tools">
@@ -5029,8 +5031,9 @@ function closeModal(id) {
   if (typeof _dreDetAposEditar === 'function') _dreDetAposEditar(id);
 }
 
-// Esc fecha o modal aberto (passando pela limpeza acima)
+// Esc não fecha mais o modal: telas suspensas fecham somente pelo X.
 document.addEventListener('keydown', function (e) {
+  return;
   if (e.key !== 'Escape') return;
   const abertos = document.querySelectorAll('.modal-overlay.open');
   if (!abertos.length) return;
@@ -7867,7 +7870,6 @@ function abrirRelatorioKPI(key) {
     ov.id = 'modal-rel-kpi';
     ov.innerHTML = '<div class="modal" id="modal-rel-kpi-inner" style="width:1000px;"></div>';
     document.body.appendChild(ov);
-    ov.addEventListener('click', e => { if (e.target === ov) closeModal('modal-rel-kpi'); });
   }
   document.getElementById('modal-rel-kpi-inner').innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
@@ -8819,7 +8821,6 @@ document.addEventListener('DOMContentLoaded', () => {
   ativarSelectsPesquisaveis();
 
   const ov = document.getElementById('cal-detail-overlay');
-  if (ov) ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
 
   // Event delegation para permissões de usuário
   document.addEventListener('click', e => {
@@ -13274,12 +13275,12 @@ function atualizarFormatoImport() {
   if(formato === 'extrato') {
     fileInput.setAttribute('accept', '.pdf,.txt,application/pdf,text/plain');
     label.textContent = 'Arquivo do Extrato (PDF ou TXT)';
-    instrucao.textContent = 'Selecione o PDF do extrato bancário (ex: Sicoob, Banco do Brasil, etc.) ou cole o texto do extrato abaixo. O sistema reconhece as movimentações de pagamento a fornecedores (boleto/título) ou recebimento de clientes (Pix/TED/transferência/depósito), conforme a tela em que você abriu esta importação.';
+    instrucao.textContent = 'Selecione o PDF do extrato bancário (Itaú, Viacredi/Ailos, Sicoob, etc.) ou cole o texto do extrato abaixo. O sistema reconhece as movimentações de pagamento a fornecedores (boleto/título) ou recebimento de clientes (Pix/TED/transferência/depósito), conforme a tela em que você abriu esta importação.';
     textarea.placeholder = 'Cole aqui o texto do extrato bancário...';
   } else {
-    fileInput.setAttribute('accept', '.csv,text/csv');
-    label.textContent = 'Arquivo CSV';
-    instrucao.textContent = 'Cole abaixo o conteúdo do relatório (CSV, separado por ";" ou ",") ou selecione o arquivo. O sistema tenta identificar automaticamente o fornecedor/cliente e a categoria; o que não conseguir identificar fica em branco para você preencher.';
+    fileInput.setAttribute('accept', '.csv,.xls,.xlsx,.pdf,text/csv,application/pdf');
+    label.textContent = 'Arquivo (Excel, CSV ou PDF do relatório)';
+    instrucao.textContent = 'Selecione a planilha (Excel .xls/.xlsx ou CSV) ou o PDF do "Relatório de Contas a Receber", ou cole o conteúdo abaixo. Quando o relatório tiver as colunas "Recebimento" e "Valor Recebido", o lançamento já entra como recebido. O sistema tenta identificar automaticamente o fornecedor/cliente e a categoria; o que não conseguir identificar fica em branco para você preencher.';
     textarea.placeholder = 'Cole aqui o conteúdo do CSV...';
   }
 }
@@ -13317,26 +13318,75 @@ async function extrairTextoPdf(file) {
   for(let p = 1; p <= pdf.numPages; p++) {
     const page = await pdf.getPage(p);
     const content = await page.getTextContent();
-    let linhaAtual = '', ultimaY = null;
-    content.items.forEach(item => {
-      const y = item.transform[5];
-      if(ultimaY !== null && Math.abs(y - ultimaY) > 2) {
-        textoCompleto += linhaAtual + '\n';
-        linhaAtual = '';
-      }
-      linhaAtual += item.str;
-      ultimaY = y;
+    // Agrupa os itens por linha (posição Y) e ordena da esquerda para a direita, separando
+    // colunas com dois espaços — necessário para extratos em tabela (Itaú, Viacredi/Ailos).
+    const itens = content.items.filter(it => it.str && it.str.trim())
+      .map(it => ({ s: it.str, x: it.transform[4], y: it.transform[5], w: it.width || 0 }));
+    itens.sort((a,b) => b.y - a.y || a.x - b.x);
+    const linhas = [];
+    itens.forEach(it => {
+      const ult = linhas[linhas.length-1];
+      if(ult && Math.abs(ult.y - it.y) <= 2) ult.itens.push(it);
+      else linhas.push({ y: it.y, itens: [it] });
     });
-    textoCompleto += linhaAtual + '\n';
+    linhas.forEach(l => {
+      l.itens.sort((a,b) => a.x - b.x);
+      let txt = '', fimAnt = null;
+      l.itens.forEach(it => {
+        if(fimAnt !== null) {
+          const gap = it.x - fimAnt;
+          if(gap > 6) txt += '  ';
+          else if(gap > 1 && !/\s$/.test(txt) && !/^\s/.test(it.s)) txt += ' ';
+        }
+        txt += it.s;
+        fimAnt = it.x + it.w;
+      });
+      textoCompleto += txt.replace(/\s+$/,'') + '\n';
+    });
   }
   return textoCompleto;
+}
+
+// SheetJS só é baixado quando o usuário importa uma planilha Excel.
+let _xlsxPromise = null;
+function ensureXlsx() {
+  if (window.XLSX) return Promise.resolve(true);
+  if (_xlsxPromise) return _xlsxPromise;
+  _xlsxPromise = new Promise(resolve => {
+    const tag = document.createElement('script');
+    tag.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    tag.onload = () => resolve(!!window.XLSX);
+    tag.onerror = () => resolve(false);
+    document.head.appendChild(tag);
+  });
+  return _xlsxPromise;
+}
+
+async function extrairCsvExcel(file) {
+  const ok = await ensureXlsx();
+  if(!ok) throw new Error('Leitor de Excel indisponível');
+  const wb = XLSX.read(await file.arrayBuffer(), { type: 'array' });
+  return XLSX.utils.sheet_to_csv(wb.Sheets[wb.SheetNames[0]], { FS: ';', blankrows: false });
 }
 
 function lerArquivoImport(ev) {
   const file = ev.target.files[0];
   if(!file) return;
   const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+  const isExcel = /\.xlsx?$/i.test(file.name);
   const statusEl = document.getElementById('import-pdf-status');
+  if(isExcel) {
+    statusEl.style.display = '';
+    statusEl.textContent = '⏳ Lendo planilha Excel...';
+    extrairCsvExcel(file).then(csv => {
+      document.getElementById('import-textarea').value = csv;
+      statusEl.textContent = '✅ Planilha lida. Revise abaixo antes de clicar em "Analisar Arquivo".';
+    }).catch(err => {
+      console.error(err);
+      statusEl.textContent = '❌ Não foi possível ler esta planilha. Salve como CSV e tente novamente.';
+    });
+    return;
+  }
   if(isPdf) {
     statusEl.style.display = '';
     statusEl.textContent = '⏳ Carregando leitor de PDF...';
@@ -13497,7 +13547,7 @@ function acharDuplicado(tipo, nomeRaw, matchId, isNovo, dataRef, valor) {
 // Monta uma linha de prévia a partir dos dados brutos já identificados (nome, valor, data etc),
 // reaproveitando o match de fornecedor/cliente, sugestão de categoria e checagem de duplicidade.
 function montarLinhaImport(tipo, dados) {
-  const { nomeRaw, valor, dataRef, venc, nf, obs, aporteSuspeito } = dados;
+  const { nomeRaw, valor, dataRef, venc, nf, obs, aporteSuspeito, transfInterna, dtReceb, valorRecebido } = dados;
   let matchId = null, isNovo = true;
   if(tipo === 'pagar') {
     const f = acharFornecedorPorNome(nomeRaw);
@@ -13509,10 +13559,173 @@ function montarLinhaImport(tipo, dados) {
   const catSugerida = sugerirCategoria(tipo, tipo==='pagar'?matchId:null, tipo==='receber'?matchId:null, `${nomeRaw} ${obs||''}`);
   const duplicado = acharDuplicado(tipo, nomeRaw, matchId, isNovo, dataRef, valor);
   return {
-    incluir: !duplicado && !aporteSuspeito, nomeRaw, matchId, isNovo, duplicado, aporteSuspeito: !!aporteSuspeito,
+    incluir: !duplicado && !aporteSuspeito && !transfInterna, nomeRaw, matchId, isNovo, duplicado, aporteSuspeito: !!aporteSuspeito, transfInterna: !!transfInterna,
     dataRef, venc, valor, nf: nf||'', obs: obs||'',
+    dtReceb: dtReceb || '', valorRecebido: valorRecebido || 0,
     catId: catSugerida
   };
+}
+
+// Extratos com data completa (dd/mm/aaaa) e valor com sinal: Itaú, Ailos/Viacredi e similares.
+// Débito = valor negativo (ou com "D"/"-" no final); o primeiro valor da linha é o lançamento e o
+// segundo (se houver) é o saldo.
+function parseExtratoGenerico(texto, tipo) {
+  const linhas = texto.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n').map(l => l.replace(/\s+$/,''));
+  const dataRe = /^(\d{2})\/(\d{2})\/(\d{4})\b\s*(.*)$/;
+  const moneyRe = /^(-)?\s*(?:R\$\s*)?(\d{1,3}(?:\.\d{3})*,\d{2}|\d+,\d{2})\s*(-|[CD])?$/i;
+  const docRe = /^[\d.\-\/]+$/;
+  const cnpjRe = /\d{2}\.?\d{3}\.?\d{3}\/?\d{4}-?\d{2}|\d{3}\.\d{3}\.\d{3}-\d{2}/;
+  const soDig = s => (s||'').replace(/\D/g,'');
+  const splitCols = s => s.trim().split(/\s{2,}/).map(c => c.trim()).filter(Boolean);
+  const ehCabecalho = l => /^(data|saldo anterior)\b/i.test(l.trim());
+
+  // Titular da conta (para marcar transferências entre contas próprias)
+  const primeiraTx = linhas.findIndex(l => dataRe.test(l.trim()) && /\d,\d{2}/.test(l));
+  const cabecalho = linhas.slice(0, primeiraTx > -1 ? primeiraTx : 15).join('\n');
+  const titularCnpjs = new Set();
+  const titularNomes = [];
+  const mCnpjTit = cabecalho.match(/(?:CNPJ|CPF)[:\s]*([\d.\/-]{11,18})/i);
+  if(mCnpjTit) titularCnpjs.add(soDig(mCnpjTit[1]));
+  const mNome = cabecalho.match(/Nome:\s*(.+)/i);
+  if(mNome) titularNomes.push(mNome[1].split(/\s{2,}/)[0]);
+  const mNomeCnpj = cabecalho.match(/^\s*(.+?)\s+(?:CNPJ|CPF)\b/im);
+  if(mNomeCnpj && !/:/.test(mNomeCnpj[1])) titularNomes.push(mNomeCnpj[1]);
+  ((typeof db !== 'undefined' && db.empresas) || []).forEach(e => {
+    if(e.cnpj && soDig(e.cnpj).length >= 11) titularCnpjs.add(soDig(e.cnpj));
+    if(e.nome) titularNomes.push(e.nome);
+    if(e.apelido) titularNomes.push(e.apelido);
+  });
+  const titularNorm = titularNomes.map(n => normText(n).replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim()).filter(n => n.length >= 6);
+  const ehTitular = (nome, cnpj) => {
+    if(cnpj && titularCnpjs.has(soDig(cnpj))) return true;
+    const n = normText(nome).replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+    if(n.length < 8) return false;
+    return titularNorm.some(t => t === n || t.startsWith(n + ' ') || n.startsWith(t + ' '));
+  };
+
+  // 1) Agrupa linhas em registros. Em PDFs como o do Itaú, células com quebra de linha ficam
+  //    centralizadas: a linha da data só tem data/CNPJ/valor e o texto fica na linha acima e abaixo.
+  const registros = [];
+  let buffer = [];       // linhas sem data acumuladas desde o último registro
+  let atual = null;
+  let esperaBaixo = null; // registro "fino" aguardando a linha de baixo
+  const juntarCols = (base, extra) => {
+    if(!base.length) return extra.slice();
+    if(base.length === extra.length) return base.map((c,i) => c + ' ' + extra[i]);
+    return base.concat(extra);
+  };
+  const continuacaoValida = l => l && l.length < 90 && !/\d,\d{2}/.test(l) && !ehCabecalho(l) && !/[:|]/.test(l);
+  const descarregarBuffer = () => {
+    if(atual) {
+      for(const l of buffer) {
+        if(!continuacaoValida(l)) break;
+        atual.textos = juntarCols(atual.textos, splitCols(l));
+      }
+    }
+    buffer = [];
+  };
+
+  linhas.forEach(bruta => {
+    const linha = bruta.trim();
+    if(!linha) return;
+    const m = linha.match(dataRe);
+    const cols = m ? splitCols(m[4]) : null;
+    const valores = cols ? cols.filter(c => moneyRe.test(c)) : [];
+    if(!m || !valores.length) {
+      if(esperaBaixo) {
+        if(continuacaoValida(linha)) esperaBaixo.textos = juntarCols(esperaBaixo.textos, splitCols(linha));
+        esperaBaixo = null;
+        return;
+      }
+      buffer.push(linha);
+      return;
+    }
+    esperaBaixo = null;
+    const textos = [], docs = [];
+    let cnpj = '';
+    cols.forEach(c => {
+      if(moneyRe.test(c)) return;
+      if(cnpjRe.test(c) && docRe.test(c.replace(/\s/g,''))) { cnpj = c; return; }
+      if(docRe.test(c)) { docs.push(c); return; }
+      const mc = c.match(cnpjRe);
+      if(mc) { cnpj = mc[0]; c = c.replace(mc[0], '').trim(); }
+      if(c) textos.push(c);
+    });
+    const mv = valores[0].match(moneyRe);
+    const negativo = mv[1] === '-' || mv[3] === '-' || (mv[3] || '').toUpperCase() === 'D';
+    const reg = { dia: m[1], mes: m[2], ano: m[3], textos, docs, cnpj, valor: parseValorBR(mv[2]), negativo };
+    if(!textos.length) {
+      // Registro fino: a última linha do buffer é o topo da célula; o restante é continuação do anterior
+      const topo = buffer.length && continuacaoValida(buffer[buffer.length-1]) ? buffer.pop() : null;
+      descarregarBuffer();
+      if(topo) reg.textos = splitCols(topo);
+      esperaBaixo = reg;
+    } else {
+      descarregarBuffer();
+    }
+    registros.push(reg);
+    atual = reg;
+  });
+
+  // 2) Converte os registros em linhas de importação
+  const limparNome = s => (s||'')
+    .replace(cnpjRe, '')
+    .replace(/^(?:\d{2,3}[\s.]?){2,4}(?=[A-Za-zÀ-ÿ])/, '') // CPF/CNPJ abreviado no início (ex: "37 855 247 FELIPE")
+    .replace(/\s+\d[\d.\-\/]*$/, '')                      // número de contrato/documento no fim
+    .replace(/\s+/g,' ').trim();
+  const PREFIXOS = /^(?:DA|DEB(?:ITO)?\.?\s*AUT(?:OMATICO)?\.?|D[EÉ]B(?:ITO)?\.?|DB\.?|PAGTO|PAGAMENTO|PGTO\.?)\s+/i;
+
+  const resultado = [];
+  registros.forEach(r => {
+    const descCompleta = r.textos.join(' ').replace(/\s+/g,' ').trim();
+    if(/^(SALDO|TOTAL|S\s?A\s?L\s?D\s?O)\b/i.test(descCompleta)) return;
+    if(!r.valor) return;
+    if(tipo === 'pagar' && !r.negativo) return;
+    if(tipo === 'receber' && r.negativo) return;
+
+    let historico = r.textos[0] || '';
+    let nomeRaw = '';
+    if(r.textos.length >= 2) {
+      nomeRaw = r.textos.slice(1).join(' ');
+    } else if(/\s-\s/.test(historico)) {
+      const partes = historico.split(/\s-\s/);
+      nomeRaw = partes.slice(1).join(' - ');
+      historico = partes[0];
+    } else {
+      nomeRaw = historico.replace(PREFIXOS, '');
+    }
+    nomeRaw = limparNome(nomeRaw) || limparNome(historico) || '(sem identificação)';
+
+    const dataRef = `${r.ano}-${r.mes}-${r.dia}`;
+    resultado.push({
+      nomeRaw, valor: r.valor, dataRef, venc: dataRef,
+      nf: r.docs[0] || '', obs: descCompleta,
+      transfInterna: ehTitular(nomeRaw, r.cnpj)
+    });
+  });
+  return resultado;
+}
+
+// "Relatório de Contas a Receber" (SBsistemas) em PDF: Emissão, Doc/Parcela, Cliente, Vencimento,
+// Valor, Recebimento, Acréscimo, Desconto, Valor Recebido, Plano de Conta.
+function parseRelatorioContasReceber(texto) {
+  const D = '(\\d{2}\\/\\d{2}\\/\\d{4})', V = '(-?[\\d.]+,\\d{2})';
+  const re = new RegExp('^' + D + '\\s+(\\S+)\\s+(.+?)\\s+' + D + '\\s+' + V + '\\s+' + D + '\\s+' + V + '\\s+' + V + '\\s+' + V + '\\s*(.*)$');
+  const resultado = [];
+  texto.replace(/\r\n?/g,'\n').split('\n').forEach(bruta => {
+    const m = bruta.trim().match(re);
+    if(!m) return;
+    const [, emissao, doc, cliente, venc, valor, dtReceb, acresc, desc, valorRec, plano] = m;
+    const vAcresc = parseValorBR(acresc), vDesc = parseValorBR(desc);
+    let obs = (plano || '').replace(/\s+/g,' ').trim();
+    if(vAcresc || vDesc) obs += (obs ? ' · ' : '') + `Acréscimo ${acresc} / Desconto ${desc}`;
+    resultado.push({
+      nomeRaw: cliente.replace(/\s+/g,' ').trim(), valor: parseValorBR(valor),
+      dataRef: parseDataBR(emissao), venc: parseDataBR(venc), nf: doc, obs,
+      dtReceb: parseDataBR(dtReceb), valorRecebido: parseValorBR(valorRec)
+    });
+  });
+  return resultado;
 }
 
 // Interpreta um extrato bancário (texto extraído de PDF ou colado) e retorna os lançamentos
@@ -13520,7 +13733,7 @@ function montarLinhaImport(tipo, dados) {
 // de Pix/TED/transferência/depósito de clientes).
 function parseExtratoBancario(texto, tipo) {
   const linhas = texto.replace(/\r\n/g,'\n').replace(/\r/g,'\n').split('\n');
-  const txRe = /^(\d{2})\/(\d{2})\s+(.*?)\s*([\d.]+,\d{2})([CD])\s*(.*)$/;
+  const txRe = /^(\d{2})\/(\d{2})\s+(.*?)\s*([\d.]+,\d{2})\s?([CD])(?![A-Za-zÀ-ÿ])\s*(.*)$/;
 
   // Ano base a partir do período informado no extrato (ex: "PERÍODO: 01/07/2026 - 23/07/2026")
   let anoFim = new Date().getFullYear(), mesFim = 12;
@@ -13534,13 +13747,17 @@ function parseExtratoBancario(texto, tipo) {
     const m = linha.match(txRe);
     if(m) {
       if(atual) registros.push(atual);
-      atual = { dia: m[1], mes: m[2], hist: m[3].trim(), valor: m[4], tipoSinal: m[5], detalhes: [] };
+      atual = { dia: m[1], mes: m[2], hist: m[3].replace(/\s+/g,' ').trim(), valor: m[4], tipoSinal: m[5], detalhes: [] };
       if(m[6] && m[6].trim()) atual.detalhes.push(m[6].trim());
     } else if(atual && linha) {
       atual.detalhes.push(linha);
     }
   });
   if(atual) registros.push(atual);
+
+  // Sem lançamentos no padrão Sicoob (dd/mm + valor C/D): tenta o padrão com data completa e
+  // valor com sinal (Itaú, Viacredi/Ailos e similares).
+  if(!registros.length) return parseExtratoGenerico(texto, tipo);
 
   const HIST_PAGAR = ['DÉB.TIT.COMPE.EFETI', 'DÉB.PGTO.BOLETO INT', 'DÉB. TIT. COBRANÇA'];
   const HIST_RECEBER = ['PIX RECEB.OUTRA IF', 'CRED.TR.CT.INTERCRE', 'TRANSF.RECEB-PIX SI',
@@ -13553,7 +13770,8 @@ function parseExtratoBancario(texto, tipo) {
 
   const resultado = [];
   registros.forEach(r => {
-    if(!alvo.some(h => r.hist.startsWith(h))) return;
+    const histSemEsp = r.hist.replace(/\s/g,'');
+    if(!alvo.some(h => histSemEsp.startsWith(h.replace(/\s/g,'')))) return;
     let nomeRaw = '';
     if(tipo === 'pagar') {
       for(const dl of r.detalhes) {
@@ -13598,10 +13816,23 @@ function processarImport() {
   const texto = document.getElementById('import-textarea').value;
   if(!texto.trim()) { alert('Cole o conteúdo do arquivo ou selecione um arquivo.'); return; }
 
+  // PDF do "Relatório de Contas a Receber" (funciona em qualquer um dos dois formatos)
+  const linhasRelRec = parseRelatorioContasReceber(texto);
+  if(linhasRelRec.length) {
+    if(tipo !== 'receber') { alert('Este arquivo é um Relatório de Contas a Receber. Abra a importação pela tela de Contas a Receber.'); return; }
+    importPreviewRows = linhasRelRec.map(dados => montarLinhaImport(tipo, dados));
+    renderImportPreview();
+    document.getElementById('import-step-1').style.display = 'none';
+    document.getElementById('import-step-2').style.display = '';
+    return;
+  }
+
   if(formato === 'extrato') {
     const linhas = parseExtratoBancario(texto, tipo);
+    // Crédito no extrato = dinheiro já recebido na conta
+    if(tipo === 'receber') linhas.forEach(d => { d.dtReceb = d.dataRef; d.valorRecebido = d.valor; });
     if(!linhas.length) {
-      alert('Não encontrei, neste extrato, lançamentos do tipo esperado para esta tela (' + (tipo==='pagar' ? 'pagamentos de boleto/título a fornecedores' : 'recebimentos de Pix/TED/transferência/depósito') + '). Confira se o texto foi extraído corretamente.');
+      alert('Não encontrei, neste extrato, lançamentos do tipo esperado para esta tela (' + (tipo==='pagar' ? 'débitos/pagamentos' : 'créditos/recebimentos') + '). Confira se o texto foi extraído corretamente (formatos reconhecidos: Itaú, Viacredi/Ailos, Sicoob).');
       return;
     }
     importPreviewRows = linhas.map(dados => montarLinhaImport(tipo, dados));
@@ -13614,7 +13845,7 @@ function processarImport() {
   const { header, linhasDados } = parseCSV(texto);
   if(!header || !linhasDados.length) { alert('Não foi possível interpretar o arquivo.'); return; }
 
-  let idxNome, idxValor, idxData, idxVenc, idxNf, idxObs;
+  let idxNome, idxValor, idxData, idxVenc, idxNf, idxObs, idxPlano = -1, idxValorRec = -1, idxDtRec = -1;
   if(tipo === 'pagar') {
     idxNome = acharColuna(header, ['fornecedor','nome','razao']);
     idxValor = acharColuna(header, ['valor total','valor']);
@@ -13624,11 +13855,14 @@ function processarImport() {
     idxObs = acharColuna(header, ['observacao','obs','situacao']);
   } else {
     idxNome = acharColuna(header, ['nome','cliente','fornecedor']);
-    idxValor = acharColuna(header, ['valor']);
-    idxData = acharColuna(header, ['data']);
+    idxValor = header.indexOf('valor') > -1 ? header.indexOf('valor') : acharColuna(header, ['valor']);
+    idxData = acharColuna(header, ['data','emissao']);
     idxVenc = acharColuna(header, ['vencimento']);
-    idxNf = acharColuna(header, ['numero do pedido','numero','pedido','nf']);
+    idxNf = acharColuna(header, ['numero do pedido','numero','pedido','nf','doc']);
     idxObs = acharColuna(header, ['observacao','obs','descricao']);
+    idxPlano = acharColuna(header, ['plano de conta']);
+    idxValorRec = acharColuna(header, ['valor recebido']);
+    idxDtRec = acharColuna(header, ['recebimento']);
   }
 
   if(idxNome === -1 || idxValor === -1) {
@@ -13637,7 +13871,7 @@ function processarImport() {
   }
 
   importPreviewRows = linhasDados
-    .filter(cols => cols.some(c=>c && c.trim()))
+    .filter(cols => cols.some(c=>c && c.trim()) && (cols[idxNome]||'').trim()) // ignora linhas vazias e a de totais
     .map(cols => {
     const nomeRaw = cols[idxNome] || '';
     const valor = parseValorBR(cols[idxValor]);
@@ -13647,8 +13881,12 @@ function processarImport() {
     if(!dataRef) dataRef = venc || today();
     if(!venc) venc = dataRef;
     const nf = idxNf > -1 ? cols[idxNf] : '';
-    const obsTxt = idxObs > -1 ? cols[idxObs] : '';
-    return montarLinhaImport(tipo, { nomeRaw, valor, dataRef, venc, nf, obs: obsTxt });
+    const plano = idxPlano > -1 ? (cols[idxPlano]||'').trim() : '';
+    const obsCol = idxObs > -1 ? (cols[idxObs]||'').trim() : '';
+    const obsTxt = [plano, obsCol].filter(Boolean).join(' · ');
+    const valorRecebido = idxValorRec > -1 ? parseValorBR(cols[idxValorRec]) : 0;
+    const dtReceb = idxDtRec > -1 ? parseDataBR(cols[idxDtRec]) : '';
+    return montarLinhaImport(tipo, { nomeRaw, valor, dataRef, venc, nf, obs: obsTxt, valorRecebido, dtReceb });
   });
 
   if(!importPreviewRows.length) { alert('Nenhuma linha válida encontrada no arquivo.'); return; }
@@ -13675,18 +13913,30 @@ function renderImportPreview() {
   const semCategoria = importPreviewRows.filter(r=>!r.catId && !r.importado).length;
   const duplicados = importPreviewRows.filter(r=>r.duplicado && !r.importado).length;
   const aportes = importPreviewRows.filter(r=>r.aporteSuspeito && !r.importado).length;
+  const internas = importPreviewRows.filter(r=>r.transfInterna && !r.importado).length;
+  const jaRecebidos = importPreviewRows.filter(r=>r.valorRecebido>0 && r.dtReceb && !r.importado).length;
   const importados = importPreviewRows.filter(r=>r.importado).length;
   document.getElementById('import-resumo').innerHTML =
     `${importPreviewRows.length} linha(s) encontrada(s) · <b>${semMatch}</b> ${tipo==='pagar'?'fornecedor(es)':'cliente(s)'} novo(s) serão criados · <b>${semCategoria}</b> sem categoria identificada`
     + (duplicados ? ` · <b style="color:#c0392b">${duplicados}</b> possível(is) duplicata(s) já desmarcada(s)` : '')
     + (aportes ? ` · <b style="color:#c2740c">${aportes}</b> possível(is) depósito(s)/aporte(s) próprio(s) já desmarcado(s)` : '')
+    + (tipo==='receber' && jaRecebidos ? ` · <b style="color:#16a34a">${jaRecebidos}</b> entram como já recebida(s)` : '')
+    + (internas ? ` · <b style="color:#2563eb">${internas}</b> transferência(s) entre contas próprias já desmarcada(s)` : '')
     + (importados ? ` · <b style="color:#1a8a3c">${importados}</b> já importada(s)` : '');
+
+  const ehReceber = tipo === 'receber';
+  const todasMarcadas = importPreviewRows.filter(r=>!r.importado).every(r=>r.incluir);
+  document.getElementById('import-thead-row').innerHTML =
+    `<th style="width:30px"><input type="checkbox" id="import-check-all" ${todasMarcadas?'checked':''} onchange="toggleAllImportRows(this)" /></th>`
+    + `<th>Data</th><th>Vencimento</th><th>${ehReceber?'Cliente':'Fornecedor'}</th><th>Valor</th>`
+    + (ehReceber ? `<th title="Preenchido = o lançamento entra como recebido">Recebido em</th><th>Vlr. Recebido</th>` : '')
+    + `<th>NF/Pedido</th><th>Categoria</th><th>Obs.</th><th>Ações</th>`;
 
   const tb = document.getElementById('tb-import-preview');
   tb.innerHTML = importPreviewRows.map((r,i) => {
     if(r.importado) {
       return `<tr style="background:#f0fff4;color:#7a8a7f">
-        <td colspan="8">✅ Importado — ${r.nomeRaw} · ${fmtBRL(r.valor)} · ${fmtDate(r.dataRef)}</td>
+        <td colspan="${ehReceber?10:8}">✅ Importado — ${r.nomeRaw} · ${fmtBRL(r.valor)} · ${fmtDate(r.dataRef)}</td>
         <td>—</td>
       </tr>`;
     }
@@ -13696,12 +13946,15 @@ function renderImportPreview() {
       .concat(catsDoTipo.map(c=>`<option value="${c.id}" ${r.catId===c.id?'selected':''}>${c.nome}</option>`));
     const dupBadge = r.duplicado ? '<span class="badge badge-red" style="margin-left:4px" title="Já existe um lançamento com mesmo fornecedor/cliente, data e valor">⚠️ Já existe</span>' : '';
     const aporteBadge = r.aporteSuspeito ? '<span class="badge badge-yellow" style="margin-left:4px" title="Depósito em dinheiro/aporte, provavelmente feito pelo próprio titular da conta — não é um recebimento de cliente">💰 Possível aporte próprio</span>' : '';
-    return `<tr${r.duplicado?' style="background:#fff5f5"':(r.aporteSuspeito?' style="background:#fffaf0"':'')}>
+    const internaBadge = r.transfInterna ? '<span class="badge badge-blue" style="margin-left:4px" title="Transferência para/da própria empresa (mesmo CNPJ/titular) — não é pagamento a fornecedor nem recebimento de cliente">🔁 Transf. entre contas próprias</span>' : '';
+    return `<tr${r.duplicado?' style="background:#fff5f5"':(r.aporteSuspeito?' style="background:#fffaf0"':(r.transfInterna?' style="background:#f0f6ff"':''))}>
       <td><input type="checkbox" ${r.incluir?'checked':''} onchange="importPreviewRows[${i}].incluir=this.checked" /></td>
       <td><input type="date" value="${r.dataRef}" style="padding:5px;font-size:12px;width:120px" onchange="importPreviewRows[${i}].dataRef=this.value; recalcDuplicadoLinha(${i})" /></td>
       <td><input type="date" value="${r.venc}" style="padding:5px;font-size:12px;width:120px" onchange="importPreviewRows[${i}].venc=this.value" /></td>
-      <td><select style="font-size:12px;max-width:200px" onchange="importPreviewRows[${i}].matchId=(this.value==='__novo__'?null:this.value); importPreviewRows[${i}].isNovo=(this.value==='__novo__'); recalcDuplicadoLinha(${i})">${nomeOptions.join('')}</select>${dupBadge}${aporteBadge}</td>
+      <td><select style="font-size:12px;max-width:200px" onchange="importPreviewRows[${i}].matchId=(this.value==='__novo__'?null:this.value); importPreviewRows[${i}].isNovo=(this.value==='__novo__'); recalcDuplicadoLinha(${i})">${nomeOptions.join('')}</select>${dupBadge}${aporteBadge}${internaBadge}</td>
       <td style="font-family:DM Mono,monospace;font-size:12px"><input type="number" step="0.01" value="${r.valor}" style="width:100px;padding:5px;font-size:12px" onchange="importPreviewRows[${i}].valor=parseFloat(this.value)||0; recalcDuplicadoLinha(${i})" /></td>
+      ${ehReceber ? `<td><input type="date" value="${r.dtReceb||''}" style="padding:5px;font-size:12px;width:120px" onchange="importPreviewRows[${i}].dtReceb=this.value" /></td>
+      <td><input type="number" step="0.01" value="${r.valorRecebido||''}" style="width:100px;padding:5px;font-size:12px" onchange="importPreviewRows[${i}].valorRecebido=parseFloat(this.value)||0" /></td>` : ''}
       <td style="font-size:12px">${r.nf||'—'}</td>
       <td><select style="font-size:12px;max-width:180px" onchange="importPreviewRows[${i}].catId=this.value">${catOptions.join('')}</select></td>
       <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${(r.obs||'').replace(/"/g,'&quot;')}">${r.obs||'—'}</td>
@@ -13778,12 +14031,18 @@ async function importarLinha(tipo, r) {
     if(!okL) return false;
     db.lancamentos.push(lanc);
   } else {
+    // Com data e valor recebido preenchidos, o lançamento já entra baixado pelo valor recebido
+    // (inclui acréscimos/descontos); o valor original fica registrado na observação.
+    const jaRecebido = (r.valorRecebido > 0) && !!r.dtReceb;
+    const difValor = jaRecebido && Math.abs(r.valorRecebido - r.valor) > 0.005;
     const lanc = {
       id: uid(), empresa_id: empresaAtual() || null,
       dtvenda: r.dataRef, dtprev: r.venc, nf: r.nf||'',
-      cliente: idAlvo, prod: '', valor: r.valor, parcelas: 1,
-      financeiro: 'sim', recebido: 'nao', tipo_pag: '', banco: '',
-      cat_dre: r.catId || '', juros: null, obs: (r.obs||'') + ' (importado via conciliação bancária)',
+      cliente: idAlvo, prod: '', valor: jaRecebido ? r.valorRecebido : r.valor, parcelas: 1,
+      financeiro: 'sim', recebido: jaRecebido ? 'sim' : 'nao', dtrecebido: jaRecebido ? r.dtReceb : '',
+      tipo_pag: '', banco: '',
+      cat_dre: r.catId || '', juros: null,
+      obs: (r.obs||'') + (difValor ? ` · Valor original ${fmtBRL(r.valor)}` : '') + ' (importado via conciliação bancária)',
       parcela_datas: null
     };
     const okL = await sbFetch('lancreceber', 'POST', lanc);
@@ -16763,9 +17022,18 @@ function imprimirFluxoDiario() {
 }
 
 
-document.querySelectorAll('.modal-overlay').forEach(ov => {
+// Telas suspensas fecham somente pelo X (ou pelos botões da própria tela): clicar fora ou
+// soltar o mouse fora da janela não fecha mais. Telas sem X recebem um automaticamente.
+document.querySelectorAll('.modal-overlay, .cal-detail-overlay').forEach(ov => {
   if (ov.dataset && ov.dataset.naoFechar) return;   // aviso bloqueante
-  ov.addEventListener('click', e => { if(e.target === ov) { if (ov.id) closeModal(ov.id); else ov.classList.remove('open'); } });
+  const caixa = ov.querySelector('.modal, .cal-detail-box');
+  if (!caixa) return;
+  const temX = [...caixa.querySelectorAll('button')].some(b => /^[✕×]$/.test(b.textContent.trim()));
+  if (temX) return;
+  const x = document.createElement('button');
+  x.type = 'button'; x.className = 'modal-x-auto'; x.title = 'Fechar'; x.setAttribute('aria-label', 'Fechar'); x.textContent = '✕';
+  x.onclick = () => { if (ov.classList.contains('modal-overlay') && ov.id) closeModal(ov.id); else ov.classList.remove('open'); };
+  caixa.insertBefore(x, caixa.firstChild);
 });
 </script>
 </body>
