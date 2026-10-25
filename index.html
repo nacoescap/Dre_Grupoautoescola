@@ -273,6 +273,53 @@ th.ef-th { padding:8px 8px 8px 12px; }
 .imp-tag.red { background:#fee2e2; color:#991b1b; } .imp-tag.amber { background:#fef3c7; color:#92400e; } .imp-tag.blue { background:#dbeafe; color:#1e40af; } .imp-tag.new { background:#f5f5f4; color:#57534e; }
 .imp-ok { width:28px; height:28px; padding:0; border:none; border-radius:6px; background:#ea580c; color:#fff; font-size:14px; cursor:pointer; }
 .imp-ok:hover { background:#c2410c; }
+/* ── Telas de Novo Lançamento (Pagamento / Recebimento): layout compacto em seções ── */
+.lanc-modal { width:min(880px,96vw) !important; padding:0 !important; }
+.lanc-modal .lm-head { position:sticky; top:0; z-index:5; background:#fff; display:flex; align-items:center; gap:12px; padding:16px 22px 14px; border-bottom:1px solid #f0efed; }
+.lanc-modal .lm-ico { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; flex-shrink:0; }
+.lanc-modal.lm-pagar .lm-ico { background:#fff1e6; }
+.lanc-modal.lm-receber .lm-ico { background:#dcfce7; }
+.lanc-modal .lm-tit { font-size:16px; font-weight:700; color:#1f2937; line-height:1.2; }
+.lanc-modal .lm-sub { font-size:12px; color:#a8a29e; margin-top:2px; }
+.lanc-modal .lm-x { margin-left:auto; background:none; border:none; cursor:pointer; color:#a8a29e; font-size:20px; line-height:1; padding:6px; border-radius:8px; }
+.lanc-modal .lm-x:hover { background:#f5f5f4; color:#44403c; }
+.lanc-modal .lm-body { padding:14px 22px 6px; }
+.lanc-modal .lm-sec { margin-bottom:14px; }
+.lanc-modal .lm-sec-t { display:flex; align-items:center; gap:10px; font-size:10.5px; font-weight:700; letter-spacing:.7px; text-transform:uppercase; color:#a8a29e; margin-bottom:8px; }
+.lanc-modal .lm-sec-t::after { content:''; flex:1; height:1px; background:#f0efed; }
+.lanc-modal .lm-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px 12px; }
+.lanc-modal .lm-grid > .form-group, .lanc-modal .lm-grid > div { margin:0; min-width:0; }
+.lanc-modal .lm-s2 { grid-column:span 2; }
+.lanc-modal .lm-s4 { grid-column:1 / -1; }
+.lanc-modal .form-group { margin-bottom:0; }
+.lanc-modal label { font-size:11.5px; margin-bottom:4px; color:#57534e; }
+.lanc-modal .lm-grid label { display:flex; align-items:center; min-height:18px; }
+.lanc-modal .label-add { justify-content:space-between; }
+.lanc-modal .lm-grid input:not([type=checkbox]), .lanc-modal .lm-grid select, .lanc-modal .lm-grid .ef-combo-trigger { height:34px; }
+.lanc-modal .btn-add-inline { width:18px; height:18px; min-width:18px; font-size:13px; border-radius:5px; }
+.lanc-modal input, .lanc-modal select, .lanc-modal textarea, .lanc-modal .ef-combo-trigger { padding:7px 10px; font-size:13px; border-width:1px; border-radius:8px; }
+.lanc-modal input[type=date] { font-family:'DM Mono',monospace; font-size:12.5px; }
+.lanc-modal .lm-valor input { font-family:'DM Mono',monospace; font-size:15px; font-weight:700; text-align:right; background:#fff; }
+.lanc-modal.lm-pagar .lm-valor input { color:#c2410c; border-color:#fed7aa; }
+.lanc-modal.lm-receber .lm-valor input { color:#15803d; border-color:#bbf7d0; }
+.lanc-modal .lm-hint { font-size:10.5px; color:#a8a29e; margin-top:3px; }
+.lanc-modal .lm-dt-dest label { color:#b45309; font-weight:600; }
+.lanc-modal .lm-dt-dest input { border-color:#fcd34d; background:#fffbeb; }
+.lanc-modal .lm-parc { margin-top:10px; }
+.lanc-modal .lm-parc-t { font-size:11.5px; font-weight:600; padding:6px 10px; border-radius:6px; margin-bottom:8px; }
+.lanc-modal.lm-pagar .lm-parc-t { color:#c2410c; background:#fff7ed; border-left:3px solid #ea580c; }
+.lanc-modal.lm-receber .lm-parc-t { color:#15803d; background:#f0fdf4; border-left:3px solid #16a34a; }
+.lanc-modal .lm-parc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }
+.lanc-modal .lm-cf { border:1px solid #e7e5e4; border-radius:8px; padding:9px 12px; background:#fcfcfb; }
+.lanc-modal .lm-cf > label { display:flex; align-items:center; gap:8px; cursor:pointer; font-size:12.5px; font-weight:600; color:#44403c; margin:0; }
+.lanc-modal textarea { resize:vertical; min-height:54px; }
+.lanc-modal .lm-foot { position:sticky; bottom:0; z-index:5; background:#fff; display:flex; align-items:center; gap:8px; padding:12px 22px; border-top:1px solid #f0efed; }
+.lanc-modal .lm-foot .lm-req { font-size:11px; color:#a8a29e; margin-right:auto; }
+.lanc-modal .lm-foot .btn { padding:8px 16px; font-size:13px; }
+@media (max-width:720px) {
+  .lanc-modal .lm-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .lanc-modal .lm-head, .lanc-modal .lm-body, .lanc-modal .lm-foot { padding-left:14px; padding-right:14px; }
+}
 .modal-x-auto { float:right; margin:-18px -18px 6px 12px; background:none; border:none; cursor:pointer; color:#a8a29e; font-size:22px; line-height:1; padding:4px; }
 .modal-x-auto:hover { color:#57534e; }
 .modal { background:#fff; border:1px solid #e7e5e4; border-radius:var(--radius2); padding:32px; width:620px; max-width:95vw; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(26,62,122,0.18); }
@@ -2892,104 +2939,129 @@ tr.cob-dia-vazio > td {
 <!-- ══ MODAL EDITAR CLIENTE ══ -->
 <!-- ══ MODAL CRIAR LANÇAMENTO — PAGAMENTO ══ -->
 <div class="modal-overlay" id="modal-novo-lanc">
-  <div class="modal" style="width:720px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div class="modal-title" style="margin-bottom:0;">📦 Novo Lançamento — Pagamento</div>
-      <button onclick="closeModal('modal-novo-lanc')" style="background:none;border:none;cursor:pointer;color:#a8a29e;font-size:22px;line-height:1;padding:4px;" title="Fechar">✕</button>
+  <div class="modal lanc-modal lm-pagar">
+    <div class="lm-head">
+      <div class="lm-ico">📦</div>
+      <div><div class="lm-tit">Novo Lançamento — Pagamento</div><div class="lm-sub">Conta a pagar, despesa ou compra</div></div>
+      <button class="lm-x" onclick="closeModal('modal-novo-lanc')" title="Fechar">✕</button>
     </div>
-    <div class="grid3">
-      <div class="form-group"><label>Empresa *</label><select id="l-empresa" class="sel-empresa"><option value="">Selecione...</option></select></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group"><label>Data da Competência *</label><input id="l-dtcompra" type="date" /></div>
-      <div class="form-group"><label>Previsão de Pagamento</label><input id="l-dtprev" type="date" /></div>
-      <div class="form-group"><label>Nº da Nota Fiscal</label><input id="l-nf" type="text" placeholder="000000" /></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group"><label class="label-add">Despesas/Fornecedor<button type="button" class="btn-add-inline" title="Cadastrar nova despesa/fornecedor" onclick="abrirCadastroRapido('fornecedor','l-forn')">+</button></label><select id="l-forn"><option value="">Nenhum (opcional)</option></select></div>
-      <div class="form-group"><label class="label-add">Item<button type="button" class="btn-add-inline" title="Cadastrar novo item" onclick="abrirCadastroRapido('produto','l-prod')">+</button></label><select id="l-prod"><option value="">Nenhum (opcional)</option></select></div>
-      <div class="form-group"><label>Valor Total (R$) *</label><input id="l-valor" type="number" step="0.01" placeholder="0,00" /></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group" style="grid-column:span 2"><label class="label-add">Categoria<button type="button" class="btn-add-inline" title="Cadastrar nova categoria" onclick="abrirCadastroRapido('categoria','l-catdre')">+</button></label><select id="l-catdre"><option value="">Nenhuma</option></select></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group"><label>Número de Parcelas</label>
-        <select id="l-parcelas" onchange="toggleParcelaDates('l-parcelas','l-parcela-dates')">
+    <div class="lm-body">
+      <div class="lm-sec">
+        <div class="lm-sec-t">Dados do lançamento</div>
+        <div class="lm-grid">
+          <div class="form-group lm-s2"><label>Empresa *</label><select id="l-empresa" class="sel-empresa"><option value="">Selecione...</option></select></div>
+          <div class="form-group"><label>Nº da Nota Fiscal</label><input id="l-nf" type="text" placeholder="000000" /></div>
+          <div class="form-group lm-valor"><label>Valor Total (R$) *</label><input id="l-valor" type="number" step="0.01" placeholder="0,00" /></div>
+          <div class="form-group"><label>Data da Competência *</label><input id="l-dtcompra" type="date" /></div>
+          <div class="form-group"><label>Previsão de Pagamento</label><input id="l-dtprev" type="date" /></div>
+          <div class="form-group lm-s2"><label class="label-add">Despesas/Fornecedor<button type="button" class="btn-add-inline" title="Cadastrar nova despesa/fornecedor" onclick="abrirCadastroRapido('fornecedor','l-forn')">+</button></label><select id="l-forn"><option value="">Nenhum (opcional)</option></select></div>
+          <div class="form-group lm-s2"><label class="label-add">Item<button type="button" class="btn-add-inline" title="Cadastrar novo item" onclick="abrirCadastroRapido('produto','l-prod')">+</button></label><select id="l-prod"><option value="">Nenhum (opcional)</option></select></div>
+          <div class="form-group lm-s2"><label class="label-add">Categoria<button type="button" class="btn-add-inline" title="Cadastrar nova categoria" onclick="abrirCadastroRapido('categoria','l-catdre')">+</button></label><select id="l-catdre"><option value="">Nenhuma</option></select></div>
+        </div>
+      </div>
+
+      <div class="lm-sec">
+        <div class="lm-sec-t">Pagamento</div>
+        <div class="lm-grid">
+          <div class="form-group"><label>Número de Parcelas</label>
+            <select id="l-parcelas" onchange="toggleParcelaDates('l-parcelas','l-parcela-dates')">
           <option value="1">1x (À Vista)</option>
-          <option value="2">2x</option><option value="3">3x</option><option value="4">4x</option>
-          <option value="5">5x</option><option value="6">6x</option><option value="7">7x</option>
-          <option value="8">8x</option><option value="9">9x</option><option value="10">10x</option>
-          <option value="11">11x</option><option value="12">12x</option><option value="13">13x</option>
-          <option value="14">14x</option><option value="15">15x</option><option value="16">16x</option>
-          <option value="17">17x</option><option value="18">18x</option><option value="19">19x</option>
-          <option value="20">20x</option><option value="21">21x</option><option value="22">22x</option>
-          <option value="23">23x</option><option value="24">24x</option><option value="25">25x</option>
-          <option value="26">26x</option><option value="27">27x</option><option value="28">28x</option>
-          <option value="29">29x</option><option value="30">30x</option><option value="31">31x</option>
-          <option value="32">32x</option><option value="33">33x</option><option value="34">34x</option>
-          <option value="35">35x</option><option value="36">36x</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Incluído no Financeiro?</label>
-        <select id="l-financeiro"><option value="nao">Não</option><option value="sim">Sim</option></select>
-      </div>
-      <div class="form-group"><label>Pago?</label>
-        <select id="l-pago" onchange="toggleDtPago('l')"><option value="nao">Não</option><option value="sim">Sim</option></select>
-      </div>
-    </div>
-    <div class="grid3" id="l-dtpago-wrap" style="display:none;">
-      <div class="form-group">
-        <label style="color:#b45309">Data do Pagamento *</label>
-        <input id="l-dtpago" type="date" />
-        <div style="font-size:11px;color:#a8a29e;margin-top:4px;">Obrigatória quando o lançamento é salvo como <b>Pago</b>.</div>
-      </div>
-    </div>
-    <div id="l-parcela-dates" style="display:none;margin-bottom:16px;">
-      <div style="font-size:12px;font-weight:600;color:#ea580c;margin-bottom:10px;padding:8px 12px;background:#fff1e6;border-radius:6px;border-left:3px solid #ea580c;">
-        📅 Datas e valores de cada parcela — preenchidos automaticamente, edite se precisar
-      </div>
-      <div id="l-parcela-dates-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;"></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group"><label>Tipo de Pagamento</label>
-        <select id="l-tipo-pag" onchange="onTipoPagChange(this)">
-          <option value="">Não informado</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Banco / Conta</label>
-        <select id="l-banco"><option value="">Não informado</option></select>
-      </div>
-    </div>
-    <!-- ══ CUSTO FIXO + VIGÊNCIAS ══ -->
-    <div style="border:1px solid #e7e5e4;border-radius:8px;padding:12px 14px;margin-bottom:16px;background:#fcfcfb;">
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;font-weight:600;color:#44403c;margin:0;">
-        <input type="checkbox" id="l-custofixo" onchange="toggleCustoFixoBox('l')" style="width:16px;height:16px;accent-color:#ea580c;cursor:pointer;" />
-        🔁 Marcar como Custo Fixo (despesa recorrente)
-      </label>
-      <div id="l-custofixo-box" style="display:none;margin-top:12px;border-top:1px dashed #e7e5e4;padding-top:12px;">
-        <div style="font-size:12px;color:#78716c;margin-bottom:10px;">
-          Informe o período em que esse custo vale. Deixe o <b>Fim</b> em branco (ou marque “Indeterminado”) para uma vigência sem data final.
+          <option value="2">2x</option>
+          <option value="3">3x</option>
+          <option value="4">4x</option>
+          <option value="5">5x</option>
+          <option value="6">6x</option>
+          <option value="7">7x</option>
+          <option value="8">8x</option>
+          <option value="9">9x</option>
+          <option value="10">10x</option>
+          <option value="11">11x</option>
+          <option value="12">12x</option>
+          <option value="13">13x</option>
+          <option value="14">14x</option>
+          <option value="15">15x</option>
+          <option value="16">16x</option>
+          <option value="17">17x</option>
+          <option value="18">18x</option>
+          <option value="19">19x</option>
+          <option value="20">20x</option>
+          <option value="21">21x</option>
+          <option value="22">22x</option>
+          <option value="23">23x</option>
+          <option value="24">24x</option>
+          <option value="25">25x</option>
+          <option value="26">26x</option>
+          <option value="27">27x</option>
+          <option value="28">28x</option>
+          <option value="29">29x</option>
+          <option value="30">30x</option>
+          <option value="31">31x</option>
+          <option value="32">32x</option>
+          <option value="33">33x</option>
+          <option value="34">34x</option>
+          <option value="35">35x</option>
+          <option value="36">36x</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Incluído no Financeiro?</label>
+            <select id="l-financeiro"><option value="nao">Não</option><option value="sim">Sim</option></select>
+          </div>
+          <div class="form-group"><label>Pago?</label>
+            <select id="l-pago" onchange="toggleDtPago('l')"><option value="nao">Não</option><option value="sim">Sim</option></select>
+          </div>
+          <div class="form-group lm-dt-dest" id="l-dtpago-wrap" style="display:none;">
+            <label>Data do Pagamento *</label>
+            <input id="l-dtpago" type="date" title="Obrigatória quando o lançamento é salvo como Pago" />
+          </div>
+          <div class="form-group lm-s2"><label>Tipo de Pagamento</label>
+            <select id="l-tipo-pag" onchange="onTipoPagChange(this)">
+              <option value="">Não informado</option>
+            </select>
+          </div>
+          <div class="form-group lm-s2"><label>Banco / Conta</label>
+            <select id="l-banco"><option value="">Não informado</option></select>
+          </div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;align-items:end;">
-          <div class="form-group" style="margin:0"><label>Início da vigência *</label><input type="date" id="l-vig-inicio" /></div>
-          <div class="form-group" style="margin:0"><label>Fim da vigência</label><input type="date" id="l-vig-fim" /></div>
-          <div class="form-group" style="margin:0"><label>Valor no período (R$)</label><input type="number" step="0.01" id="l-vig-valor" placeholder="usa o valor total" /></div>
-          <div class="form-group" style="margin:0"><label>Observação</label><input type="text" id="l-vig-obs" placeholder="Ex.: reajuste IGPM" /></div>
+        <div id="l-parcela-dates" class="lm-parc" style="display:none;">
+          <div class="lm-parc-t">📅 Datas e valores de cada parcela — preenchidos automaticamente, edite se precisar</div>
+          <div id="l-parcela-dates-grid" class="lm-parc-grid"></div>
         </div>
-        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;">
-          <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#57534e;cursor:pointer;margin:0;">
-            <input type="checkbox" id="l-vig-indeterminado" onchange="toggleVigIndeterminado('l')" style="accent-color:#ea580c;cursor:pointer;" /> Indeterminado (sem data final)
+      </div>
+
+      <div class="lm-sec">
+        <div class="lm-sec-t">Complemento</div>
+        <!-- ══ CUSTO FIXO + VIGÊNCIAS ══ -->
+        <div class="lm-cf" style="margin-bottom:10px;">
+          <label>
+            <input type="checkbox" id="l-custofixo" onchange="toggleCustoFixoBox('l')" style="width:15px;height:15px;accent-color:#ea580c;cursor:pointer;padding:0;" />
+            🔁 Marcar como Custo Fixo (despesa recorrente)
           </label>
-          <button type="button" class="btn btn-primary btn-sm" id="l-vig-btn" onclick="incluirVigencia('l')">+ Incluir vigência</button>
-          <button type="button" class="btn btn-secondary btn-sm" id="l-vig-cancel" onclick="cancelarEdicaoVigencia('l')" style="display:none">Cancelar edição</button>
+          <div id="l-custofixo-box" style="display:none;margin-top:10px;border-top:1px dashed #e7e5e4;padding-top:10px;">
+            <div style="font-size:11.5px;color:#78716c;margin-bottom:8px;">
+              Informe o período em que esse custo vale. Deixe o <b>Fim</b> em branco (ou marque “Indeterminado”) para uma vigência sem data final.
+            </div>
+            <div class="lm-grid" style="align-items:end;">
+              <div class="form-group"><label>Início da vigência *</label><input type="date" id="l-vig-inicio" /></div>
+              <div class="form-group"><label>Fim da vigência</label><input type="date" id="l-vig-fim" /></div>
+              <div class="form-group"><label>Valor no período (R$)</label><input type="number" step="0.01" id="l-vig-valor" placeholder="usa o valor total" /></div>
+              <div class="form-group"><label>Observação</label><input type="text" id="l-vig-obs" placeholder="Ex.: reajuste IGPM" /></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:8px;">
+              <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#57534e;cursor:pointer;margin:0;">
+                <input type="checkbox" id="l-vig-indeterminado" onchange="toggleVigIndeterminado('l')" style="accent-color:#ea580c;cursor:pointer;width:auto;padding:0;" /> Indeterminado (sem data final)
+              </label>
+              <button type="button" class="btn btn-primary btn-sm" id="l-vig-btn" onclick="incluirVigencia('l')">+ Incluir vigência</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="l-vig-cancel" onclick="cancelarEdicaoVigencia('l')" style="display:none">Cancelar edição</button>
+            </div>
+            <div style="font-size:10.5px;font-weight:700;color:#a8a29e;text-transform:uppercase;letter-spacing:.5px;margin:12px 0 6px;">Vigências incluídas</div>
+            <div id="l-vig-lista"></div>
+          </div>
         </div>
-        <div style="font-size:11px;font-weight:700;color:#a8a29e;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 6px;">Vigências incluídas</div>
-        <div id="l-vig-lista"></div>
+        <div class="form-group"><label>Observações</label><textarea id="l-obs" rows="2" placeholder="Informações adicionais..."></textarea></div>
       </div>
     </div>
-    <div class="form-group"><label>Observações</label><textarea id="l-obs" rows="2" placeholder="Informações adicionais..."></textarea></div>
-    <div class="modal-footer">
+    <div class="lm-foot">
+      <span class="lm-req">* campos obrigatórios</span>
       <button class="btn btn-secondary" onclick="closeModal('modal-novo-lanc')">Cancelar</button>
       <button class="btn btn-secondary" onclick="clearLancamento()">Limpar</button>
       <button class="btn btn-primary" onclick="saveLancamento()">Salvar Lançamento</button>
@@ -2999,75 +3071,101 @@ tr.cob-dia-vazio > td {
 
 <!-- ══ MODAL CRIAR LANÇAMENTO — RECEBIMENTO ══ -->
 <div class="modal-overlay" id="modal-novo-lr">
-  <div class="modal" style="width:720px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-      <div class="modal-title" style="margin-bottom:0;">💰 Novo Lançamento — Recebimento</div>
-      <button onclick="closeModal('modal-novo-lr')" style="background:none;border:none;cursor:pointer;color:#a8a29e;font-size:22px;line-height:1;padding:4px;" title="Fechar">✕</button>
+  <div class="modal lanc-modal lm-receber">
+    <div class="lm-head">
+      <div class="lm-ico">💰</div>
+      <div><div class="lm-tit">Novo Lançamento — Recebimento</div><div class="lm-sub">Conta a receber, venda ou receita</div></div>
+      <button class="lm-x" onclick="closeModal('modal-novo-lr')" title="Fechar">✕</button>
     </div>
-    <div class="grid3">
-      <div class="form-group"><label>Empresa *</label><select id="lr-empresa" class="sel-empresa"><option value="">Selecione...</option></select></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group"><label>Data da Competência *</label><input id="lr-dtvenda" type="date" /></div>
-      <div class="form-group"><label>Previsão de Recebimento</label><input id="lr-dtprev" type="date" /></div>
-      <div class="form-group"><label>Nº da Nota Fiscal</label><input id="lr-nf" type="text" placeholder="000000" /></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group"><label class="label-add">Cliente *<button type="button" class="btn-add-inline" title="Cadastrar novo cliente" onclick="abrirCadastroRapido('cliente','lr-cliente')">+</button></label><select id="lr-cliente"><option value="">Selecione...</option></select></div>
-      <div class="form-group"><label class="label-add">Produto de Venda<button type="button" class="btn-add-inline" title="Cadastrar novo produto de venda" onclick="abrirCadastroRapido('prodvenda','lr-prod')">+</button></label><select id="lr-prod"><option value="">Selecione...</option></select></div>
-      <div class="form-group"><label>Valor Total (R$) *</label><input id="lr-valor" type="number" step="0.01" placeholder="0,00" /></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group" style="grid-column:span 2"><label class="label-add">Categoria<button type="button" class="btn-add-inline" title="Cadastrar nova categoria" onclick="abrirCadastroRapido('categoria','lr-catdre')">+</button></label><select id="lr-catdre"><option value="">Nenhuma</option></select></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group"><label>Número de Parcelas</label>
-        <select id="lr-parcelas" onchange="toggleParcelaDates('lr-parcelas','lr-parcela-dates')">
+    <div class="lm-body">
+      <div class="lm-sec">
+        <div class="lm-sec-t">Dados do lançamento</div>
+        <div class="lm-grid">
+          <div class="form-group lm-s2"><label>Empresa *</label><select id="lr-empresa" class="sel-empresa"><option value="">Selecione...</option></select></div>
+          <div class="form-group"><label>Nº da Nota Fiscal</label><input id="lr-nf" type="text" placeholder="000000" /></div>
+          <div class="form-group lm-valor"><label>Valor Total (R$) *</label><input id="lr-valor" type="number" step="0.01" placeholder="0,00" /></div>
+          <div class="form-group"><label>Data da Competência *</label><input id="lr-dtvenda" type="date" /></div>
+          <div class="form-group"><label>Previsão de Recebimento</label><input id="lr-dtprev" type="date" /></div>
+          <div class="form-group lm-s2"><label class="label-add">Cliente *<button type="button" class="btn-add-inline" title="Cadastrar novo cliente" onclick="abrirCadastroRapido('cliente','lr-cliente')">+</button></label><select id="lr-cliente"><option value="">Selecione...</option></select></div>
+          <div class="form-group lm-s2"><label class="label-add">Produto de Venda<button type="button" class="btn-add-inline" title="Cadastrar novo produto de venda" onclick="abrirCadastroRapido('prodvenda','lr-prod')">+</button></label><select id="lr-prod"><option value="">Selecione...</option></select></div>
+          <div class="form-group lm-s2"><label class="label-add">Categoria<button type="button" class="btn-add-inline" title="Cadastrar nova categoria" onclick="abrirCadastroRapido('categoria','lr-catdre')">+</button></label><select id="lr-catdre"><option value="">Nenhuma</option></select></div>
+        </div>
+      </div>
+
+      <div class="lm-sec">
+        <div class="lm-sec-t">Recebimento</div>
+        <div class="lm-grid">
+          <div class="form-group"><label>Número de Parcelas</label>
+            <select id="lr-parcelas" onchange="toggleParcelaDates('lr-parcelas','lr-parcela-dates')">
           <option value="1">1x (À Vista)</option>
-          <option value="2">2x</option><option value="3">3x</option><option value="4">4x</option>
-          <option value="5">5x</option><option value="6">6x</option><option value="7">7x</option>
-          <option value="8">8x</option><option value="9">9x</option><option value="10">10x</option>
-          <option value="11">11x</option><option value="12">12x</option><option value="13">13x</option>
-          <option value="14">14x</option><option value="15">15x</option><option value="16">16x</option>
-          <option value="17">17x</option><option value="18">18x</option><option value="19">19x</option>
-          <option value="20">20x</option><option value="21">21x</option><option value="22">22x</option>
-          <option value="23">23x</option><option value="24">24x</option><option value="25">25x</option>
-          <option value="26">26x</option><option value="27">27x</option><option value="28">28x</option>
-          <option value="29">29x</option><option value="30">30x</option><option value="31">31x</option>
-          <option value="32">32x</option><option value="33">33x</option><option value="34">34x</option>
-          <option value="35">35x</option><option value="36">36x</option>
-        </select>
+          <option value="2">2x</option>
+          <option value="3">3x</option>
+          <option value="4">4x</option>
+          <option value="5">5x</option>
+          <option value="6">6x</option>
+          <option value="7">7x</option>
+          <option value="8">8x</option>
+          <option value="9">9x</option>
+          <option value="10">10x</option>
+          <option value="11">11x</option>
+          <option value="12">12x</option>
+          <option value="13">13x</option>
+          <option value="14">14x</option>
+          <option value="15">15x</option>
+          <option value="16">16x</option>
+          <option value="17">17x</option>
+          <option value="18">18x</option>
+          <option value="19">19x</option>
+          <option value="20">20x</option>
+          <option value="21">21x</option>
+          <option value="22">22x</option>
+          <option value="23">23x</option>
+          <option value="24">24x</option>
+          <option value="25">25x</option>
+          <option value="26">26x</option>
+          <option value="27">27x</option>
+          <option value="28">28x</option>
+          <option value="29">29x</option>
+          <option value="30">30x</option>
+          <option value="31">31x</option>
+          <option value="32">32x</option>
+          <option value="33">33x</option>
+          <option value="34">34x</option>
+          <option value="35">35x</option>
+          <option value="36">36x</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Incluído no Financeiro?</label>
+            <select id="lr-financeiro"><option value="nao">Não</option><option value="sim">Sim</option></select>
+          </div>
+          <div class="form-group"><label>Recebido?</label>
+            <select id="lr-recebido"><option value="nao">Não</option><option value="sim">Sim</option></select>
+          </div>
+          <div class="form-group"><label>Juros (% ao mês)</label>
+            <input id="lr-juros" type="number" step="0.01" min="0" placeholder="Padrão" title="Deixe vazio para usar a taxa padrão" />
+          </div>
+          <div class="form-group lm-s2"><label>Tipo de Recebimento</label>
+            <select id="lr-tipo-pag" onchange="onTipoRecebChange(this)">
+              <option value="">Não informado</option>
+            </select>
+          </div>
+          <div class="form-group lm-s2"><label>Banco / Conta</label>
+            <select id="lr-banco"><option value="">Não informado</option></select>
+          </div>
+        </div>
+        <div id="lr-parcela-dates" class="lm-parc" style="display:none;">
+          <div class="lm-parc-t">📅 Datas e valores de cada parcela — preenchidos automaticamente, edite se precisar</div>
+          <div id="lr-parcela-dates-grid" class="lm-parc-grid"></div>
+        </div>
       </div>
-      <div class="form-group"><label>Incluído no Financeiro?</label>
-        <select id="lr-financeiro"><option value="nao">Não</option><option value="sim">Sim</option></select>
-      </div>
-      <div class="form-group"><label>Recebido?</label>
-        <select id="lr-recebido"><option value="nao">Não</option><option value="sim">Sim</option></select>
+
+      <div class="lm-sec">
+        <div class="lm-sec-t">Complemento</div>
+        <div class="form-group"><label>Observações</label><textarea id="lr-obs" rows="2" placeholder="Informações adicionais..."></textarea></div>
       </div>
     </div>
-    <div id="lr-parcela-dates" style="display:none;margin-bottom:16px;">
-      <div style="font-size:12px;font-weight:600;color:#16a34a;margin-bottom:10px;padding:8px 12px;background:#dcfce7;border-radius:6px;border-left:3px solid #16a34a;">
-        📅 Datas e valores de cada parcela — preenchidos automaticamente, edite se precisar
-      </div>
-      <div id="lr-parcela-dates-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;"></div>
-    </div>
-    <div class="grid3">
-      <div class="form-group"><label>Tipo de Recebimento</label>
-        <select id="lr-tipo-pag" onchange="onTipoRecebChange(this)">
-          <option value="">Não informado</option>
-        </select>
-      </div>
-      <div class="form-group"><label>Banco / Conta</label>
-        <select id="lr-banco"><option value="">Não informado</option></select>
-      </div>
-    </div>
-    <div class="grid3">
-      <div class="form-group"><label>Taxa de Juros (% ao mês)</label>
-        <input id="lr-juros" type="number" step="0.01" min="0" placeholder="Deixe vazio para usar padrão" />
-      </div>
-    </div>
-    <div class="form-group"><label>Observações</label><textarea id="lr-obs" rows="2" placeholder="Informações adicionais..."></textarea></div>
-    <div class="modal-footer">
+    <div class="lm-foot">
+      <span class="lm-req">* campos obrigatórios</span>
       <button class="btn btn-secondary" onclick="closeModal('modal-novo-lr')">Cancelar</button>
       <button class="btn btn-secondary" onclick="clearLancReceber()">Limpar</button>
       <button class="btn btn-primary" onclick="saveLancReceber()">Salvar Lançamento</button>
