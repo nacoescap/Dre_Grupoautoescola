@@ -1151,6 +1151,90 @@ tr.cob-dia-vazio > td {
 .badge-cc { background:#fff1e6; color:#c2410c; border:1px solid #fed7aa; }
 @media (max-width:640px) { .cc-det-info { grid-template-columns:1fr; } }
 
+/* ── CARTÕES DE CRÉDITO — visual profissional ── */
+#page-cartoes .cc-wrap { max-width:1240px; }
+.ccx-kpis { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:18px; }
+.ccx-kpi { background:#fff; border:1px solid var(--border); border-radius:14px; padding:14px 16px; box-shadow:0 1px 3px rgba(26,62,122,.05); min-width:0; }
+.ccx-kpi-lbl { font-size:11px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:#a8a29e; }
+.ccx-kpi-val { font-family:'DM Mono',monospace; font-size:20px; font-weight:700; color:#1f2937; margin-top:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ccx-kpi-sub { font-size:11.5px; color:#78716c; margin-top:3px; }
+.ccx-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+.ccx-card { background:#fff; border:1px solid var(--border); border-radius:18px; overflow:hidden; cursor:pointer; box-shadow:0 1px 4px rgba(26,62,122,.06); transition:box-shadow .15s, transform .15s; display:flex; flex-direction:column; }
+.ccx-card:hover { box-shadow:0 8px 24px rgba(26,62,122,.12); transform:translateY(-2px); }
+.ccx-plastic { position:relative; margin:14px 14px 0; border-radius:14px; padding:16px 18px 14px; color:#fff; min-height:150px; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 6px 16px rgba(0,0,0,.18); }
+.ccx-plastic::before { content:''; position:absolute; right:-60px; top:-70px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,.08); }
+.ccx-plastic::after { content:''; position:absolute; right:30px; bottom:-90px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,.05); }
+.ccx-pl-top { display:flex; justify-content:space-between; align-items:center; gap:10px; position:relative; z-index:1; }
+.ccx-pl-nome { font-size:15px; font-weight:700; letter-spacing:.2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ccx-plastic .cc-band { width:46px; height:30px; flex:0 0 46px; font-size:9px; box-shadow:0 0 0 1px rgba(255,255,255,.25); }
+.ccx-chipic { width:34px; height:25px; border-radius:5px; background:linear-gradient(135deg,#fde68a,#d4a017); margin:12px 0 8px; position:relative; z-index:1; opacity:.95; }
+.ccx-pl-lbl { font-size:10.5px; text-transform:uppercase; letter-spacing:.6px; opacity:.75; position:relative; z-index:1; }
+.ccx-pl-val { font-family:'DM Mono',monospace; font-size:23px; font-weight:700; margin-top:2px; position:relative; z-index:1; }
+.ccx-pl-foot { display:flex; gap:16px; font-size:11.5px; opacity:.85; margin-top:auto; padding-top:8px; position:relative; z-index:1; }
+.ccx-body { padding:14px 18px 16px; display:flex; flex-direction:column; gap:10px; flex:1; }
+.ccx-row { display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:12.5px; color:#57534e; }
+.ccx-pill { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; padding:3px 10px; border-radius:999px; white-space:nowrap; }
+.ccx-pill::before { content:''; width:6px; height:6px; border-radius:50%; background:currentColor; }
+.ccx-bar { height:7px; background:#f0eeec; border-radius:999px; overflow:hidden; }
+.ccx-bar > div { height:100%; border-radius:999px; }
+.ccx-lim { font-size:11.5px; color:#78716c; display:flex; justify-content:space-between; margin-top:5px; gap:8px; }
+.ccx-alerta { background:#fef2f2; border:1px solid #fecaca; color:#991b1b; border-radius:9px; padding:7px 10px; font-size:12px; }
+.ccx-aviso { background:#fff7ed; border:1px solid #fed7aa; color:#9a3412; border-radius:9px; padding:7px 10px; font-size:12px; }
+.ccx-acts { display:flex; gap:6px; margin-top:auto; padding-top:4px; border-top:1px solid #f5f4f2; padding-top:12px; }
+.ccx-acts .btn { flex:1; justify-content:center; }
+.ccx-vazio { background:#fff; border:1px dashed #d6d3d1; border-radius:18px; padding:44px 24px; text-align:center; color:#78716c; }
+/* detalhe */
+.ccx-top { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+.ccx-mesnav { display:inline-flex; align-items:center; background:#fff; border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+.ccx-mesnav button { border:none; background:none; width:40px; height:38px; font-size:20px; color:#57534e; cursor:pointer; }
+.ccx-mesnav button:hover { background:#f5f4f2; color:var(--accent); }
+.ccx-mesnav div { min-width:170px; text-align:center; font-weight:700; font-size:14.5px; color:#1f2937; border-left:1px solid #f0eeec; border-right:1px solid #f0eeec; line-height:38px; }
+.ccx-hero { display:grid; grid-template-columns:320px 1fr; gap:16px; margin-bottom:16px; }
+.ccx-hero .ccx-plastic { margin:0; min-height:180px; }
+.ccx-resumo { background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px 20px; display:flex; flex-direction:column; gap:14px; }
+.ccx-resumo-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px 20px; }
+.ccx-resumo-grid .lbl { font-size:11px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:#a8a29e; }
+.ccx-resumo-grid .val { font-size:15px; font-weight:700; color:#1f2937; margin-top:3px; }
+.ccx-resumo-acts { display:flex; gap:8px; flex-wrap:wrap; padding-top:12px; border-top:1px solid #f5f4f2; }
+.ccx-cols { display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:16px; align-items:start; }
+.ccx-box { background:#fff; border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+.ccx-box-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:14px 18px; border-bottom:1px solid #f0eeec; flex-wrap:wrap; }
+.ccx-box-head h3 { font-size:14px; font-weight:700; color:#1f2937; margin:0; }
+.ccx-box-head input { width:240px; max-width:100%; border-radius:999px !important; padding:8px 14px !important; font-size:13px; }
+.ccx-tab { width:100%; border-collapse:collapse; font-size:13px; }
+.ccx-tab th { text-align:left; font-size:10.5px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:#a8a29e; padding:10px 14px; background:#fafaf9; border-bottom:1px solid #f0eeec; white-space:nowrap; }
+.ccx-tab td { padding:10px 14px; border-bottom:1px solid #f5f4f2; vertical-align:middle; }
+.ccx-tab tr:hover td { background:#fffaf5; }
+.ccx-tab .num { text-align:right; font-family:'DM Mono',monospace; font-weight:700; white-space:nowrap; }
+.ccx-tab .dt { white-space:nowrap; color:#57534e; }
+.ccx-desc b { color:#1f2937; font-weight:600; }
+.ccx-desc small { display:block; color:#a8a29e; font-size:11.5px; margin-top:1px; }
+.ccx-cls { display:inline-flex; flex-direction:column; gap:1px; }
+.ccx-cls .g { font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.3px; }
+.ccx-cls .c { font-size:12.5px; color:#44403c; }
+.ccx-semcat { font-size:11.5px; font-weight:600; color:#b45309; background:#fffbeb; border:1px solid #fde68a; border-radius:6px; padding:2px 8px; }
+.ccx-parc { font-size:11px; font-weight:700; color:#57534e; background:#f5f4f2; border-radius:6px; padding:2px 7px; white-space:nowrap; }
+.ccx-tab .acts { display:flex; gap:4px; justify-content:flex-end; }
+.ccx-ic { width:30px; height:30px; border-radius:8px; border:1px solid var(--border); background:#fff; color:#78716c; cursor:pointer; font-size:13px; }
+.ccx-ic:hover { color:#1f2937; border-color:#a8a29e; }
+.ccx-ic.del:hover { color:#dc2626; border-color:#fca5a5; background:#fef2f2; }
+.ccx-tab tfoot td { font-weight:700; background:#fafaf9; border-bottom:none; }
+.ccx-cat-lista { padding:8px 18px 16px; }
+.ccx-cat-g { margin-top:12px; }
+.ccx-cat-gh { display:flex; justify-content:space-between; font-size:12px; font-weight:700; color:#1f2937; margin-bottom:6px; gap:8px; }
+.ccx-cat-gh span:last-child { font-family:'DM Mono',monospace; }
+.ccx-cat-it { margin:0 0 8px; }
+.ccx-cat-it .ln { display:flex; justify-content:space-between; font-size:12px; color:#57534e; gap:8px; margin-bottom:3px; }
+.ccx-cat-it .ln span:last-child { font-family:'DM Mono',monospace; white-space:nowrap; }
+.ccx-integra { font-size:11.5px; color:#78716c; background:#f8fafc; border-top:1px solid #f0eeec; padding:10px 18px; line-height:1.5; }
+@media (max-width:1000px) { .ccx-cols, .ccx-hero { grid-template-columns:1fr; } .ccx-kpis { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (max-width:640px) { .ccx-resumo-grid { grid-template-columns:1fr 1fr; } .ccx-tab .hide-sm { display:none; } .ccx-box-head input { width:100%; } }
+/* modal de despesa */
+.ccx-sec { border:1px solid #f0eeec; border-radius:12px; padding:14px 14px 2px; margin-bottom:14px; }
+.ccx-sec-t { font-size:11px; font-weight:800; letter-spacing:.5px; text-transform:uppercase; color:#a8a29e; margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+.ccx-cls-info { font-size:12px; color:#57534e; background:#f8fafc; border:1px solid #e2e8f0; border-radius:9px; padding:8px 11px; margin:-4px 0 12px; line-height:1.5; }
+.ccx-cls-info b { color:#1f2937; }
+
 
 /* ══ MENU LATERAL — visual profissional ══ */
 .sidebar { width:248px; background:#ffffff; border-right:1px solid #ece9e6; box-shadow:none; }
@@ -4483,23 +4567,38 @@ body.menu-oculto .sidebar { transform:translateX(-248px); }
       <select id="cc-d-cartao" onchange="ccAtualizarFaturas(true);ccRenderChipsCartao()" style="display:none"></select>
       <div class="cc-chips" id="cc-d-cartoes"></div>
     </div>
-    <div class="form-group"><label>Data da Compra *</label><input id="cc-d-data" type="date" onchange="ccAtualizarFaturas(true)" /></div>
-    <div class="form-group"><label>Descrição *</label><input id="cc-d-desc" type="text" placeholder="Ex.: TV Samsung" /></div>
-    <div class="form-group"><label>Categoria</label><select id="cc-d-cat"><option value="">Nenhuma</option></select></div>
-    <div class="grid2">
-      <div class="form-group"><label>Valor (R$) *</label><input id="cc-d-valor" type="number" step="0.01" min="0" placeholder="0,00" oninput="ccPreviaParcelas()" /></div>
-      <div class="form-group"><label>Fatura (vencimento) *</label><select id="cc-d-fatura" onchange="ccPreviaParcelas()"></select></div>
-    </div>
-    <div class="grid2">
-      <div class="form-group"><label>Parcelada?</label>
-        <select id="cc-d-parcelada" onchange="ccToggleParcelada()"><option value="nao">Não (à vista)</option><option value="sim">Sim</option></select>
+    <div class="ccx-sec">
+      <div class="ccx-sec-t">🛒 Compra</div>
+      <div class="grid2">
+        <div class="form-group"><label>Data da Compra *</label><input id="cc-d-data" type="date" onchange="ccAtualizarFaturas(true);ccInfoClassificacao()" /></div>
+        <div class="form-group"><label>Valor (R$) *</label><input id="cc-d-valor" type="number" step="0.01" min="0" placeholder="0,00" oninput="ccPreviaParcelas()" /></div>
       </div>
-      <div class="form-group" id="cc-d-parc-grp" style="display:none"><label>Nº de Parcelas</label><select id="cc-d-parcelas" onchange="ccPreviaParcelas()"></select></div>
+      <div class="form-group"><label>Descrição *</label><input id="cc-d-desc" type="text" placeholder="Ex.: TV Samsung" /></div>
     </div>
-    <div class="form-group" id="cc-d-tipoval-grp" style="display:none"><label>O valor informado é</label>
-      <select id="cc-d-tipoval" onchange="ccPreviaParcelas()"><option value="total">Valor total da compra</option><option value="parcela">Valor de cada parcela</option></select>
+    <div class="ccx-sec">
+      <div class="ccx-sec-t">🏷️ Classificação — DRE e Fluxo de Caixa</div>
+      <div class="grid2">
+        <div class="form-group"><label>Grupo</label><select id="cc-d-grp" onchange="ccTrocarGrupoDre()"><option value="">Todos os grupos</option></select></div>
+        <div class="form-group"><label>Categoria</label><select id="cc-d-cat" onchange="ccTrocarCategoriaDre()"><option value="">Nenhuma</option></select></div>
+      </div>
+      <div id="cc-d-cls-info" class="ccx-cls-info"></div>
     </div>
-    <div id="cc-d-previa" class="lanc-note" style="display:none;margin-bottom:14px"></div>
+    <div class="ccx-sec">
+      <div class="ccx-sec-t">💳 Fatura e parcelamento</div>
+      <div class="grid2">
+        <div class="form-group"><label>Fatura (vencimento) *</label><select id="cc-d-fatura" onchange="ccPreviaParcelas();ccInfoClassificacao()"></select></div>
+        <div class="form-group"><label>Parcelada?</label>
+          <select id="cc-d-parcelada" onchange="ccToggleParcelada()"><option value="nao">Não (à vista)</option><option value="sim">Sim</option></select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="form-group" id="cc-d-parc-grp" style="display:none"><label>Nº de Parcelas</label><select id="cc-d-parcelas" onchange="ccPreviaParcelas()"></select></div>
+        <div class="form-group" id="cc-d-tipoval-grp" style="display:none"><label>O valor informado é</label>
+          <select id="cc-d-tipoval" onchange="ccPreviaParcelas()"><option value="total">Valor total da compra</option><option value="parcela">Valor de cada parcela</option></select>
+        </div>
+      </div>
+      <div id="cc-d-previa" class="lanc-note" style="display:none;margin-bottom:14px"></div>
+    </div>
     <div class="form-group"><label>Observação</label><input id="cc-d-obs" type="text" placeholder="Opcional" /></div>
     <div class="modal-footer">
       <button class="btn btn-danger" id="cc-d-excluir" style="margin-right:auto;display:none" onclick="ccExcluirDespesa(document.getElementById('cc-d-grupo').value)">Apagar</button>
@@ -11229,8 +11328,31 @@ function renderDfc() {
 
   // 2. Contas a Pagar → Categoria do lançamento, senão do produto, senão Custos
   if (inclPagar) {
+    // Contas a pagar quitadas com cartão saem do caixa só pela fatura (evita contar 2x)
+    const _ccOriDfc = ccOrigensSet();
     db.lancamentos.forEach(l => {
       if (dfcFiltroPago === 'apagar' && l.pago === 'sim') return;
+      // Fatura do cartão: abre o valor pelo grupo/categoria de cada despesa,
+      // no vencimento da fatura (sem categoria => grupo padrão de Custos)
+      if (l.cartao_fatura) {
+        const venc = l.dtprev || l.dtcompra;
+        if (!venc) return;
+        const pv = venc.split('-');
+        if (parseInt(pv[0]) !== ano) return;
+        const m = parseInt(pv[1]);
+        const [fcid, fmes] = String(l.cartao_fatura).split('|');
+        ccDespesasFatura(fcid, fmes).forEach(d => {
+          const catObj = d.cat_dre ? db.dfc_cats.find(x => x.id === d.cat_dre) : null;
+          const grupoId = catObj ? catObj.grupo : (grupoPadraoCusto && grupoPadraoCusto.id);
+          if (!grupoId || dados[m][grupoId] === undefined) return;
+          const v = Number(d.valor) || 0;
+          dados[m][grupoId] += v * (catObj ? dreSinalCat(catObj.id, grupoId) : 1);
+          _guardar(m, grupoId, { kind: 'des', lancId: l.id, forn: '💳 ' + (d.descricao || '—'), prod: '',
+            valParc: v, venc, nf: '', banco: l.banco, tipo_pag: l.tipo_pag,
+            parcIdx: d.parcela || 1, totalParc: d.total_parcelas || 1, isPago: l.pago === 'sim' });
+        });
+        return;
+      }
       const n = l.parcelas || 1;
       const valParc = (l.valor || 0) / n;
       const catLanc = l.cat_dre ? db.dfc_cats.find(x => x.id === l.cat_dre) : null;
@@ -11239,6 +11361,7 @@ function renderDfc() {
       const catObj  = catLanc || catProd;
       const grupoId = catObj ? catObj.grupo : (grupoPadraoCusto && grupoPadraoCusto.id);
       for (let i = 1; i <= n; i++) {
+        if (_ccOriDfc.has(`${l.id}|${i}`)) continue;
         const venc = parcelaVencimento(l.dtprev, i, n) || l.dtcompra;
         if (!venc) continue;
         const parts = venc.split('-');
@@ -12074,6 +12197,39 @@ function renderDre() {
     });
   });
 
+  // 2b. Despesas lançadas direto no cartão de crédito. A fatura em Contas a
+  //     Pagar não tem categoria (não entra no DRE); quem entra é cada despesa,
+  //     com o grupo/categoria dela. Competência = data da compra; base
+  //     vencimento = vencimento da fatura. Despesas que vieram de Contas a
+  //     Pagar ficam de fora (a conta original já está no DRE).
+  (db.cartao_despesas || []).forEach(d => {
+    if (d.origem_lanc) return;
+    if (!pertenceEmpresaAtiva(d.empresa_id || null)) return;
+    const catId = d.cat_dre || null;
+    if (!catId) return;
+    const grupoId = getDreCatGrupo(catId);
+    if (!grupoId) return;
+    const cc = ccCartao(d.cartao_id);
+    const dtRef = baseDoGrupo(grupoId) === 'vencimento' ? (cc && d.fatura ? ccDataVencimento(cc, d.fatura) : '') : d.data;
+    if (!dtRef) return;
+    const pr = dtRef.split('-');
+    if (parseInt(pr[0]) !== ano) return;
+    const m = parseInt(pr[1]);
+    if (valoresMes[m][grupoId] === undefined) return;
+    const valor = Number(d.valor) || 0;
+    const item = {
+      tipo: 'cartao', id: d.grupo, nf: '', data: dtRef, nome: '💳 ' + (d.descricao || '—'),
+      prod: 'Cartão ' + (cc ? cc.nome : '') + ((d.total_parcelas || 1) > 1 ? ` (parc. ${d.parcela}/${d.total_parcelas})` : ''),
+      valor,
+      status: ccFaturaPaga(d.cartao_id, d.fatura) ? 'Pago' : 'A Pagar'
+    };
+    const sinalCat = dreSinalCat(catId, grupoId);
+    valoresMes[m][grupoId] += valor * sinalCat;
+    itensMes[m][grupoId].push(item);
+    valoresMesCat[m][catId] = (valoresMesCat[m][catId] || 0) + valor * sinalCat;
+    (itensMesCat[m][catId] = itensMesCat[m][catId] || []).push(item);
+  });
+
   // Injeta a Variação de Estoque digitada manualmente (não vem de lançamentos).
   // O valor digitado (positivo ou negativo) é SOMADO diretamente ao grupo do CPV,
   // de modo que tanto o valor monetário do CPV quanto o % do CPV recalculam.
@@ -12519,6 +12675,27 @@ function renderAnaliseCategoria() {
     });
   });
 
+  // Despesas lançadas direto no cartão de crédito (mesma regra do DRE):
+  // categoria da despesa, na data da compra. As que vieram de Contas a
+  // Pagar ficam de fora (a conta original já foi somada acima).
+  (db.cartao_despesas || []).forEach(d => {
+    if (d.origem_lanc) return;
+    if (!pertenceEmpresaAtiva(d.empresa_id || null)) return;
+    const catId = d.cat_dre;
+    if (!catId || !valoresMes[catId] || !d.data) return;
+    const parts = d.data.split('-');
+    if (parseInt(parts[0]) !== ano) return;
+    const m = parseInt(parts[1]);
+    const cc = ccCartao(d.cartao_id);
+    const valor = Number(d.valor) || 0;
+    valoresMes[catId][m] += valor;
+    itensMes[m][catId].push({
+      tipo: 'cartao', id: d.grupo, nf: '', data: d.data, nome: '💳 ' + (d.descricao || '—'),
+      prod: 'Cartão ' + (cc ? cc.nome : '') + ((d.total_parcelas || 1) > 1 ? ` (parc. ${d.parcela}/${d.total_parcelas})` : ''),
+      valor, status: ccFaturaPaga(d.cartao_id, d.fatura) ? 'Pago' : 'A Pagar'
+    });
+  });
+
   // Guarda para o drill-down (abrirDetalheAcCategoria), acessível após o render
   _acItensCache = itensMes;
   _acAnoCache = ano;
@@ -12855,6 +13032,12 @@ function _dreDetReabrir() {
 }
 
 function editarDoDetalheDre(tipo, id) {
+  if (tipo === 'cartao') {
+    if (!(db.cartao_despesas || []).some(d => d.grupo === id)) { alert('Despesa não encontrada. Ela pode ter sido excluída.'); return; }
+    closeModal('modal-dre-detalhe');
+    ccAbrirDespesa(null, null, id);
+    return;
+  }
   const existe = tipo === 'receber' ? db.lancreceber.some(x => x.id === id) : db.lancamentos.some(x => x.id === id);
   if (!existe) { alert('Lançamento não encontrado. Ele pode ter sido excluído.'); return; }
   closeModal('modal-dre-detalhe');
@@ -12871,6 +13054,11 @@ function _dreDetAposEditar(modalId) {
 }
 
 async function excluirDoDetalheDre(tipo, id) {
+  if (tipo === 'cartao') {
+    await ccExcluirDespesa(id);
+    _dreDetReabrir();
+    return;
+  }
   const reg = tipo === 'receber' ? db.lancreceber.find(x => x.id === id) : db.lancamentos.find(x => x.id === id);
   if (!reg) { alert('Lançamento não encontrado. Ele pode ter sido excluído.'); return; }
   const quem = tipo === 'receber' ? getClienteNome(reg.cliente) : getFornNome(reg.forn);
@@ -16687,42 +16875,94 @@ function ccRender() {
 }
 function ccVoltarLista() { ccSel.cartao = null; ccRender(); }
 
+// Cor do "plástico" do cartão, pela bandeira
+const CC_PLASTICO = {
+  mastercard: 'linear-gradient(135deg,#1f2937 0%,#111827 60%,#3b1d0f 100%)',
+  visa:       'linear-gradient(135deg,#1a1f71 0%,#283593 55%,#0d1240 100%)',
+  elo:        'linear-gradient(135deg,#27272a 0%,#09090b 100%)',
+  amex:       'linear-gradient(135deg,#2e77bb 0%,#1d4f80 100%)',
+  hipercard:  'linear-gradient(135deg,#b3131b 0%,#7f0d13 100%)',
+  outro:      'linear-gradient(135deg,#ea580c 0%,#7c2d12 100%)'
+};
+function ccPlasticoBg(c) { return CC_PLASTICO[(c && c.bandeira) || 'outro'] || CC_PLASTICO.outro; }
+// Limite comprometido = tudo lançado no cartão em faturas ainda não pagas
+function ccLimiteUsado(cid) {
+  const pagas = {};
+  return Math.round((db.cartao_despesas || []).filter(d => d.cartao_id === cid).reduce((s, d) => {
+    if (pagas[d.fatura] === undefined) pagas[d.fatura] = ccFaturaPaga(cid, d.fatura);
+    return pagas[d.fatura] ? s : s + (Number(d.valor) || 0);
+  }, 0) * 100) / 100;
+}
+function ccFaturasAtrasadas(c, mesAtual) {
+  return [...new Set((db.cartao_despesas || []).filter(d => d.cartao_id === c.id && d.fatura < mesAtual).map(d => d.fatura))]
+    .filter(m => !ccFaturaPaga(c.id, m) && ccTotalFatura(c.id, m) > 0);
+}
+function ccPillHtml(sit) {
+  return `<span class="ccx-pill" style="color:${sit.cor};background:${sit.cor}14">${sit.txt}</span>`;
+}
+function ccBarraLimite(c, usado) {
+  if (!c.limite) return '';
+  const pct = Math.min(100, Math.max(0, usado / c.limite * 100));
+  const cor = pct >= 90 ? '#dc2626' : pct >= 70 ? '#d97706' : '#16a34a';
+  return `<div><div class="ccx-bar"><div style="width:${pct.toFixed(1)}%;background:${cor}"></div></div>
+    <div class="ccx-lim"><span>Usado ${fmtBRL(usado)} (${pct.toFixed(0)}%)</span><span>Disponível <b style="color:#1f2937">${fmtBRL(c.limite - usado)}</b></span></div></div>`;
+}
+function ccPlasticoHtml(c, rotulo, valor, mes) {
+  return `<div class="ccx-plastic" style="background:${ccPlasticoBg(c)}">
+    <div class="ccx-pl-top"><span class="ccx-pl-nome">${esc(c.nome || '')}</span>${ccBandeiraHtml(c.bandeira)}</div>
+    <div class="ccx-chipic"></div>
+    <div class="ccx-pl-lbl">${rotulo}</div>
+    <div class="ccx-pl-val">${fmtBRL(valor)}</div>
+    <div class="ccx-pl-foot"><span>Fecha ${fmtDate(ccDataFechamento(c, mes)).slice(0, 5)}</span><span>Vence ${fmtDate(ccDataVencimento(c, mes)).slice(0, 5)}</span></div>
+  </div>`;
+}
+
 function ccRenderLista() {
   const lw = document.getElementById('cc-lista-wrap');
   const cartoes = (db.cartoes || []).slice().sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
   if (!cartoes.length) {
-    lw.innerHTML = `<div class="cc-lista" style="padding:36px 24px;text-align:center;color:#78716c">
-      Nenhum cartão cadastrado ainda.<br><br>
+    lw.innerHTML = `<div class="ccx-vazio">
+      <div style="font-size:34px;margin-bottom:8px">💳</div>
+      <div style="font-size:15px;font-weight:700;color:#1f2937;margin-bottom:4px">Nenhum cartão cadastrado</div>
+      <div style="font-size:13px;margin-bottom:16px">Cadastre o cartão com o dia de fechamento e de vencimento para começar a lançar as despesas.</div>
       <button class="btn btn-primary" onclick="ccAbrirCadastro()">💳 Cadastrar primeiro cartão</button></div>`;
     return;
   }
-  let totalGeral = 0;
+  let totalGeral = 0, totalAtraso = 0, limTotal = 0, limUsado = 0, nAtraso = 0;
   const itens = cartoes.map(c => {
     const mes = ccMesAtualCartao(c);
     const val = ccTotalFatura(c.id, mes);
     totalGeral += val;
-    // faturas anteriores ainda não pagas
-    const abertas = [...new Set((db.cartao_despesas || []).filter(d => d.cartao_id === c.id && d.fatura < mes).map(d => d.fatura))]
-      .filter(m => !ccFaturaPaga(c.id, m) && ccTotalFatura(c.id, m) > 0);
+    const abertas = ccFaturasAtrasadas(c, mes);
     const atrasado = abertas.reduce((s, m) => s + ccTotalFatura(c.id, m), 0);
+    totalAtraso += atrasado; if (abertas.length) nAtraso += abertas.length;
+    const usado = ccLimiteUsado(c.id);
+    if (c.limite) { limTotal += Number(c.limite) || 0; limUsado += usado; }
     const sit = ccSituacao(c.id, mes);
-    return `<div class="cc-item" onclick="ccAbrirDetalhe('${c.id}')">
-      ${ccBandeiraHtml(c.bandeira)}
-      <div class="cc-info">
-        <div class="cc-nome">${c.nome} <span>· Fecha em ${fmtDate(ccDataFechamento(c, mes)).slice(0, 5)} · Vence ${fmtDate(ccDataVencimento(c, mes)).slice(0, 5)}</span></div>
-        <div class="cc-val">${fmtBRL(val)} <span style="font-size:12px;font-weight:600;color:${sit.cor};font-family:inherit">${sit.txt}</span></div>
-        ${atrasado > 0 ? `<div class="cc-sub">Faturas anteriores em aberto: <b>${fmtBRL(atrasado)}</b></div>` : ''}
-        <div class="cc-sub">🏦 ${c.banco_id ? 'Pago pela conta ' + getBancoNome(c.banco_id) : '<span style="color:#d97706">Sem banco vinculado — clique em ✎ para vincular</span>'}${c.limite ? ' · Limite ' + fmtBRL(c.limite) : ''}</div>
-      </div>
-      <div class="cc-acts" onclick="event.stopPropagation()">
-        <button class="cc-mini" title="Editar cartão" onclick="ccAbrirCadastro('${c.id}')">✎</button>
-        <button class="cc-mini del" title="Excluir cartão" onclick="ccExcluirCartao('${c.id}')">🗑</button>
-        <button class="cc-add" title="Nova despesa neste cartão" onclick="ccAbrirDespesa('${c.id}')">+</button>
+    return `<div class="ccx-card" onclick="ccAbrirDetalhe('${c.id}')">
+      ${ccPlasticoHtml(c, 'Fatura atual · ' + ccMesLabel(mes), val, mes)}
+      <div class="ccx-body">
+        <div class="ccx-row">${ccPillHtml(sit)}<span title="Conta que paga a fatura">🏦 ${c.banco_id ? esc(getBancoNome(c.banco_id)) : '<span style="color:#d97706">sem banco</span>'}</span></div>
+        ${ccBarraLimite(c, usado)}
+        ${atrasado > 0 ? `<div class="ccx-alerta">⚠️ ${abertas.length} fatura(s) anterior(es) em aberto: <b>${fmtBRL(atrasado)}</b></div>` : ''}
+        ${!c.banco_id ? '<div class="ccx-aviso">Vincule o banco que paga a fatura em ✎ Editar.</div>' : ''}
+        <div class="ccx-acts" onclick="event.stopPropagation()">
+          <button class="btn btn-primary btn-sm" onclick="ccAbrirDespesa('${c.id}')">+ Despesa</button>
+          <button class="btn btn-secondary btn-sm" onclick="ccAbrirDetalhe('${c.id}')">Ver fatura</button>
+          <button class="ccx-ic" title="Editar cartão" onclick="ccAbrirCadastro('${c.id}')">✎</button>
+          <button class="ccx-ic del" title="Excluir cartão" onclick="ccExcluirCartao('${c.id}')">🗑</button>
+        </div>
       </div>
     </div>`;
   }).join('');
-  lw.innerHTML = `<div class="cc-lista">${itens}
-    <div class="cc-total"><span>Total (faturas atuais)</span><span>${fmtBRL(totalGeral)}</span></div></div>`;
+  const kpi = (lbl, val, sub, cor) => `<div class="ccx-kpi"><div class="ccx-kpi-lbl">${lbl}</div><div class="ccx-kpi-val"${cor ? ` style="color:${cor}"` : ''}>${val}</div>${sub ? `<div class="ccx-kpi-sub">${sub}</div>` : ''}</div>`;
+  lw.innerHTML = `<div class="ccx-kpis">
+      ${kpi('Faturas atuais', fmtBRL(totalGeral), cartoes.length + ' cartão(ões)', '#dc2626')}
+      ${kpi('Em atraso', fmtBRL(totalAtraso), nAtraso ? nAtraso + ' fatura(s) vencida(s)' : 'Nenhuma fatura vencida', totalAtraso > 0 ? '#b91c1c' : '#16a34a')}
+      ${kpi('Limite total', limTotal ? fmtBRL(limTotal) : '—', limTotal ? 'Comprometido ' + fmtBRL(limUsado) : 'Nenhum limite informado')}
+      ${kpi('Limite disponível', limTotal ? fmtBRL(limTotal - limUsado) : '—', limTotal ? ((limUsado / limTotal * 100).toFixed(0) + '% utilizado') : '', limTotal ? '#16a34a' : '')}
+    </div>
+    <div class="ccx-grid">${itens}</div>`;
 }
 
 function ccAbrirDetalhe(cid) {
@@ -16741,37 +16981,67 @@ function ccRenderDetalhe() {
   const sit = ccSituacao(c.id, mes);
   const l = ccLancFatura(c.id, mes);
   const paga = l && l.pago === 'sim';
-  const pagoInfo = paga ? `<div><div class="lbl">Pago em</div><div class="val">${fmtDate(l.dtpago)} · ${getBancoNome(l.banco)}</div></div>` : '';
+  const qtd = ccDespesasFatura(c.id, mes).length;
+  const usado = ccLimiteUsado(c.id);
+  const ultimo = paga
+    ? `<div><div class="lbl">Pago em</div><div class="val">${fmtDate(l.dtpago)} · ${esc(getBancoNome(l.banco))}</div></div>`
+    : `<div><div class="lbl">Limite disponível</div><div class="val">${c.limite ? fmtBRL(c.limite - usado) : '—'}</div></div>`;
   dw.innerHTML = `
-    <div style="margin-bottom:10px"><button class="btn btn-secondary btn-sm" onclick="ccVoltarLista()">← Todos os cartões</button></div>
-    <div class="cc-nav">
-      <button onclick="ccNavMes(-1)" title="Fatura anterior">‹</button>
-      <div>${ccMesLabel(mes)}</div>
-      <button onclick="ccNavMes(1)" title="Próxima fatura">›</button>
+    <div class="ccx-top">
+      <button class="btn btn-secondary btn-sm" onclick="ccVoltarLista()">← Todos os cartões</button>
+      <div class="ccx-mesnav">
+        <button onclick="ccNavMes(-1)" title="Fatura anterior">‹</button>
+        <div>${ccMesLabel(mes)}</div>
+        <button onclick="ccNavMes(1)" title="Próxima fatura">›</button>
+      </div>
     </div>
-    <div class="cc-det">
-      <div class="cc-det-nome" style="display:flex;align-items:center;justify-content:center;gap:12px">${ccBandeiraHtml(c.bandeira)}${c.nome}</div>
-      <div class="cc-det-info">
-        <div><div class="lbl">Fechamento</div><div class="val">${fmtDate(ccDataFechamento(c, mes))}</div></div>
-        <div><div class="lbl">Vencimento</div><div class="val">${fmtDate(ccDataVencimento(c, mes))}</div></div>
-        <div><div class="lbl">Situação</div><div class="val" style="color:${sit.cor}">${sit.txt}</div></div>
-        <div><div class="lbl">Valor</div><div class="val" style="color:#dc2626">${fmtBRL(total)}</div></div>
-        <div><div class="lbl">Banco vinculado</div><div class="val">${c.banco_id ? getBancoNome(c.banco_id) : '—'}</div></div>
-        ${pagoInfo}
+    <div class="ccx-hero">
+      ${ccPlasticoHtml(c, 'Fatura de ' + ccMesLabel(mes), total, mes)}
+      <div class="ccx-resumo">
+        <div class="ccx-resumo-grid">
+          <div><div class="lbl">Valor da fatura</div><div class="val" style="color:#dc2626;font-family:'DM Mono',monospace">${fmtBRL(total)}</div></div>
+          <div><div class="lbl">Situação</div><div class="val">${ccPillHtml(sit)}</div></div>
+          <div><div class="lbl">Lançamentos</div><div class="val">${qtd}</div></div>
+          <div><div class="lbl">Fechamento</div><div class="val">${fmtDate(ccDataFechamento(c, mes))}</div></div>
+          <div><div class="lbl">Vencimento</div><div class="val">${fmtDate(ccDataVencimento(c, mes))}</div></div>
+          ${ultimo}
+          <div style="grid-column:1/-1"><div class="lbl">Banco que paga a fatura</div><div class="val">${c.banco_id ? '🏦 ' + esc(getBancoNome(c.banco_id)) : '<span style="color:#d97706">Nenhum banco vinculado</span>'}</div></div>
+        </div>
+        ${c.limite ? ccBarraLimite(c, usado) : ''}
+        <div class="ccx-resumo-acts">
+          ${paga
+            ? `<button class="btn btn-secondary btn-sm" onclick="ccEstornarFatura('${c.id}','${mes}')">↺ Desfazer pagamento</button>`
+            : `<button class="btn btn-primary btn-sm" ${total > 0 ? '' : 'disabled'} onclick="ccAbrirPagamento('${c.id}','${mes}')">✓ Pagar fatura</button>`}
+          <button class="btn btn-secondary btn-sm" onclick="ccAbrirDespesa('${c.id}','${mes}')">+ Despesa</button>
+          <button class="btn btn-secondary btn-sm" onclick="ccAbrirImportacao('${c.id}','${mes}')">📥 Importar fatura</button>
+          <button class="btn btn-secondary btn-sm" onclick="ccAbrirCadastro('${c.id}')">✎ Editar cartão</button>
+          <button class="btn btn-danger btn-sm" style="margin-left:auto" onclick="ccExcluirCartao('${c.id}')">🗑 Excluir cartão</button>
+        </div>
       </div>
-      <div class="cc-det-acoes">
-        ${paga
-          ? `<button class="btn btn-secondary btn-sm" onclick="ccEstornarFatura('${c.id}','${mes}')">↺ Desfazer pagamento</button>`
-          : `<button class="btn btn-primary btn-sm" ${total > 0 ? '' : 'disabled'} onclick="ccAbrirPagamento('${c.id}','${mes}')">✓ Pagar fatura</button>`}
-        <button class="btn btn-secondary btn-sm" onclick="ccAbrirDespesa('${c.id}','${mes}')">+ Despesa</button>
-        <button class="btn btn-secondary btn-sm" onclick="ccAbrirImportacao('${c.id}','${mes}')">📥 Importar fatura</button>
-        <button class="btn btn-secondary btn-sm" onclick="ccAbrirCadastro('${c.id}')">✎ Editar cartão</button>
-        <button class="btn btn-danger btn-sm" onclick="ccExcluirCartao('${c.id}')">🗑 Excluir cartão</button>
+    </div>
+    <div class="ccx-cols">
+      <div class="ccx-box">
+        <div class="ccx-box-head"><h3>Despesas da fatura</h3>
+          <input class="cc-busca" id="cc-busca" type="text" placeholder="🔍 Buscar descrição, grupo ou categoria" value="${(ccSel.busca || '').replace(/"/g, '&quot;')}" oninput="ccSel.busca=this.value;ccRenderDetalheLista()" />
+        </div>
+        <div id="cc-det-lista"></div>
       </div>
-      <input class="cc-busca" id="cc-busca" type="text" placeholder="Busca" value="${(ccSel.busca || '').replace(/"/g, '&quot;')}" oninput="ccSel.busca=this.value;ccRenderDetalheLista()" />
-      <div id="cc-det-lista"></div>
+      <div class="ccx-box">
+        <div class="ccx-box-head"><h3>Resumo por grupo e categoria</h3></div>
+        <div id="cc-det-cats"></div>
+        <div class="ccx-integra">📊 <b>DRE:</b> cada despesa entra no grupo/categoria escolhido, na data da compra (competência).<br>💰 <b>Fluxo de Caixa:</b> a saída acontece no vencimento da fatura, pelo banco que a pagar.</div>
+      </div>
     </div>`;
   ccRenderDetalheLista();
+  ccRenderResumoCategorias();
+}
+
+function ccClassifHtml(catId) {
+  if (!catId) return '<span class="ccx-semcat">Sem categoria</span>';
+  const gid = getDreCatGrupo(catId);
+  const g = getDreGrupo(gid);
+  const cor = g && g.tipo === 'entrada' ? '#16a34a' : '#ea580c';
+  return `<span class="ccx-cls"><span class="g" style="color:${cor}">${esc(getDreGrupoNome(gid))}</span><span class="c">${esc(getDreCatNome(catId))}</span></span>`;
 }
 
 function ccRenderDetalheLista() {
@@ -16779,30 +17049,57 @@ function ccRenderDetalheLista() {
   if (!box) return;
   const c = ccCartao(ccSel.cartao);
   const paga = ccFaturaPaga(c.id, ccSel.mes);
-  const q = (ccSel.busca || '').trim().toLowerCase();
+  const q = normText((ccSel.busca || '').trim());
   let lista = ccDespesasFatura(c.id, ccSel.mes);
-  if (q) lista = lista.filter(d => (d.descricao || '').toLowerCase().includes(q) || (d.cat_dre ? getDreCatNome(d.cat_dre) : '').toLowerCase().includes(q));
+  if (q) lista = lista.filter(d => normText([d.descricao, d.obs, d.cat_dre ? getDreCatNome(d.cat_dre) : 'sem categoria', d.cat_dre ? getDreGrupoNome(getDreCatGrupo(d.cat_dre)) : ''].join(' ')).includes(q));
   lista.sort((a, b) => (b.data || '').localeCompare(a.data || '') || (a.descricao || '').localeCompare(b.descricao || ''));
-  if (!lista.length) { box.innerHTML = '<div class="empty-state" style="padding:28px 0">Nenhuma despesa nesta fatura.</div>'; return; }
-  let html = '', diaAtual = null;
+  if (!lista.length) { box.innerHTML = `<div class="empty-state" style="padding:36px 0">${q ? 'Nenhuma despesa corresponde à busca.' : 'Nenhuma despesa nesta fatura.'}</div>`; return; }
+  const soma = lista.reduce((s, d) => s + (Number(d.valor) || 0), 0);
+  const linhas = lista.map(d => {
+    const parc = (d.total_parcelas || 1) > 1 ? `<span class="ccx-parc">${d.parcela}/${d.total_parcelas}</span>` : '<span style="color:#d6d3d1">—</span>';
+    const sub = [d.origem_lanc ? '<span style="color:#c2410c">veio de Contas a Pagar</span>' : '', d.obs ? esc(d.obs) : ''].filter(Boolean).join(' · ');
+    return `<tr>
+      <td class="dt">${fmtDate(d.data)}</td>
+      <td class="ccx-desc"><b>${esc(d.descricao || '—')}</b>${sub ? `<small>${sub}</small>` : ''}</td>
+      <td class="hide-sm">${ccClassifHtml(d.cat_dre)}</td>
+      <td class="hide-sm">${parc}</td>
+      <td class="num" style="color:${Number(d.valor) < 0 ? '#16a34a' : '#dc2626'}">${fmtBRL(d.valor)}</td>
+      <td>${paga ? '' : `<div class="acts"><button class="ccx-ic" title="Editar" onclick="ccAbrirDespesa(null,null,'${d.grupo}')">✎</button><button class="ccx-ic del" title="Excluir" onclick="ccExcluirDespesa('${d.grupo}')">🗑</button></div>`}</td>
+    </tr>`;
+  }).join('');
+  box.innerHTML = `<div style="overflow-x:auto"><table class="ccx-tab">
+    <thead><tr><th>Data</th><th>Descrição</th><th class="hide-sm">Grupo / Categoria</th><th class="hide-sm">Parcela</th><th style="text-align:right">Valor</th><th></th></tr></thead>
+    <tbody>${linhas}</tbody>
+    <tfoot><tr><td colspan="2">${q ? 'Total filtrado' : 'Total'} · ${lista.length} despesa(s)</td><td class="hide-sm"></td><td class="hide-sm"></td><td class="num">${fmtBRL(soma)}</td><td></td></tr></tfoot>
+  </table></div>`;
+}
+
+function ccRenderResumoCategorias() {
+  const box = document.getElementById('cc-det-cats');
+  if (!box) return;
+  const lista = ccDespesasFatura(ccSel.cartao, ccSel.mes);
+  if (!lista.length) { box.innerHTML = '<div class="empty-state" style="padding:28px 0">Sem despesas.</div>'; return; }
+  const total = lista.reduce((s, d) => s + (Number(d.valor) || 0), 0) || 1;
+  const grupos = {};
   lista.forEach(d => {
-    if (d.data !== diaAtual) {
-      diaAtual = d.data;
-      const dt = new Date(d.data + 'T12:00:00');
-      const sem = dt.toLocaleDateString('pt-BR', { weekday: 'long' });
-      html += `<div class="cc-dia">${sem.charAt(0).toUpperCase() + sem.slice(1)}, ${dt.getDate()}</div>`;
-    }
-    const parc = (d.total_parcelas || 1) > 1 ? ` (${d.parcela}/${d.total_parcelas})` : '';
-    const cat = d.cat_dre ? getDreCatNome(d.cat_dre) : 'Sem categoria';
-    html += `<div class="cc-desp">
-      <div class="cc-desp-ico">💳</div>
-      <div class="cc-desp-txt"><b>${d.descricao || '—'}${parc}</b><div>${cat} | ${c.nome}${d.origem_lanc ? ' · <span style="color:#c2410c">conta a pagar</span>' : ''}${d.obs ? ' · ' + d.obs : ''}</div></div>
-      <div class="cc-desp-val" style="${Number(d.valor) < 0 ? 'color:#16a34a' : ''}">${fmtBRL(d.valor)}
-        ${paga ? '' : `<div class="actions"><button class="btn btn-secondary btn-sm" onclick="ccAbrirDespesa(null,null,'${d.grupo}')">Editar</button><button class="btn btn-danger btn-sm" onclick="ccExcluirDespesa('${d.grupo}')">Excluir</button></div>`}
-      </div>
-    </div>`;
+    const gid = d.cat_dre ? (getDreCatGrupo(d.cat_dre) || '__sg') : '__sc';
+    const ck = d.cat_dre || '__sc';
+    const g = grupos[gid] = grupos[gid] || { total: 0, cats: {} };
+    g.total += Number(d.valor) || 0;
+    g.cats[ck] = (g.cats[ck] || 0) + (Number(d.valor) || 0);
   });
-  box.innerHTML = html;
+  const nomeG = gid => gid === '__sc' ? 'Sem categoria' : gid === '__sg' ? 'Sem grupo' : getDreGrupoNome(gid);
+  box.innerHTML = '<div class="ccx-cat-lista">' + Object.keys(grupos).sort((a, b) => grupos[b].total - grupos[a].total).map(gid => {
+    const g = grupos[gid];
+    const cor = gid === '__sc' ? '#d97706' : '#ea580c';
+    const cats = Object.keys(g.cats).sort((a, b) => g.cats[b] - g.cats[a]).map(ck => {
+      const v = g.cats[ck];
+      const pct = Math.max(0, Math.min(100, v / total * 100));
+      return `<div class="ccx-cat-it"><div class="ln"><span>${esc(ck === '__sc' ? 'Não classificado' : getDreCatNome(ck))}</span><span>${fmtBRL(v)} · ${pct.toFixed(0)}%</span></div>
+        <div class="ccx-bar"><div style="width:${pct.toFixed(1)}%;background:${cor}"></div></div></div>`;
+    }).join('');
+    return `<div class="ccx-cat-g"><div class="ccx-cat-gh"><span>${esc(nomeG(gid))}</span><span>${fmtBRL(g.total)}</span></div>${cats}</div>`;
+  }).join('') + '</div>';
 }
 
 // ── Cadastro de cartão ──
@@ -16920,9 +17217,8 @@ function ccAbrirDespesa(cid, mes, grupo, orig) {
   selC.innerHTML = (db.cartoes || []).slice().sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))
     .map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
   const selCat = document.getElementById('cc-d-cat');
-  selCat.innerHTML = '<option value="">Nenhuma</option>' + (db.dfc_cats || []).slice()
-    .sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))
-    .map(c => `<option value="${c.id}">${c.nome}</option>`).join('');
+  ccMontarGruposDre();
+  ccMontarCategoriasDre('');
   const selP = document.getElementById('cc-d-parcelas');
   selP.innerHTML = Array.from({ length: 47 }, (_, i) => `<option value="${i + 2}">${i + 2}x</option>`).join('');
 
@@ -16961,7 +17257,60 @@ function ccAbrirDespesa(cid, mes, grupo, orig) {
   ccRenderChipsCartao();
   ccToggleParcelada();
   if (typeof enhanceSearchableSelect === 'function') { try { enhanceSearchableSelect(selCat); } catch (e) {} }
+  // Grupo acompanha a categoria já escolhida (edição / conta vinda de Contas a Pagar)
+  const catIni = selCat.value;
+  document.getElementById('cc-d-grp').value = catIni ? (getDreCatGrupo(catIni) || '') : '';
+  ccMontarCategoriasDre(catIni);
+  ccInfoClassificacao();
   openModal('modal-cc-despesa');
+}
+// ── Grupo / Categoria da despesa no cartão (mesmo cadastro do DRE) ──
+function ccMontarGruposDre() {
+  const sel = document.getElementById('cc-d-grp');
+  const usados = new Set((db.dfc_cats || []).map(c => c.grupo).filter(Boolean));
+  const grupos = (db.dre_grupos || []).filter(g => (g.tipo === 'saida' || g.tipo === 'entrada') && usados.has(g.id))
+    .sort((a, b) => (a.tipo === b.tipo ? 0 : (a.tipo === 'saida' ? -1 : 1)) || (a.ordem || 0) - (b.ordem || 0));
+  sel.innerHTML = '<option value="">Todos os grupos</option>' + grupos.map(g => `<option value="${g.id}">${g.nome}</option>`).join('');
+}
+function ccMontarCategoriasDre(manter) {
+  const sel = document.getElementById('cc-d-cat');
+  const grp = document.getElementById('cc-d-grp').value;
+  const cats = (db.dfc_cats || []).filter(c => !grp || c.grupo === grp)
+    .sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
+  sel.innerHTML = '<option value="">Nenhuma</option>' + cats.map(c =>
+    `<option value="${c.id}">${c.nome}${grp ? '' : ' (' + getDreGrupoNome(c.grupo) + ')'}</option>`).join('');
+  sel.value = (manter && cats.some(c => c.id === manter)) ? manter : '';
+}
+function ccTrocarGrupoDre() {
+  ccMontarCategoriasDre(document.getElementById('cc-d-cat').value);
+  ccInfoClassificacao();
+}
+function ccTrocarCategoriaDre() {
+  const cat = document.getElementById('cc-d-cat').value;
+  const gSel = document.getElementById('cc-d-grp');
+  if (cat) {
+    const g = getDreCatGrupo(cat) || '';
+    if (gSel.value !== g) { gSel.value = g; ccMontarCategoriasDre(cat); }
+  }
+  ccInfoClassificacao();
+}
+// Mostra onde a despesa vai aparecer no DRE e no Fluxo de Caixa
+function ccInfoClassificacao() {
+  const box = document.getElementById('cc-d-cls-info');
+  if (!box) return;
+  const cat = document.getElementById('cc-d-cat').value;
+  const c = ccCartao(document.getElementById('cc-d-cartao').value);
+  const data = document.getElementById('cc-d-data').value;
+  const fat = document.getElementById('cc-d-fatura').value;
+  const venc = c && fat ? fmtDate(ccDataVencimento(c, fat)) : '—';
+  if (!cat) {
+    box.innerHTML = '⚠️ <b>Sem categoria:</b> a despesa não entra no DRE. No Fluxo de Caixa ela aparece em Custos, no vencimento da fatura (' + venc + ').';
+    box.style.borderColor = '#fde68a'; box.style.background = '#fffbeb';
+    return;
+  }
+  box.style.borderColor = ''; box.style.background = '';
+  box.innerHTML = `📊 <b>DRE:</b> ${getDreGrupoNome(getDreCatGrupo(cat))} › ${getDreCatNome(cat)} — competência ${data ? fmtDate(data) : '—'}<br>` +
+                  `💰 <b>Fluxo de Caixa:</b> saída no vencimento da fatura (${venc}), quando ela é paga pelo banco.`;
 }
 // Monta a lista de faturas possíveis (a padrão pela data da compra + vizinhas)
 function ccAtualizarFaturas(recalcular, mesForcado) {
@@ -16978,6 +17327,7 @@ function ccAtualizarFaturas(recalcular, mesForcado) {
   sel.innerHTML = opts.map(m => `<option value="${m}">${ccMesLabel(m)} — vence ${fmtDate(ccDataVencimento(c, m))}${ccFaturaPaga(c.id, m) ? ' (paga)' : ''}</option>`).join('');
   sel.value = atual;
   ccPreviaParcelas();
+  ccInfoClassificacao();
 }
 function ccToggleParcelada() {
   const sim = document.getElementById('cc-d-parcelada').value === 'sim';
@@ -18774,6 +19124,10 @@ function renderFluxoDiario(repopular) {
     if (porDia[d]) porDia[d][campo] += (valor || 0);
   };
 
+  // Contas quitadas com cartão de crédito saem do caixa só quando a fatura é
+  // paga (a fatura já está em Contas a Pagar) — não conta a conta original.
+  const _ccOriFd = ccOrigensSet();
+  const _viaCCFd = p => _ccOriFd.has(`${p.lancId}|${p.parcIdx}`);
   if (base === 'realizado') {
     // Com uma conta bancária escolhida, o movimento é sempre consolidado
     // (todas as empresas), igual ao saldo da conta.
@@ -18783,6 +19137,7 @@ function renderFluxoDiario(repopular) {
     });
     (banco ? getParcelasBanco(true) : getParcelas(true)).forEach(p => {
       if (banco && p.banco !== banco) return;
+      if (_viaCCFd(p)) return;
       somar(p.dtpago, 'despesa', p.valParc);
     });
   } else {
@@ -18792,6 +19147,7 @@ function renderFluxoDiario(repopular) {
     });
     getParcelas(false).concat(getParcelas(true)).forEach(p => {
       if (banco && p.banco !== banco) return;
+      if (_viaCCFd(p)) return;
       somar(p.venc, 'despesa', p.valParc);
     });
   }
@@ -18995,6 +19351,8 @@ function editarDoDetalhe(tabela, id) {
 }
 
 async function excluirDoDetalhe(tabela, id) {
+  const _fcc = tabela === 'pagar' ? db.lancamentos.find(x => x.id === id) : null;
+  if (_fcc && _fcc.cartao_fatura) { alert('Este valor faz parte da fatura de um cartão de crédito. Edite ou exclua a despesa na tela Cartões de Crédito.'); return; }
   if (tabela === 'dfc') {
     const l = db.dfc_lans.find(x => x.id === id);
     if (!l) { alert('Lançamento não encontrado.'); return; }
@@ -19101,6 +19459,7 @@ function _fdLancamentosDoDia(dia, tipo) {
   const data = `${ano}-${String(mes).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
   const rec = [], des = [];
   const bate = (d) => d === data;
+  const _ccOriDia = ccOrigensSet(); // pagas com cartão: saem pela fatura
 
   if (tipo === 'receita' || tipo === 'ambos') {
     (base === 'realizado'
@@ -19112,7 +19471,7 @@ function _fdLancamentosDoDia(dia, tipo) {
     (base === 'realizado'
       ? (banco ? getParcelasBanco(true) : getParcelas(true)).filter(p => (!banco || p.banco === banco) && bate(p.dtpago))
       : getParcelas(false).concat(getParcelas(true)).filter(p => bate(p.venc))
-    ).forEach(p => des.push(p));
+    ).forEach(p => { if (!_ccOriDia.has(`${p.lancId}|${p.parcIdx}`)) des.push(p); });
   }
   return { rec, des, data };
 }
