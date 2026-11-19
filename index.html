@@ -1375,6 +1375,23 @@ body.menu-oculto .sidebar { transform:translateX(-248px); }
 .le-nota { font-size:11.5px; color:#78716c; margin:8px 0 0; }
 .le-tool { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:10px 0 6px; }
 .le-tt b { font-size:14px; }
+.le-tt-acts { display:inline-flex; gap:6px; margin-left:10px; vertical-align:middle; }
+.le-tt-acts .btn { padding:5px 10px; font-size:12px; }
+#modal-le-imp .modal { width:min(1250px,97vw); max-height:94vh; overflow:auto; padding:20px 24px; }
+.lei-cfg { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin:10px 0; }
+.lei-cfg label { display:flex; flex-direction:column; gap:3px; font-size:11px; font-weight:700; color:#57534e; text-transform:uppercase; letter-spacing:.3px; margin:0; }
+.lei-cfg select, .lei-cfg input { text-transform:none; font-weight:500; letter-spacing:0; }
+#lei-status { font-size:12.5px; color:#44403c; background:#faf9f7; border:1px solid #f0efed; border-radius:8px; padding:8px 10px; margin-bottom:10px; }
+.lei-mapa-h { font-size:11px; font-weight:700; color:#57534e; text-transform:uppercase; letter-spacing:.3px; margin:4px 0 6px; }
+.lei-mapa-g { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:6px; margin-bottom:10px; }
+.lei-mapa-g label { display:grid; grid-template-columns:1fr 170px; align-items:center; gap:6px; font-size:12px; margin:0; padding:4px 6px; border:1px solid #e7e5e4; border-radius:6px; background:#fff; }
+.lei-mapa-g label.falta { border-color:#fcd34d; background:#fffbeb; }
+.lei-mapa-g label span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.lei-mapa-g small { color:#a8a29e; font-weight:600; }
+.lei-mapa-g select { padding:3px 6px; font-size:12px; height:28px; }
+.lei-tp { font-size:11px; font-weight:700; padding:2px 6px; border-radius:4px; white-space:nowrap; }
+.lei-tp.rec { background:#dcfce7; color:#166534; } .lei-tp.desp { background:#fee2e2; color:#991b1b; }
+#lei-prev .imp-wrap { max-height:calc(94vh - 380px); }
 .le-filtros { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
 .le-filtros input, .le-filtros select { padding:5px 8px !important; font-size:12px !important; height:30px !important; }
 .le-filtros input { width:240px !important; }
@@ -4680,6 +4697,47 @@ body.menu-oculto .sidebar { transform:translateX(-248px); }
         <button class="btn btn-secondary" id="import-btn-cancelar" onclick="closeModal('modal-import')">Cancelar</button>
         <button class="btn btn-primary" id="import-btn-confirmar" onclick="confirmarImport()">✅ Confirmar Importação</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL LANÇAMENTOS POR EMPRESA: RELATÓRIO DE RECEITAS (EXCEL) / EXTRATO DO BANCO (PDF) ══ -->
+<div class="modal-overlay" id="modal-le-imp">
+  <div class="modal">
+    <div class="modal-title" id="lei-titulo">Importar</div>
+    <p style="font-size:13px;color:#57534e;margin:0" id="lei-instr"></p>
+    <div class="lei-cfg">
+      <label id="lei-emp-wrap">Empresa *<select id="lei-emp"></select></label>
+      <label><span id="lei-banco-lbl">Banco *</span><select id="lei-banco" onchange="leiRecalcDuplicados()"></select></label>
+      <label><span id="lei-file-lbl">Arquivo</span><input type="file" id="lei-file" onchange="leiLerArquivo(event)"></label>
+    </div>
+    <div id="lei-status" style="display:none"></div>
+    <div id="lei-prev" style="display:none">
+      <div class="imp-toolbar"><div id="lei-resumo" class="imp-chips"></div></div>
+      <div id="lei-mapa"></div>
+      <div class="imp-bar">
+        <label>Categoria em massa (entradas marcadas):</label>
+        <select id="lei-massa-r"></select>
+        <button class="btn btn-secondary btn-sm" onclick="leiCatMassa('r')">Aplicar</button>
+        <span id="lei-massa-p-wrap" style="display:contents">
+          <span class="sep"></span>
+          <label>Saídas marcadas:</label>
+          <select id="lei-massa-p"></select>
+          <button class="btn btn-secondary btn-sm" onclick="leiCatMassa('p')">Aplicar</button>
+        </span>
+        <div class="imp-total" id="lei-total"></div>
+      </div>
+      <div class="imp-wrap">
+        <table class="imp-table" style="min-width:860px;width:100%"><thead><tr id="lei-thead"></tr></thead><tbody id="lei-tbody"></tbody></table>
+      </div>
+    </div>
+    <div id="lei-prog" style="display:none;margin-top:12px;">
+      <div id="lei-prog-lbl" style="font-size:12px;color:#57534e;margin-bottom:4px;"></div>
+      <div style="width:100%;height:10px;background:#f5f4f2;border-radius:6px;overflow:hidden;"><div id="lei-prog-bar" style="width:0%;height:100%;background:#ea580c;transition:width .15s ease;"></div></div>
+    </div>
+    <div class="btn-row" style="margin-top:14px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="closeModal('modal-le-imp')">Fechar</button>
+      <button class="btn btn-primary" id="lei-btn-ok" onclick="leiConfirmar()">✅ Lançar marcadas</button>
     </div>
   </div>
 </div>
@@ -20881,7 +20939,8 @@ function renderLancEmpresa() {
   const bancosUsados = [...new Set(todas.map(x => x.banco || '__sem'))];
   const tool = document.getElementById('le-tool');
   if (!tool.contains(document.activeElement)) tool.innerHTML = `
-    <div class="le-tt"><b>Lançamentos de ${_leMes ? meses[Number(_leMes)] : 'todo o ano'} ${_leAno}</b> <span class="le-mut">· ${vis.length} lançamento(s)${vis.length !== todas.length ? ` (de ${todas.length})` : ''}</span></div>
+    <div class="le-tt"><b>Lançamentos de ${_leMes ? meses[Number(_leMes)] : 'todo o ano'} ${_leAno}</b> <span class="le-mut">· ${vis.length} lançamento(s)${vis.length !== todas.length ? ` (de ${todas.length})` : ''}</span>
+      <span class="le-tt-acts">${_lePode('entrada') ? '<button type="button" class="btn btn-secondary" onclick="leiAbrir(\'excel\')" title="Incluir relatório Excel de receitas (Data recebimento, Valor recebido e Plano de conta)">📊 Relatório de receitas (Excel)</button>' : ''}${_lePode('entrada') && _lePode('saida') ? '<button type="button" class="btn btn-secondary" onclick="leiAbrir(\'extrato\')" title="Lançar as movimentações do extrato em PDF de um banco">🏦 Lançar extrato do banco (PDF)</button>' : ''}</span></div>
     <div class="le-filtros">
       <input placeholder="Buscar fornecedor, cliente, item, categoria…" value="${_qeEsc(f.q)}" oninput="_leFiltro.q=this.value;clearTimeout(window._leT);window._leT=setTimeout(renderLancEmpresa,250)">
       <select onchange="_leFiltro.tipo=this.value;renderLancEmpresa()"><option value="">Entradas e saídas</option><option value="r"${f.tipo === 'r' ? ' selected' : ''}>Só entradas (receber)</option><option value="p"${f.tipo === 'p' ? ' selected' : ''}>Só saídas (pagar)</option></select>
@@ -21025,6 +21084,336 @@ function ecTopo(pageId, prefixo, cons) {
 }
 // Lançamentos por Empresa passa a usar o mesmo topo colorido
 function _leTopo() { ecTopo('lanc-empresa', 'LANÇAMENTOS', 'LANÇAMENTOS CONSOLIDADO'); }
+
+// ══════════════════════════════════════════════════════════════════════
+// LANÇAMENTOS POR EMPRESA — IMPORTAÇÕES
+// 1) Relatório Excel de receitas: F = Data do recebimento, J = Valor recebido,
+//    K = Plano de conta. Cada linha vira uma entrada JÁ RECEBIDA no banco/caixa
+//    escolhido (B = Doc/Parcela e C = Cliente vão só na descrição/NF).
+// 2) Extrato do banco em PDF: todas as movimentações (créditos e débitos) viram
+//    lançamentos JÁ PAGOS/RECEBIDOS no banco escolhido, na data do extrato.
+// Usa os leitores de PDF/Excel e os parsers de extrato da Conciliação Bancária.
+// ══════════════════════════════════════════════════════════════════════
+const _lei = { modo: 'excel', linhas: [], nomeArq: '', mapaPlano: {} };
+
+function leiAbrir(modo) {
+  if (modo === 'excel' && !_lePode('entrada')) { alert('Sem permissão para lançar receitas.'); return; }
+  if (modo === 'extrato' && !(_lePode('entrada') && _lePode('saida'))) { alert('Sem permissão para lançar entradas e saídas.'); return; }
+  _lei.modo = modo; _lei.linhas = []; _lei.nomeArq = ''; _lei.mapaPlano = {};
+  const ex = modo === 'excel';
+  document.getElementById('lei-titulo').textContent = ex ? '📊 Incluir relatório de receitas (Excel)' : '🏦 Lançar extrato do banco (PDF)';
+  document.getElementById('lei-instr').innerHTML = ex
+    ? 'Colunas usadas: <b>F</b> = Data do recebimento · <b>J</b> = Valor recebido · <b>K</b> = Plano de conta. Cada linha entra como <b>receita já recebida</b> no banco/caixa escolhido. Linhas com valor recebido zerado são ignoradas.'
+    : 'Escolha o <b>banco</b> do extrato e selecione o PDF (Itaú, Viacredi/Ailos, Sicoob…). Créditos entram como <b>entradas recebidas</b> e débitos como <b>saídas pagas</b> nesse banco, na data do extrato. Linhas de saldo são ignoradas.';
+  const f = document.getElementById('lei-file');
+  f.value = '';
+  f.setAttribute('accept', ex ? '.xls,.xlsx,.csv' : '.pdf,.txt,application/pdf,text/plain');
+  document.getElementById('lei-file-lbl').textContent = ex ? 'Planilha (Excel .xls/.xlsx)' : 'Extrato (PDF)';
+  document.getElementById('lei-banco-lbl').textContent = ex ? 'Banco / Caixa do recebimento *' : 'Banco do extrato *';
+  const emps = empresasAtivas();
+  const selE = document.getElementById('lei-emp');
+  selE.innerHTML = '<option value="">— Selecione —</option>' + emps.map(e => `<option value="${e.id}">${_qeEsc(e.apelido || e.nome)}</option>`).join('');
+  selE.value = emps.some(e => e.id === empresaAtual()) ? empresaAtual() : '';
+  document.getElementById('lei-emp-wrap').style.display = emps.length ? '' : 'none';
+  const selB = document.getElementById('lei-banco');
+  selB.innerHTML = '<option value="">— Selecione —</option>' + db.bancos.map(b => `<option value="${b.id}">${_qeEsc(b.nome)}</option>`).join('');
+  selB.value = '';
+  document.getElementById('lei-status').style.display = 'none';
+  document.getElementById('lei-prev').style.display = 'none';
+  document.getElementById('lei-mapa').innerHTML = '';
+  leiProgresso(0, 0);
+  openModal('modal-le-imp');
+}
+
+function leiStatus(txt) { const el = document.getElementById('lei-status'); el.style.display = txt ? '' : 'none'; el.innerHTML = txt || ''; }
+
+// Data de célula Excel (texto dd/mm/aaaa, Date ou nº serial) → aaaa-mm-dd
+function _leiDataCel(v) {
+  if (v instanceof Date && !isNaN(v)) return `${v.getFullYear()}-${String(v.getMonth() + 1).padStart(2, '0')}-${String(v.getDate()).padStart(2, '0')}`;
+  if (typeof v === 'number' && v > 20000 && v < 80000) { const d = new Date(Math.round((v - 25569) * 86400000)); return d.toISOString().slice(0, 10); }
+  const s = String(v == null ? '' : v).trim();
+  const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+  if (m) { const a = m[3].length === 2 ? '20' + m[3] : m[3]; return `${a}-${m[2].padStart(2, '0')}-${m[1].padStart(2, '0')}`; }
+  return parseDataBR(s);
+}
+const _leiValorCel = v => typeof v === 'number' ? v : parseValorBR(v);
+
+// Banco sugerido: nº da conta que aparece no cabeçalho do extrato; senão o nome do banco no texto
+function _leiSugerirBanco(texto) {
+  const cab = (texto || '').split('\n').slice(0, 20).join(' ');
+  const toks = (cab.match(/[\d.\-\/]{4,}/g) || []).map(t => t.replace(/\D/g, '')).filter(t => t.length >= 4);
+  const porConta = db.bancos.find(b => { const c = String(b.conta || '').replace(/\D/g, ''); return c.length >= 5 && toks.some(t => t.endsWith(c) || c.endsWith(t) && t.length >= 5); });
+  if (porConta) return porConta.id;
+  const tx = normText(texto);
+  const chaves = ['itau', 'viacredi', 'ailos', 'sicoob', 'sicredi', 'bradesco', 'santander', 'banco do brasil', 'caixa economica', 'inter', 'nubank', 'unicred', 'cresol'];
+  for (const k of chaves) {
+    if (tx.indexOf(k) === -1) continue;
+    const b = db.bancos.find(x => normText(x.nome + ' ' + (x.banco || '')).indexOf(k) > -1);
+    if (b) return b.id;
+  }
+  return '';
+}
+function _leiBancoPorNome(nome) {
+  const n = normText(nome).replace(/[^a-z0-9]+/g, ' ').trim();
+  if (!n) return '';
+  const nb = b => normText(b.nome).replace(/[^a-z0-9]+/g, ' ').trim();
+  const b = db.bancos.find(x => nb(x) === n) || db.bancos.find(x => nb(x) && (n.indexOf(nb(x)) > -1 || nb(x).indexOf(n) > -1));
+  return b ? b.id : '';
+}
+function _leiPessoa(tipo, nome) {
+  const n = normText(nome);
+  if (!n) return '';
+  const p = (tipo === 'r' ? db.clientes : db.fornecedores).find(x => normText(x.nome) === n);
+  return p ? p.id : '';
+}
+// Chave para lembrar a categoria usada da última vez para o mesmo histórico do extrato
+const _leiChave = s => normText(String(s || '').replace(/\(importado[^)]*\)/i, '')).replace(/[^a-z]+/g, ' ').trim();
+function _leiMemoriaCategorias() {
+  const mem = { r: {}, p: {} };
+  const regs = (lista, t, campoData) => (lista || []).forEach(l => {
+    if (!l.cat_dre || !/\(importado do extrato/i.test(l.obs || '')) return;
+    const k = _leiChave(l.obs); if (!k) return;
+    const d = l[campoData] || '';
+    if (!mem[t][k] || d >= mem[t][k].d) mem[t][k] = { c: l.cat_dre, d };
+  });
+  regs(db.lancamentos.concat(db._lancOutras || []), 'p', 'dtcompra');
+  regs(db.lancreceber.concat(db._lrOutras || []), 'r', 'dtvenda');
+  return mem;
+}
+
+async function leiLerArquivo(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  _lei.nomeArq = file.name;
+  try {
+    if (_lei.modo === 'excel') {
+      leiStatus('⏳ Lendo planilha…');
+      if (!await ensureXlsx()) throw new Error('Leitor de Excel indisponível');
+      const wb = XLSX.read(await file.arrayBuffer(), { type: 'array', cellDates: true });
+      const rows = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: true, defval: '' });
+      _leiMontarExcel(rows);
+    } else {
+      const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+      leiStatus(isPdf ? '⏳ Lendo o PDF do extrato…' : '⏳ Lendo o arquivo…');
+      const texto = isPdf ? await extrairTextoPdf(file) : await file.text();
+      _leiMontarExtrato(texto);
+    }
+  } catch (err) {
+    console.error(err);
+    leiStatus('❌ Não foi possível ler este arquivo. ' + (_lei.modo === 'excel' ? 'Confira se é a planilha do relatório de recebimentos.' : 'Confira se é o PDF do extrato bancário.'));
+  }
+}
+
+function _leiMontarExcel(rows) {
+  const linhas = [], contas = {};
+  let ignoradas = 0;
+  rows.forEach(c => {
+    const data = _leiDataCel(c[5]);           // F — Data do recebimento
+    const valor = _leiValorCel(c[9]);         // J — Valor recebido
+    const plano = String(c[10] || '').replace(/\s+/g, ' ').trim(); // K — Plano de conta
+    if (!data) return;                        // cabeçalho, linha de total, linhas vazias
+    if (!(valor > 0)) { ignoradas++; return; }
+    const doc = String(c[1] || '').trim(), cli = String(c[2] || '').replace(/\s+/g, ' ').trim();
+    if (c[12]) contas[c[12]] = (contas[c[12]] || 0) + 1;
+    linhas.push({ tipo: 'r', data, valor: Math.round(valor * 100) / 100, plano, nf: doc,
+      desc: [cli, doc ? 'Doc ' + doc : ''].filter(Boolean).join(' · '),
+      pessoaId: _leiPessoa('r', cli), catId: acharCategoriaPorPlano('receber', plano), incluir: true });
+  });
+  if (!linhas.length) { leiStatus('❌ Nenhuma linha com data de recebimento (coluna F) e valor recebido (coluna J) encontrada.'); return; }
+  // Banco/caixa sugerido pela coluna "Conta" (M), se existir um com o mesmo nome
+  const contaMais = Object.keys(contas).sort((a, b) => contas[b] - contas[a])[0];
+  const selB = document.getElementById('lei-banco');
+  if (!selB.value && contaMais) selB.value = _leiBancoPorNome(contaMais);
+  _lei.linhas = linhas;
+  _lei.mapaPlano = {};
+  [...new Set(linhas.map(l => l.plano))].forEach(p => { _lei.mapaPlano[p] = (linhas.find(l => l.plano === p) || {}).catId || ''; });
+  leiStatus(`✅ ${linhas.length} recebimento(s) lido(s)${ignoradas ? ` · ${ignoradas} linha(s) com valor recebido zerado ignorada(s)` : ''}${contaMais ? ` · Conta no relatório: <b>${_qeEsc(contaMais)}</b>` : ''}.`);
+  leiRecalcDuplicados();
+}
+
+function _leiMontarExtrato(texto) {
+  const pag = parseExtratoBancario(texto, 'pagar'), rec = parseExtratoBancario(texto, 'receber');
+  if (!pag.length && !rec.length) { leiStatus('❌ Não encontrei movimentações neste extrato (formatos reconhecidos: Itaú, Viacredi/Ailos, Sicoob).'); return; }
+  const mem = _leiMemoriaCategorias();
+  const mk = (d, tipo) => {
+    const pessoaId = _leiPessoa(tipo, d.nomeRaw);
+    const desc = (d.obs || d.nomeRaw || '').replace(/\s+/g, ' ').trim();
+    const lembrada = mem[tipo][_leiChave(desc)];
+    const catId = lembrada ? lembrada.c : sugerirCategoria(tipo === 'r' ? 'receber' : 'pagar', tipo === 'p' ? pessoaId : null, tipo === 'r' ? pessoaId : null, desc);
+    return { tipo, data: d.dataRef, valor: d.valor, desc, nf: d.nf || '', pessoaId, catId, ti: !!d.transfInterna, incluir: !d.transfInterna };
+  };
+  _lei.linhas = rec.map(d => mk(d, 'r')).concat(pag.map(d => mk(d, 'p')))
+    .sort((a, b) => a.data.localeCompare(b.data) || (a.tipo === b.tipo ? 0 : a.tipo === 'r' ? -1 : 1));
+  const selB = document.getElementById('lei-banco');
+  const sug = _leiSugerirBanco(texto);
+  if (sug) selB.value = sug;
+  const emp = identificarEmpresaImport(texto);
+  if (emp) document.getElementById('lei-emp').value = emp;
+  const datas = _lei.linhas.map(l => l.data).sort();
+  leiStatus(`✅ ${rec.length} crédito(s) e ${pag.length} débito(s) de ${fmtDate(datas[0])} a ${fmtDate(datas[datas.length - 1])}.` +
+    (sug ? ` Banco identificado: <b>${_qeEsc(getBancoNome(sug))}</b> (confira).` : ' <b>Escolha o banco do extrato.</b>'));
+  leiRecalcDuplicados();
+}
+
+// Já lançado = mesmo banco, mesma data de pagamento/recebimento e mesmo valor (Excel: mesma NF/Doc e valor).
+// Conta repetições: duas tarifas iguais no mesmo dia só batem com dois lançamentos existentes.
+function leiRecalcDuplicados() {
+  const banco = document.getElementById('lei-banco').value;
+  const usados = new Set();
+  const pag = db.lancamentos.concat(db._lancOutras || []), rec = db.lancreceber.concat(db._lrOutras || []);
+  _lei.linhas.forEach((l, i) => {
+    if (l.importado) return;
+    const igual = x => !usados.has(x.id) && Math.abs((Number(x.valor) || 0) - l.valor) < 0.005;
+    let achou = null;
+    if (_lei.modo === 'excel') achou = l.nf ? rec.find(x => igual(x) && String(x.nf || '') === l.nf) : null;
+    else if (banco) achou = l.tipo === 'r'
+      ? rec.find(x => igual(x) && x.banco === banco && x.recebido === 'sim' && x.dtrecebido === l.data && (x.parcelas || 1) === 1)
+      : pag.find(x => igual(x) && x.banco === banco && x.pago === 'sim' && x.dtpago === l.data && (x.parcelas || 1) === 1);
+    const eraDup = l.dup;
+    l.dup = !!achou;
+    if (achou) usados.add(achou.id);
+    if (l.dup && !eraDup) l.incluir = false;
+    if (!l.dup && eraDup && !l.ti) l.incluir = true;
+  });
+  leiRender();
+}
+
+function leiAplicarPlano(plano, catId) {
+  _lei.mapaPlano[plano] = catId;
+  _lei.linhas.forEach(l => { if (!l.importado && l.plano === plano) l.catId = catId; });
+  leiRender();
+}
+function leiCatMassa(tipo) {
+  const catId = document.getElementById('lei-massa-' + tipo).value;
+  if (!catId) { alert('Escolha a categoria.'); return; }
+  let n = 0;
+  _lei.linhas.forEach(l => { if (!l.importado && l.incluir && l.tipo === tipo) { l.catId = catId; n++; } });
+  if (!n) alert('Nenhuma linha marcada de ' + (tipo === 'r' ? 'entrada' : 'saída') + '.');
+  leiRender();
+}
+function leiMarcarTodas(cb) { _lei.linhas.forEach(l => { if (!l.importado) l.incluir = cb.checked; }); leiRender(); }
+function leiMarcar(i, v) { _lei.linhas[i].incluir = v; leiRender(); }
+
+function leiRender() {
+  const L = _lei.linhas, ex = _lei.modo === 'excel';
+  const prev = document.getElementById('lei-prev');
+  if (!L.length) { prev.style.display = 'none'; return; }
+  prev.style.display = '';
+  const optsR = _leOptsCategorias('', 'entrada'), optsP = _leOptsCategorias('', 'saida');
+  const sel = (html, v) => {
+    if (!v) return html;
+    if (html.indexOf(`value="${v}"`) === -1) html += `<option value="${v}">${_qeEsc(getDreCatNome(v))}</option>`;
+    return html.replace(`value="${v}"`, `value="${v}" selected`);
+  };
+  // Resumo
+  const pend = L.filter(l => !l.importado), marc = pend.filter(l => l.incluir);
+  const soma = (arr, t) => arr.filter(l => l.tipo === t).reduce((s, l) => s + l.valor, 0);
+  const chip = (cls, n, txt, title) => `<span class="imp-chip ${cls}"${title ? ` title="${_qeEsc(title)}"` : ''}><b>${n}</b> ${txt}</span>`;
+  const dups = pend.filter(l => l.dup).length, tis = pend.filter(l => l.ti).length, semCat = marc.filter(l => !l.catId).length, feitos = L.length - pend.length;
+  document.getElementById('lei-resumo').innerHTML =
+    chip('green', pend.filter(l => l.tipo === 'r').length, 'entrada(s)') +
+    (ex ? '' : chip('red', pend.filter(l => l.tipo === 'p').length, 'saída(s)')) +
+    chip(semCat ? 'amber' : '', semCat, 'marcada(s) sem categoria') +
+    (dups ? chip('red', dups, 'já lançada(s)', 'Já existe lançamento igual neste banco — vêm desmarcadas') : '') +
+    (tis ? chip('blue', tis, 'transf. entre contas próprias', 'Vêm desmarcadas — use a tela Transferência entre Contas') : '') +
+    (feitos ? chip('green', feitos, 'lançada(s)') : '');
+  document.getElementById('lei-total').innerHTML = `Marcadas: <b>${marc.length}</b>` +
+    ` · Entradas <b style="color:#15803d">${fmtBRL(soma(marc, 'r'))}</b>` + (ex ? '' : ` · Saídas <b style="color:#b91c1c">${fmtBRL(soma(marc, 'p'))}</b>`);
+  document.getElementById('lei-massa-p-wrap').style.display = ex ? 'none' : 'contents';
+  const mR = document.getElementById('lei-massa-r'), mP = document.getElementById('lei-massa-p');
+  const vR = mR.value, vP = mP.value;
+  mR.innerHTML = optsR; mP.innerHTML = optsP; mR.value = vR; mP.value = vP;
+
+  // Excel: plano de conta do relatório → categoria do sistema
+  const mapa = document.getElementById('lei-mapa');
+  if (ex) {
+    const planos = Object.keys(_lei.mapaPlano).sort((a, b) => a.localeCompare(b));
+    const qtd = p => pend.filter(l => l.plano === p).length;
+    mapa.innerHTML = `<div class="lei-mapa-h">Plano de conta do relatório (coluna K) → Categoria do sistema</div><div class="lei-mapa-g">` +
+      planos.map(p => `<label class="${_lei.mapaPlano[p] ? '' : 'falta'}"><span title="${_qeEsc(p)}">${_qeEsc(p || '(sem plano)')} <small>${qtd(p)}</small></span>` +
+        `<select onchange="leiAplicarPlano(${_qeEsc(JSON.stringify(p))},this.value)">${sel(optsR, _lei.mapaPlano[p])}</select></label>`).join('') + '</div>';
+  } else mapa.innerHTML = '';
+
+  // Tabela
+  const todas = pend.length > 0 && pend.every(l => l.incluir);
+  document.getElementById('lei-thead').innerHTML = `<th class="c" style="width:32px"><input type="checkbox" ${todas ? 'checked' : ''} onchange="leiMarcarTodas(this)" title="Marcar/desmarcar todas"></th>` +
+    `<th style="width:92px">${ex ? 'Recebido em' : 'Data'}</th>${ex ? '' : '<th style="width:74px">Tipo</th>'}<th>Descrição</th>` +
+    (ex ? '<th style="width:190px">Plano de conta</th>' : '') + '<th style="width:230px">Categoria</th><th style="width:110px;text-align:right">Valor</th>';
+  document.getElementById('lei-tbody').innerHTML = L.map((l, i) => {
+    if (l.importado) return `<tr class="done"><td class="c">✓</td><td colspan="5">Lançado — ${fmtDate(l.data)} · ${_qeEsc(l.desc)} · ${fmtBRL(l.valor)}</td></tr>`;
+    const tags = (l.dup ? '<span class="imp-tag red">Já lançado</span>' : '') + (l.ti ? '<span class="imp-tag blue" title="Transferência para/da própria empresa">Transf. própria</span>' : '') +
+      (l.pessoaId ? `<span class="imp-tag new" title="${l.tipo === 'r' ? 'Cliente' : 'Fornecedor'} cadastrado">${_qeEsc(l.tipo === 'r' ? getClienteNome(l.pessoaId) : getFornNome(l.pessoaId))}</span>` : '');
+    const st = l.dup ? ' st-dup' : l.ti ? ' st-interna' : '';
+    return `<tr class="${l.incluir ? '' : 'off'}${st}">
+      <td class="c"><input type="checkbox" ${l.incluir ? 'checked' : ''} onchange="leiMarcar(${i},this.checked)"></td>
+      <td class="mono">${fmtDate(l.data)}</td>
+      ${ex ? '' : `<td><span class="lei-tp ${l.tipo === 'r' ? 'rec' : 'desp'}">${l.tipo === 'r' ? '↓ Entrada' : '↑ Saída'}</span></td>`}
+      <td><input value="${_qeEsc(l.desc)}" style="width:100%" onchange="_lei.linhas[${i}].desc=this.value">${tags ? `<div class="imp-tags">${tags}</div>` : ''}</td>
+      ${ex ? `<td class="obs" title="${_qeEsc(l.plano)}">${_qeEsc(l.plano) || '—'}</td>` : ''}
+      <td><select style="width:100%" onchange="_lei.linhas[${i}].catId=this.value;leiRender()">${sel(l.tipo === 'r' ? optsR : optsP, l.catId)}</select></td>
+      <td class="mono" style="text-align:right;font-weight:600;color:${l.tipo === 'r' ? '#15803d' : '#b91c1c'}">${l.tipo === 'r' ? '+' : '−'} ${_leNum(l.valor)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function leiProgresso(atual, total, label) {
+  const wrap = document.getElementById('lei-prog');
+  if (!total) { wrap.style.display = 'none'; return; }
+  const p = Math.round(atual / total * 100);
+  wrap.style.display = '';
+  document.getElementById('lei-prog-bar').style.width = p + '%';
+  document.getElementById('lei-prog-lbl').textContent = (label || '') + ' ' + p + '%';
+}
+
+let _leiGravando = false;
+async function leiConfirmar() {
+  if (_leiGravando) return;
+  const banco = document.getElementById('lei-banco').value;
+  const emp = document.getElementById('lei-emp').value || null;
+  const marc = _lei.linhas.filter(l => l.incluir && !l.importado);
+  if (!marc.length) { alert('Nenhuma linha marcada.'); return; }
+  if (!banco) { alert('Escolha o banco / caixa: todo lançamento pago ou recebido precisa de um banco.'); document.getElementById('lei-banco').focus(); return; }
+  if (empresasAtivas().length && !emp) { alert('Escolha a empresa.'); document.getElementById('lei-emp').focus(); return; }
+  const semCat = marc.filter(l => !l.catId).length;
+  if (semCat && !confirm(`${semCat} linha(s) marcada(s) estão sem categoria (plano de contas) e ficarão como "Sem categoria".\n\nDeseja lançar assim mesmo?`)) return;
+  const nomeBanco = getBancoNome(banco);
+  const origem = _lei.modo === 'excel' ? '(importado do relatório de receitas)' : `(importado do extrato ${nomeBanco})`;
+  _leiGravando = true;
+  document.getElementById('lei-btn-ok').disabled = true;
+  let ok = 0, erros = 0;
+  try {
+    for (let i = 0; i < marc.length; i++) {
+      const l = marc[i];
+      leiProgresso(i, marc.length, `Lançando ${i + 1} de ${marc.length}…`);
+      const obs = `${l.desc} ${origem}`.trim();
+      let rec, tabela, lista, outras;
+      if (l.tipo === 'r') {
+        rec = { id: uid(), empresa_id: emp, dtvenda: l.data, dtprev: l.data, nf: l.nf || '', cliente: l.pessoaId || '', prod: '',
+          valor: l.valor, parcelas: 1, financeiro: 'sim', recebido: 'sim', dtrecebido: l.data, tipo_pag: '', banco,
+          cat_dre: l.catId || '', juros: null, obs, parcela_datas: null };
+        tabela = 'lancreceber'; lista = 'lancreceber'; outras = '_lrOutras';
+      } else {
+        rec = { id: uid(), empresa_id: emp, dtcompra: l.data, dtprev: l.data, nf: l.nf || '', forn: l.pessoaId || '', prod: '',
+          valor: l.valor, parcelas: 1, financeiro: 'sim', pago: 'sim', dtpago: l.data, tipo_pag: '', banco,
+          cat_dre: l.catId || '', obs, parcela_datas: null };
+        tabela = 'lancamentos'; lista = 'lancamentos'; outras = '_lancOutras';
+      }
+      const r = await sbFetch(tabela, 'POST', rec);
+      if (!r) { erros++; continue; }
+      if (pertenceEmpresaAtiva(rec.empresa_id)) db[lista].push(rec); else _sincOutras(outras, rec);
+      l.importado = true; ok++;
+    }
+  } finally {
+    _leiGravando = false;
+    document.getElementById('lei-btn-ok').disabled = false;
+    leiProgresso(0, 0);
+  }
+  try { atualizarTelasAposImport('pagar'); atualizarTelasAposImport('receber'); renderFluxoBancoDiario(); } catch (e) {}
+  renderLancEmpresa();
+  leiRender();
+  alert(`✅ ${ok} lançamento(s) gravado(s) em ${nomeBanco}${erros ? `\n❌ ${erros} com erro (continuam marcados para tentar de novo)` + sbErroMsg() : ''}.`);
+  if (_lei.linhas.every(l => l.importado || !l.incluir) && !erros) closeModal('modal-le-imp');
+}
 
 // ══════════════════════════════════════════════════════════════════════
 // FLUXO DE CAIXA POR EMPRESA (modelo DK) — realizado, dia a dia
