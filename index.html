@@ -1372,6 +1372,21 @@ body.menu-oculto .sidebar { transform:translateX(-248px); }
 .le-grid input, .le-grid select { padding:6px 8px !important; font-size:12.5px !important; height:32px !important; text-transform:none; font-weight:500; letter-spacing:0; }
 .le-grid .le-w2 { grid-column:span 2; }
 .le-acts { display:flex; gap:6px; align-items:center; }
+/* Lançamento avulso: todos os campos compactos em uma única linha */
+.le-form:has(.le-linha) { padding:8px 12px; margin:8px 0; }
+.le-form:has(.le-linha) .le-fh { margin-bottom:6px; gap:8px; }
+.le-grid.le-linha { display:flex; flex-wrap:nowrap; gap:6px; align-items:flex-end; }
+.le-linha > label { flex:1 1 0; min-width:0; overflow:hidden; gap:2px; font-size:9.5px; letter-spacing:.2px; white-space:nowrap; }
+.le-linha > label .opc { display:none; }
+.le-linha > label.le-w2 { flex:1.7 1 0; }
+.le-linha > label:has(#le-dt), .le-linha > label:has(#le-venc), .le-linha > label:has(#le-dtpag) { flex:0 0 118px; }
+.le-linha > label:has(#le-valor) { flex:0 0 92px; }
+.le-linha > label:has(#le-nf) { flex:0 0 64px; }
+.le-linha input, .le-linha select { padding:3px 6px !important; font-size:12px !important; height:28px !important; min-width:0; width:100%; }
+.le-linha input[type=date] { padding:3px 4px !important; font-size:11.5px !important; }
+.le-linha .le-acts { flex:0 0 auto; gap:4px; }
+.le-linha .le-acts .btn { height:28px; padding:0 12px; font-size:12px; }
+.le-form:has(.le-linha) .le-nota { margin-top:4px; font-size:11px; }
 .le-nota { font-size:11.5px; color:#78716c; margin:8px 0 0; }
 .le-tool { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin:10px 0 6px; }
 .le-tt b { font-size:14px; }
@@ -20680,13 +20695,13 @@ function _leMontarForm(v) {
   };
   let corpo;
   if (modo === 'avulso') corpo = `
-    <div class="le-grid" onkeydown="leTeclaForm(event)">
+    <div class="le-grid le-linha" onkeydown="leTeclaForm(event)">
       ${F.emp}${F.banco}
-      <label>Data do lançamento<input type="date" id="le-dt" value="${_qeEsc(v.dt)}"></label>
-      ${F.cat}${F.pessoa}${F.prod}${F.obs('Ex.: Pix, pagamento fornecedor…')}
+      <label title="Data do lançamento">Data lanç.<input type="date" id="le-dt" value="${_qeEsc(v.dt)}"></label>
+      ${F.cat.replace('>Categoria (plano de contas)<', ' title="Categoria (plano de contas)">Categoria<')}${F.pessoa.replace(/>Fornecedor \/ Despesa</, ' title="Fornecedor / Despesa">Fornecedor<')}${F.prod}${F.obs('Ex.: Pix, pagamento fornecedor…')}
       <label>Valor (R$)<input id="le-valor" type="number" step="0.01" min="0" placeholder="0,00" value="${_qeEsc(v.valor)}"></label>
-      <label>Data de vencimento<input type="date" id="le-venc" value="${_qeEsc(v.venc)}" title="Se ficar vazio, vence na data do lançamento"></label>
-      <label>Data de ${saida ? 'pagamento' : 'recebimento'} <span class="opc">opcional</span><input type="date" id="le-dtpag" value="${_qeEsc(v.dtpag)}" title="Só conta como pago/recebido quando esta data é preenchida (com o banco)"></label>
+      <label title="Data de vencimento">Vencimento<input type="date" id="le-venc" value="${_qeEsc(v.venc)}" title="Se ficar vazio, vence na data do lançamento"></label>
+      <label title="Data de ${saida ? 'pagamento' : 'recebimento'} (opcional)">${saida ? 'Pagamento' : 'Recebimento'} <span class="opc">opcional</span><input type="date" id="le-dtpag" value="${_qeEsc(v.dtpag)}" title="Só conta como pago/recebido quando esta data é preenchida (com o banco)"></label>
       ${F.nf}
       <div class="le-acts"><button type="button" class="btn btn-primary" onclick="leSalvarNovo()">+ Lançar</button>
         <button type="button" class="btn btn-secondary btn-sm" onclick="leFormCompleto()" title="Abrir o formulário completo (forma de pagamento, observações…)">⋯</button></div>
